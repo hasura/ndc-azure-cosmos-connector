@@ -1,4 +1,5 @@
 import { CosmosClient } from "@azure/cosmos";
+import { fetch_n_rows_from_container } from "./introspect_container_schema";
 
 // TODO: accept these as arguments
 const endpoint = 'https://test-cosmosdb-connector.documents.azure.com:443/';
@@ -10,25 +11,16 @@ async function run() {
         endpoint, key
     });
 
-    console.log("aadClient created successfully");
-
     // TODO: accept the database id as an argument.
-    const { resources: allContainers }  =  await client.database("ConnectorTest").containers.readAll().fetchAll();
+    const database = client.database("ConnectorTest");
 
-    console.log("allContainers are ", allContainers);
+    const { resources: allContainers }  =  await database.containers.readAll().fetchAll();
 
-    // const querySpec = {
-    //     query: 'SELECT * FROM Volcanoes v OFFSET 0 LIMIT 10',
-    //     parameters: []
-    // };
-
-    // var response = container.items.query(querySpec).fetchAll();
-
-    // for (var item of (await response).resources) {
-    //     console.log("Item is ", item);
-    // }
-
-
+    allContainers.forEach(async container => {
+        const dbContainer = database.container(container.id);
+        const n_container_rows = await fetch_n_rows_from_container(5, dbContainer);
+        console.log("container rows are ", n_container_rows);
+    });
 
 }
 
