@@ -1,5 +1,5 @@
 import { CosmosClient } from "@azure/cosmos";
-import { fetch_n_rows_from_container } from "./introspect_container_schema";
+import { fetch_n_rows_from_container, infer_schema_from_container_rows } from "./introspect_container_schema";
 
 // TODO: accept these as arguments
 const endpoint = 'https://test-cosmosdb-connector.documents.azure.com:443/';
@@ -19,7 +19,7 @@ async function run() {
     allContainers.forEach(async container => {
         const dbContainer = database.container(container.id);
         const n_container_rows = await fetch_n_rows_from_container(5, dbContainer);
-        console.log("container rows are ", n_container_rows);
+        infer_schema_from_container_rows(n_container_rows, container.id);
     });
 
 }
