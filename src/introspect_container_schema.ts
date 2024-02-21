@@ -1,5 +1,5 @@
-import { Container, JSONArray, JSONObject, JSONValue } from "@azure/cosmos"
-import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, NamedObjectTypeDefinition, NamedScalarTypeDefinition, NamedTypeDefinition, NumberScalarTypeDefinition, ObjectPropertyDefinition, ObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinition, StringScalarTypeDefinition, TypeDefinition } from "./schema";
+import { Container, JSONObject, JSONValue } from "@azure/cosmos"
+import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, NamedObjectTypeDefinition, NamedTypeDefinition, NumberScalarTypeDefinition, ObjectPropertyDefinition, ObjectTypeDefinition, StringScalarTypeDefinition, TypeDefinition } from "./schema";
 
 /**
    * Fetches at-most `n` latest rows from the given container
@@ -84,6 +84,7 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
         return [numberScalarTypeDefinition as TypeDefinition, []]
     }
 
+    // TODO: I'm not sure how to handle this.
     return [{} as TypeDefinition, []]
 }
 
