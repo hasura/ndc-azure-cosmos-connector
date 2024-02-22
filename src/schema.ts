@@ -11,8 +11,7 @@ export type CollectionDefinitions = {
 export type CollectionDefinition = {
   description: string | null,
   arguments: ArgumentDefinition[]
-  resultType: TypeDefinition,
-  uniqueColumns: string[]
+  resultType: TypeDefinition
 }
 
 export type ArgumentDefinition = {
@@ -25,9 +24,14 @@ export type ObjectTypeDefinitions = {
   [objectTypeName: string]: ObjectTypeDefinition
 }
 
+export type ObjectTypePropertiesMap = {
+    [propertyName: string]: ObjectPropertyDefinition
+}
+
+
 export type ObjectTypeDefinition = {
-  description: string | null,
-  properties: ObjectPropertyDefinition[]
+    description: string | null,
+    properties: ObjectTypePropertiesMap
 }
 
 export type ObjectPropertyDefinition = {

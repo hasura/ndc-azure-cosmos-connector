@@ -1,5 +1,5 @@
 import { Container, JSONObject, JSONValue } from "@azure/cosmos"
-import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, NamedObjectTypeDefinition, NamedTypeDefinition, NumberScalarTypeDefinition, ObjectPropertyDefinition, ObjectTypeDefinition, StringScalarTypeDefinition, TypeDefinition } from "./schema";
+import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, CollectionDefinition, NamedObjectTypeDefinition, NullableTypeDefinition, NumberScalarTypeDefinition, ObjectTypeDefinition, ObjectTypeDefinitions, ObjectTypePropertiesMap, StringScalarTypeDefinition, TypeDefinition } from "./schema";
 
 /**
    * Fetches at-most `n` latest rows from the given container
@@ -19,14 +19,11 @@ export async function fetch_n_rows_from_container(n: number, container: Containe
     return response.resources
 }
 
-type ObjectTypeDefinitionMap = {
-    [key: string]: ObjectTypeDefinition
-}
 
-function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string): [TypeDefinition, ObjectTypeDefinitionMap] {
+function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string, containerPrefix: string, objectTypeDefinitionMap: ObjectTypeDefinitions): [TypeDefinition, ObjectTypeDefinitions] {
     if (Array.isArray(jsonValue)) {
         if (jsonValue.length > 0 && jsonValue != null) {
-            const [typeDefn, objectTypeDefns] = infer_schema_of_json_value(jsonValue[0], objectTypeName); // TODO: check if the `objectTypeName` makes sense here?
+            const [typeDefn, objectTypeDefns] = infer_schema_of_json_value(jsonValue[0], objectTypeName, containerPrefix, objectTypeDefinitionMap);
             const arrayTypeDefn: ArrayTypeDefinition = {
                 type: "array",
                 elementType: typeDefn
@@ -34,26 +31,48 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
             return [arrayTypeDefn, objectTypeDefns]
         }
     } else if (typeof jsonValue === "object") {
-        var objPropertyDefns: ObjectPropertyDefinition[] = [];
-        let objTypeDefns: ObjectTypeDefinitionMap = {};
+        var objPropertyDefns: ObjectTypePropertiesMap = {};
+        let objTypeDefns: ObjectTypeDefinitions = {};
+
+        let existingObjectTypeDefinition = objectTypeDefinitionMap[containerPrefix + objectTypeName];
 
         Object.keys(jsonValue as JSONObject).map(key => {
             const value: JSONValue = (jsonValue as JSONObject)[key];
             if (value != null && value != undefined) {
-                const [fieldTypeDefinition, currentObjTypeDefns] = infer_schema_of_json_value(value, key);
-                objPropertyDefns.push({
+                const [fieldTypeDefinition, currentObjTypeDefns] = infer_schema_of_json_value(value, key, containerPrefix, objectTypeDefinitionMap);
+
+                objPropertyDefns[key] = {
                     propertyName: key,
                     description: null,
                     type: fieldTypeDefinition
-                });
-                objTypeDefns = {...objTypeDefns, ...currentObjTypeDefns};
+                };
+
+                objTypeDefns = { ...objTypeDefns, ...currentObjTypeDefns };
             }
         })
         const currentNamedObjTypeDefn: NamedObjectTypeDefinition = {
             type: "named",
-            name: objectTypeName,
+            name: containerPrefix + objectTypeName,
             kind: "object"
         };
+
+        if ( existingObjectTypeDefinition != null ) {
+            // Add the keys that were accumulated
+            for (const k in existingObjectTypeDefinition.properties) {
+                const currentPropertyTypeDef = objPropertyDefns[k];
+                if (currentPropertyTypeDef == null) {
+                    var existingObjectPropertyDefn = existingObjectTypeDefinition.properties[k];
+                    // Making this property of the object as nullable, because we didn't find this
+                    // key in the earlier rows, which means it should be a nullable field.
+                    existingObjectPropertyDefn.type = {
+                        type: "nullable",
+                        nullOrUndefinability: "AcceptsEither",
+                        underlyingType: existingObjectPropertyDefn.type
+                    } as NullableTypeDefinition as TypeDefinition;
+                    objPropertyDefns[k] = existingObjectPropertyDefn
+                }
+            }
+        }
 
         const currentObjTypeDefinition: ObjectTypeDefinition = {
             description: null,
@@ -61,7 +80,7 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
         };
 
 
-        objTypeDefns = { ...objTypeDefns, [objectTypeName]: currentObjTypeDefinition };
+        objTypeDefns = { ...objTypeDefns, [containerPrefix + objectTypeName]: currentObjTypeDefinition };
 
         return [currentNamedObjTypeDefn, objTypeDefns]
 
@@ -95,20 +114,24 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
     return [{} as TypeDefinition, {}]
 }
 
-export function infer_schema_from_container_rows(rows: JSONObject[], container_name: string) {
-
+export function infer_schema_from_container_rows(rows: JSONObject[], containerName: string): [CollectionDefinition, ObjectTypeDefinitions] {
+    var objectTypeDefnsAccumulator = {};
+    var collectionObjectType: NamedObjectTypeDefinition = {
+        type: "named",
+        name: containerName + "_" + containerName ,
+        kind: "object"
+    };
     rows.forEach(row => {
-        const [containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, container_name);
-        console.log(`containerObjTypeDefinition is ${JSON.stringify(containerObjTypeDefinition, null, 2)} \n and object type definitions are ${JSON.stringify(objTypeDefns, null, 2)} jfkdlsfds`)
+        const [containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, containerName, containerName + "_", objectTypeDefnsAccumulator);
+        objectTypeDefnsAccumulator = objTypeDefns;
     }
 
     )
+
+    let collectionDefinition: CollectionDefinition = {
+        description: null,
+        arguments: [],
+        resultType: collectionObjectType
+    }
+    return [collectionDefinition, objectTypeDefnsAccumulator]
 }
-
-const sampleRow = `
-[
-{"a": "b"}
-]
-`;
-
-infer_schema_from_container_rows(JSON.parse(sampleRow) , "Artists");
