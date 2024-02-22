@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./build && tsc",
+    "start": "ts-node ./src/introspect_container_schema.ts"
+
   },
   "author": "Karthikeyan Chinnakonda",
   "license": "ISC",

@@ -19,9 +19,13 @@ export async function fetch_n_rows_from_container(n: number, container: Containe
     return response.resources
 }
 
-function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string): [TypeDefinition, ObjectTypeDefinition[]] {
+type ObjectTypeDefinitionMap = {
+    [key: string]: ObjectTypeDefinition
+}
+
+function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string): [TypeDefinition, ObjectTypeDefinitionMap] {
     if (Array.isArray(jsonValue)) {
-        if (jsonValue.length > 0)  {
+        if (jsonValue.length > 0 && jsonValue != null) {
             const [typeDefn, objectTypeDefns] = infer_schema_of_json_value(jsonValue[0], objectTypeName); // TODO: check if the `objectTypeName` makes sense here?
             const arrayTypeDefn: ArrayTypeDefinition = {
                 type: "array",
@@ -31,7 +35,8 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
         }
     } else if (typeof jsonValue === "object") {
         var objPropertyDefns: ObjectPropertyDefinition[] = [];
-        var objTypeDefns: ObjectTypeDefinition[] = [];
+        let objTypeDefns: ObjectTypeDefinitionMap = {};
+
         Object.keys(jsonValue as JSONObject).map(key => {
             const value: JSONValue = (jsonValue as JSONObject)[key];
             if (value != null && value != undefined) {
@@ -41,7 +46,7 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
                     description: null,
                     type: fieldTypeDefinition
                 });
-                objTypeDefns = objTypeDefns.concat(currentObjTypeDefns);
+                objTypeDefns = {...objTypeDefns, ...currentObjTypeDefns};
             }
         })
         const currentNamedObjTypeDefn: NamedObjectTypeDefinition = {
@@ -55,9 +60,11 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
             properties: objPropertyDefns
         };
 
-        objTypeDefns.push(currentObjTypeDefinition);
 
-        return [(currentNamedObjTypeDefn as NamedTypeDefinition) as TypeDefinition, objTypeDefns]
+        objTypeDefns = { ...objTypeDefns, [objectTypeName]: currentObjTypeDefinition };
+
+        return [currentNamedObjTypeDefn, objTypeDefns]
+
     } else if (typeof jsonValue === "string") {
         let stringScalarTypeDefinition: StringScalarTypeDefinition = {
             type: "named",
@@ -65,7 +72,7 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
             kind: "scalar",
             literalValue: jsonValue as string
         };
-        return [stringScalarTypeDefinition as TypeDefinition, []]
+        return [stringScalarTypeDefinition as TypeDefinition, {}]
     } else if (typeof jsonValue == "number") {
         let numberScalarTypeDefinition: NumberScalarTypeDefinition = {
             type: "named",
@@ -73,26 +80,26 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
             kind: "scalar",
             literalValue: jsonValue as number
         };
-        return [numberScalarTypeDefinition as TypeDefinition, []]
+        return [numberScalarTypeDefinition as TypeDefinition, {}]
     } else if (typeof jsonValue == "boolean") {
-        let numberScalarTypeDefinition: BooleanScalarTypeDefinition = {
+        let booleanScalarTypeDefinition: BooleanScalarTypeDefinition = {
             type: "named",
             name: BuiltInScalarTypeName.Boolean,
             kind: "scalar",
             literalValue: jsonValue as boolean
         };
-        return [numberScalarTypeDefinition as TypeDefinition, []]
+        return [booleanScalarTypeDefinition as TypeDefinition, {}]
     }
 
     // TODO: I'm not sure how to handle this.
-    return [{} as TypeDefinition, []]
+    return [{} as TypeDefinition, {}]
 }
 
 export function infer_schema_from_container_rows(rows: JSONObject[], container_name: string) {
 
     rows.forEach(row => {
-        const [containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, container_name)
-        console.log(`containerObjTypeDefinition is ${JSON.stringify(containerObjTypeDefinition, null, 2)} \n and object type definitions are ${JSON.stringify(objTypeDefns, null, 2) }`)
+        const [containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, container_name);
+        console.log(`containerObjTypeDefinition is ${JSON.stringify(containerObjTypeDefinition, null, 2)} \n and object type definitions are ${JSON.stringify(objTypeDefns, null, 2)} jfkdlsfds`)
     }
 
     )
@@ -100,7 +107,7 @@ export function infer_schema_from_container_rows(rows: JSONObject[], container_n
 
 const sampleRow = `
 [
-{"hello": [[1]] }
+{"a": "b"}
 ]
 `;
 
