@@ -1,6 +1,6 @@
 import { CosmosClient } from "@azure/cosmos";
 import { fetch_n_rows_from_container, infer_schema_from_container_rows } from "./introspect_container_schema";
-import { CollectionDefinitions, CollectionsSchema, ObjectTypeDefinitions, ScalarTypeDefinitions } from "./schema";
+import { CollectionDefinitions, CollectionsSchema, ObjectTypeDefinitions, ScalarTypeDefinitions, getNdcSchemaResponse } from "./schema";
 
 // TODO: accept these as arguments
 const endpoint = 'https://test-cosmosdb-connector.documents.azure.com:443/';
@@ -36,6 +36,8 @@ async function run() {
         objectTypes: objectTypeDefinitions,
         scalarTypes: scalarTypeDefinitions,
     };
+
+    console.log("Schema response is ", JSON.stringify(getNdcSchemaResponse(collectionsSchema), null, 2));
 }
 
 async function handleError(error: { code: string }): Promise<void> {

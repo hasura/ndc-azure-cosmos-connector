@@ -1,27 +1,30 @@
+import * as sdk from "@hasura/ndc-sdk-typescript";
+import { mapObjectValues } from "./utils";
+
 export type CollectionsSchema = {
-  collections: CollectionDefinitions
-  objectTypes: ObjectTypeDefinitions
-  scalarTypes: ScalarTypeDefinitions
+    collections: CollectionDefinitions
+    objectTypes: ObjectTypeDefinitions
+    scalarTypes: ScalarTypeDefinitions
 }
 
 export type CollectionDefinitions = {
-  [collectionName: string]: CollectionDefinition
+    [collectionName: string]: CollectionDefinition
 }
 
 export type CollectionDefinition = {
-  description: string | null,
-  arguments: ArgumentDefinition[]
-  resultType: TypeDefinition
+    description: string | null,
+    arguments: ArgumentDefinition[]
+    resultType: TypeDefinition
 }
 
 export type ArgumentDefinition = {
-  argumentName: string,
-  description: string | null,
-  type: TypeDefinition
+    argumentName: string,
+    description: string | null,
+    type: TypeDefinition
 }
 
 export type ObjectTypeDefinitions = {
-  [objectTypeName: string]: ObjectTypeDefinition
+    [objectTypeName: string]: ObjectTypeDefinition
 }
 
 export type ObjectTypePropertiesMap = {
@@ -35,13 +38,13 @@ export type ObjectTypeDefinition = {
 }
 
 export type ObjectPropertyDefinition = {
-  propertyName: string,
-  description: string | null,
-  type: TypeDefinition,
+    propertyName: string,
+    description: string | null,
+    type: TypeDefinition,
 }
 
 export type ScalarTypeDefinitions = {
-  [scalarTypeName: string]: ScalarTypeDefinition
+    [scalarTypeName: string]: ScalarTypeDefinition
 }
 
 export type ScalarTypeDefinition = Record<string, never> // Empty object, for now
@@ -49,22 +52,21 @@ export type ScalarTypeDefinition = Record<string, never> // Empty object, for no
 export type TypeDefinition = ArrayTypeDefinition | NullableTypeDefinition | NamedTypeDefinition
 
 export type ArrayTypeDefinition = {
-  type: "array"
-  elementType: TypeDefinition
+    type: "array"
+    elementType: TypeDefinition
 }
 
 export type NullableTypeDefinition = {
-  type: "nullable",
-  nullOrUndefinability: NullOrUndefinability
-  underlyingType: TypeDefinition
+    type: "nullable",
+    underlyingType: TypeDefinition
 }
 
 export type NamedTypeDefinition = NamedObjectTypeDefinition | NamedScalarTypeDefinition
 
 export type NamedObjectTypeDefinition = {
-  type: "named"
-  name: string
-  kind: "object"
+    type: "named"
+    name: string
+    kind: "object"
 }
 
 export type NamedScalarTypeDefinition = CustomNamedScalarTypeDefinition | BuiltInScalarTypeDefinition
@@ -72,42 +74,36 @@ export type NamedScalarTypeDefinition = CustomNamedScalarTypeDefinition | BuiltI
 export type BuiltInScalarTypeDefinition = StringScalarTypeDefinition | BooleanScalarTypeDefinition | NumberScalarTypeDefinition | DateTimeScalarTypeDefinition
 
 export type CustomNamedScalarTypeDefinition = {
-  type: "named"
-  name: string
-  kind: "scalar"
+    type: "named"
+    name: string
+    kind: "scalar"
 }
 
 export type StringScalarTypeDefinition = {
-  type: "named"
-  name: BuiltInScalarTypeName.String
-  kind: "scalar"
-  literalValue?: string
+    type: "named"
+    name: BuiltInScalarTypeName.String
+    kind: "scalar"
+    literalValue?: string
 }
 
 export type NumberScalarTypeDefinition = {
-  type: "named"
-  name: BuiltInScalarTypeName.Number
-  kind: "scalar"
-  literalValue?: number
+    type: "named"
+    name: BuiltInScalarTypeName.Number
+    kind: "scalar"
+    literalValue?: number
 }
 
 export type BooleanScalarTypeDefinition = {
-  type: "named"
-  name: BuiltInScalarTypeName.Boolean
-  kind: "scalar"
-  literalValue?: boolean
+    type: "named"
+    name: BuiltInScalarTypeName.Boolean
+    kind: "scalar"
+    literalValue?: boolean
 }
 
 export type DateTimeScalarTypeDefinition = {
-  type: "named"
-  name: BuiltInScalarTypeName.DateTime
-  kind: "scalar"
-}
-
-export enum NullOrUndefinability {
-    AcceptsNullOnly = "AcceptsNullOnly",
-    AcceptsUndefinedOnly = "AcceptsUndefinedOnly",
-    AcceptsEither = "AcceptsEither",
+    type: "named"
+    name: BuiltInScalarTypeName.DateTime
+    kind: "scalar"
 }
 
 export enum BuiltInScalarTypeName {
@@ -115,4 +111,65 @@ export enum BuiltInScalarTypeName {
     Number = "Number",
     Boolean = "Boolean",
     DateTime = "DateTime",
+}
+
+
+export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.SchemaResponse {
+    const collections = Object.entries(collectionsSchema.collections);
+
+    var collectionInfos = collections.map(([collectionName, collectionInfo]) => {
+        return {
+            name: collectionName,
+            description: null,
+            arguments: {},
+            type: getBaseNamedType(collectionInfo.resultType),
+            uniqueness_constraints: {},
+            foreign_keys: {}
+        }
+    })
+
+
+    const objectTypes = mapObjectValues(collectionsSchema.objectTypes, objDef => {
+        return {
+            fields: Object.fromEntries(Object.values(objDef.properties).map(propDef => {
+                const objField: sdk.ObjectField = {
+                    type: convertTypeReferenceToSdkType(propDef.type),
+                    description: null
+                }
+                return [propDef.propertyName, objField];
+            })),
+            ...(objDef.description ? { description: objDef.description } : {})
+        }
+    });
+
+    const scalarTypes = mapObjectValues(collectionsSchema.scalarTypes, _scalar_def => {
+        return {
+            aggregate_functions: {},
+            comparison_operators: {},
+        }
+    })
+
+    return {
+        functions: [],
+        procedures: [],
+        collections: collectionInfos,
+        object_types: objectTypes,
+        scalar_types: scalarTypes,
+    }
+}
+
+function convertTypeReferenceToSdkType(typeRef: TypeDefinition): sdk.Type {
+    switch (typeRef.type) {
+        case "array": return { type: "array", element_type: convertTypeReferenceToSdkType(typeRef.elementType) }
+        case "nullable": return { type: "nullable", underlying_type: convertTypeReferenceToSdkType(typeRef.underlyingType) }
+        case "named": return { type: "named", name: typeRef.name }
+    }
+}
+
+function getBaseNamedType(typeRef: TypeDefinition): string {
+    switch (typeRef.type) {
+        case "array": return getBaseNamedType(typeRef.elementType)
+        case "nullable": return getBaseNamedType(typeRef.underlyingType)
+        case "named": return typeRef.name
+    }
 }

@@ -56,7 +56,7 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
             kind: "object"
         };
 
-        if ( existingObjectTypeDefinition != null ) {
+        if (existingObjectTypeDefinition != null) {
             // Add the keys that were accumulated
             for (const k in existingObjectTypeDefinition.properties) {
                 const currentPropertyTypeDef = objPropertyDefns[k];
@@ -66,7 +66,6 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
                     // key in the earlier rows, which means it should be a nullable field.
                     existingObjectPropertyDefn.type = {
                         type: "nullable",
-                        nullOrUndefinability: "AcceptsEither",
                         underlyingType: existingObjectPropertyDefn.type
                     } as NullableTypeDefinition as TypeDefinition;
                     objPropertyDefns[k] = existingObjectPropertyDefn
@@ -118,11 +117,11 @@ export function infer_schema_from_container_rows(rows: JSONObject[], containerNa
     var objectTypeDefnsAccumulator = {};
     var collectionObjectType: NamedObjectTypeDefinition = {
         type: "named",
-        name: containerName + "_" + containerName ,
+        name: containerName + "_" + containerName,
         kind: "object"
     };
     rows.forEach(row => {
-        const [containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, containerName, containerName + "_", objectTypeDefnsAccumulator);
+        const [_containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, containerName, containerName + "_", objectTypeDefnsAccumulator);
         objectTypeDefnsAccumulator = objTypeDefns;
     }
 
