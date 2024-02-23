@@ -19,11 +19,21 @@ export async function fetch_n_rows_from_container(n: number, container: Containe
     return response.resources
 }
 
+function calculatePrefix(prefixPath: string[]): string {
+    return prefixPath.join("_")
+}
 
-function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string, containerPrefix: string, objectTypeDefinitionMap: ObjectTypeDefinitions): [TypeDefinition, ObjectTypeDefinitions] {
+/**
+   * Infers the schema of the give `jsonValue` by introspecting the JSON value. It calculates
+   * the schema of the different object types primarily and the fields that construct the
+   * object type.
+
+   **/
+function infer_schema_of_json_value(jsonValue: JSONValue, typePrefix: string[], objectTypeDefinitionMap: ObjectTypeDefinitions): [TypeDefinition, ObjectTypeDefinitions] {
+    const currentPrefix = calculatePrefix(typePrefix);
     if (Array.isArray(jsonValue)) {
         if (jsonValue.length > 0 && jsonValue != null) {
-            const [typeDefn, objectTypeDefns] = infer_schema_of_json_value(jsonValue[0], objectTypeName, containerPrefix, objectTypeDefinitionMap);
+            const [typeDefn, objectTypeDefns] = infer_schema_of_json_value(jsonValue[0], typePrefix, objectTypeDefinitionMap);
             const arrayTypeDefn: ArrayTypeDefinition = {
                 type: "array",
                 elementType: typeDefn
@@ -34,12 +44,12 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
         var objPropertyDefns: ObjectTypePropertiesMap = {};
         let objTypeDefns: ObjectTypeDefinitions = {};
 
-        let existingObjectTypeDefinition = objectTypeDefinitionMap[containerPrefix + objectTypeName];
+        let existingObjectTypeDefinition = objectTypeDefinitionMap[currentPrefix];
 
         Object.keys(jsonValue as JSONObject).map(key => {
             const value: JSONValue = (jsonValue as JSONObject)[key];
             if (value != null && value != undefined) {
-                const [fieldTypeDefinition, currentObjTypeDefns] = infer_schema_of_json_value(value, key, containerPrefix, objectTypeDefinitionMap);
+                const [fieldTypeDefinition, currentObjTypeDefns] = infer_schema_of_json_value(value, [...typePrefix, key], objectTypeDefinitionMap);
 
                 objPropertyDefns[key] = {
                     propertyName: key,
@@ -50,9 +60,12 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
                 objTypeDefns = { ...objTypeDefns, ...currentObjTypeDefns };
             }
         })
+
+
+
         const currentNamedObjTypeDefn: NamedObjectTypeDefinition = {
             type: "named",
-            name: containerPrefix + objectTypeName,
+            name: currentPrefix,
             kind: "object"
         };
 
@@ -79,7 +92,7 @@ function infer_schema_of_json_value(jsonValue: JSONValue, objectTypeName: string
         };
 
 
-        objTypeDefns = { ...objTypeDefns, [containerPrefix + objectTypeName]: currentObjTypeDefinition };
+        objTypeDefns = { ...objTypeDefns, [currentPrefix]: currentObjTypeDefinition };
 
         return [currentNamedObjTypeDefn, objTypeDefns]
 
@@ -120,12 +133,12 @@ export function infer_schema_from_container_rows(rows: JSONObject[], containerNa
         name: containerName + "_" + containerName,
         kind: "object"
     };
-    rows.forEach(row => {
-        const [_containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, containerName, containerName + "_", objectTypeDefnsAccumulator);
+
+    for (let i = rows.length - 1; i >= 0; i--) {
+        let row = rows[i];
+        const [_containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, [containerName], objectTypeDefnsAccumulator);
         objectTypeDefnsAccumulator = objTypeDefns;
     }
-
-    )
 
     let collectionDefinition: CollectionDefinition = {
         description: null,
@@ -134,3 +147,27 @@ export function infer_schema_from_container_rows(rows: JSONObject[], containerNa
     }
     return [collectionDefinition, objectTypeDefnsAccumulator]
 }
+
+const Artist = `
+[
+{
+  "Albums": [
+    {
+      "AlbumId": 1,
+      "Name": "Album 1",
+      "Artist": {
+        "Name": "Artist 1",
+        "Albums": [
+          {
+            "AlbumId": 1,
+            "Name": "Album 1"
+          }
+        ]
+      }
+    }
+  ]
+}
+]
+`
+
+console.log("Inferred schema", JSON.stringify(infer_schema_of_json_value(JSON.parse(Artist), ["Artist"], {}), null, 2))
