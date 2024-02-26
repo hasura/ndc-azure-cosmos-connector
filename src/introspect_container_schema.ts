@@ -1,5 +1,6 @@
 import { Container, JSONObject, JSONValue } from "@azure/cosmos"
-import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, CollectionDefinition, NamedObjectTypeDefinition, NullableTypeDefinition, NumberScalarTypeDefinition, ObjectTypeDefinition, ObjectTypeDefinitions, ObjectTypePropertiesMap, StringScalarTypeDefinition, TypeDefinition } from "./schema";
+import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, CollectionDefinition, CollectionsSchema, NamedObjectTypeDefinition, NullableTypeDefinition, NumberScalarTypeDefinition, ObjectTypeDefinition, ObjectTypeDefinitions, ObjectTypePropertiesMap, StringScalarTypeDefinition, TypeDefinition } from "./schema";
+import { InputData, SerializedRenderResult, jsonInputForTargetLanguage, quicktype } from "quicktype-core";
 
 /**
    * Fetches at-most `n` latest rows from the given container
@@ -9,7 +10,7 @@ import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName
    * @returns The latest at-most `n` rows from the `container`.
 
 **/
-export async function fetch_n_rows_from_container(n: number, container: Container): Promise<JSONObject[]> {
+export async function fetch_n_rows_from_container(n: number, container: Container): Promise<string[]> {
     const querySpec = {
         query: `SELECT * FROM ${container.id} c ORDER BY c._ts DESC OFFSET 0 LIMIT ${n}`,
         parameters: []
@@ -19,133 +20,176 @@ export async function fetch_n_rows_from_container(n: number, container: Containe
     return response.resources
 }
 
-function calculatePrefix(prefixPath: string[]): string {
-    return prefixPath.join("_")
+interface JSONDefinitionValueStringType {
+    type: "string"
 }
 
-/**
-   * Infers the schema of the give `jsonValue` by introspecting the JSON value. It calculates
-   * the schema of the different object types primarily and the fields that construct the
-   * object type.
+interface JSONDefinitionValueNumberType {
+    type: "number"
+}
 
-   **/
-function infer_schema_of_json_value(jsonValue: JSONValue, typePrefix: string[], objectTypeDefinitionMap: ObjectTypeDefinitions): [TypeDefinition, ObjectTypeDefinitions] {
-    const currentPrefix = calculatePrefix(typePrefix);
-    if (Array.isArray(jsonValue)) {
-        if (jsonValue.length > 0 && jsonValue != null) {
-            const [typeDefn, objectTypeDefns] = infer_schema_of_json_value(jsonValue[0], typePrefix, objectTypeDefinitionMap);
-            const arrayTypeDefn: ArrayTypeDefinition = {
-                type: "array",
-                elementType: typeDefn
-            };
-            return [arrayTypeDefn, objectTypeDefns]
-        }
-    } else if (typeof jsonValue === "object") {
-        var objPropertyDefns: ObjectTypePropertiesMap = {};
-        let objTypeDefns: ObjectTypeDefinitions = {};
-
-        let existingObjectTypeDefinition = objectTypeDefinitionMap[currentPrefix];
-
-        Object.keys(jsonValue as JSONObject).map(key => {
-            const value: JSONValue = (jsonValue as JSONObject)[key];
-            if (value != null && value != undefined) {
-                const [fieldTypeDefinition, currentObjTypeDefns] = infer_schema_of_json_value(value, [...typePrefix, key], objectTypeDefinitionMap);
-
-                objPropertyDefns[key] = {
-                    propertyName: key,
-                    description: null,
-                    type: fieldTypeDefinition
-                };
-
-                objTypeDefns = { ...objTypeDefns, ...currentObjTypeDefns };
-            }
-        })
+interface JSONDefinitionValueIntegerType {
+    type: "integer"
+}
 
 
+interface JSONDefinitionValueBooleanType {
+    type: "boolean"
+}
 
-        const currentNamedObjTypeDefn: NamedObjectTypeDefinition = {
+interface JSONDefinitionValueObjectTypeProperties {
+    [propertyName: string]: JSONDefinitionValueType
+}
+
+interface JSONDefinitionValueObjectType {
+    type: "object",
+    properties: JSONDefinitionValueObjectTypeProperties
+}
+
+interface JSONDefinitionValueArrayType {
+    type: "array",
+    items: JSONDefinitionValueObjectTypeProperty
+}
+
+interface JSONDefinitionValueNullType {
+    type: "null"
+}
+
+interface JSONDefinitionValueObjectTypePropertyRef {
+    type: "ref"
+    '$ref': string
+}
+
+
+type JSONDefinitionValueType
+    = JSONDefinitionValueStringType
+    | JSONDefinitionValueArrayType
+    | JSONDefinitionValueBooleanType
+    | JSONDefinitionValueNumberType
+    | JSONDefinitionValueIntegerType
+    | JSONDefinitionValueObjectType
+    | JSONDefinitionValueNullType
+
+type JSONDefinitionValueObjectTypeProperty = JSONDefinitionValueType | JSONDefinitionValueObjectTypePropertyRef
+
+type JSONSchemaDefinitionValues = {
+    [typeName: string]: JSONDefinitionValueType
+}
+
+type JSONSchema = {
+    definitions: JSONSchemaDefinitionValues
+}
+
+export async function infer_schema_from_container_rows_quick_type(rows: string[], containerTypeName: string): Promise<JSONSchema> {
+    const jsonInput = jsonInputForTargetLanguage("schema");
+
+    await jsonInput.addSource({
+        name: containerTypeName,
+        samples: rows.map(x => JSON.stringify(x))
+    });
+
+    const inputData = new InputData();
+    inputData.addInput(jsonInput);
+
+    let jsonSchema = await quicktype({
+        inputData,
+        lang: "schema"
+    });
+
+    return JSON.parse(jsonSchema.lines.join(""))
+
+}
+
+function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypeProperty): TypeDefinition | null {
+    if (jsonValueTypeDefn.type == "ref") {
+        // Case of a reference to an object.
+        return {
             type: "named",
-            name: currentPrefix,
+            name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
             kind: "object"
-        };
 
-        if (existingObjectTypeDefinition != null) {
-            // Add the keys that were accumulated
-            for (const k in existingObjectTypeDefinition.properties) {
-                const currentPropertyTypeDef = objPropertyDefns[k];
-                if (currentPropertyTypeDef == null) {
-                    var existingObjectPropertyDefn = existingObjectTypeDefinition.properties[k];
-                    // Making this property of the object as nullable, because we didn't find this
-                    // key in the earlier rows, which means it should be a nullable field.
-                    existingObjectPropertyDefn.type = {
-                        type: "nullable",
-                        underlyingType: existingObjectPropertyDefn.type
-                    } as NullableTypeDefinition as TypeDefinition;
-                    objPropertyDefns[k] = existingObjectPropertyDefn
+        }
+    } else if (jsonValueTypeDefn.type == "null") {
+        return null
+    } else if (jsonValueTypeDefn.type == "array") {
+        if ('$ref' in jsonValueTypeDefn.items) {
+            return {
+                "type": "array",
+                "elementType": {
+                    "type": "named",
+                    "name": (jsonValueTypeDefn.items['$ref'] as string).split('/')[2],
+                    "kind": "object"
                 }
             }
+        } else {
+            let propertyTypeDefn = getPropertyTypeDefn(jsonValueTypeDefn.items);
+            if (propertyTypeDefn != null) {
+                return {
+                    "type": "array",
+                    "elementType": propertyTypeDefn
+                }
+            } else {
+                return null
+            }
         }
-
-        const currentObjTypeDefinition: ObjectTypeDefinition = {
-            description: null,
-            properties: objPropertyDefns
-        };
-
-
-        objTypeDefns = { ...objTypeDefns, [currentPrefix]: currentObjTypeDefinition };
-
-        return [currentNamedObjTypeDefn, objTypeDefns]
-
-    } else if (typeof jsonValue === "string") {
-        let stringScalarTypeDefinition: StringScalarTypeDefinition = {
-            type: "named",
+    } else if (jsonValueTypeDefn.type == "string") {
+        return {
+            "type": "named",
             name: BuiltInScalarTypeName.String,
-            kind: "scalar",
-            literalValue: jsonValue as string
-        };
-        return [stringScalarTypeDefinition as TypeDefinition, {}]
-    } else if (typeof jsonValue == "number") {
-        let numberScalarTypeDefinition: NumberScalarTypeDefinition = {
-            type: "named",
+            kind: "scalar"
+        }
+    } else if (jsonValueTypeDefn.type == "number") {
+        return {
+            "type": "named",
             name: BuiltInScalarTypeName.Number,
-            kind: "scalar",
-            literalValue: jsonValue as number
-        };
-        return [numberScalarTypeDefinition as TypeDefinition, {}]
-    } else if (typeof jsonValue == "boolean") {
-        let booleanScalarTypeDefinition: BooleanScalarTypeDefinition = {
-            type: "named",
+            kind: "scalar"
+        }
+    }
+    else if (jsonValueTypeDefn.type == "integer") {
+        return {
+            "type": "named",
+            name: BuiltInScalarTypeName.Number,
+            kind: "scalar"
+        }
+    } else if (jsonValueTypeDefn.type == "boolean") {
+        return {
+            "type": "named",
             name: BuiltInScalarTypeName.Boolean,
-            kind: "scalar",
-            literalValue: jsonValue as boolean
-        };
-        return [booleanScalarTypeDefinition as TypeDefinition, {}]
+            kind: "scalar"
+        }
     }
 
-    // TODO: I'm not sure how to handle this.
-    return [{} as TypeDefinition, {}]
+    return null
 }
 
-export function infer_schema_from_container_rows(rows: JSONObject[], containerName: string): [CollectionDefinition, ObjectTypeDefinitions] {
-    var objectTypeDefnsAccumulator = {};
-    var collectionObjectType: NamedObjectTypeDefinition = {
-        type: "named",
-        name: containerName + "_" + containerName,
-        kind: "object"
-    };
+export function getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema: JSONSchema): ObjectTypeDefinitions {
+    var objectTypeDefinitions: ObjectTypeDefinitions = {};
+    Object.entries(containerJSONSchema.definitions).forEach(([objectTypeName, objectTypeDefinition]) => {
+        if (objectTypeDefinition.type == "object") {
+            var objectTypeProperties: ObjectTypePropertiesMap = {};
 
-    for (let i = rows.length - 1; i >= 0; i--) {
-        let row = rows[i];
-        const [_containerObjTypeDefinition, objTypeDefns] = infer_schema_of_json_value(row, [containerName], objectTypeDefnsAccumulator);
-        objectTypeDefnsAccumulator = objTypeDefns;
-    }
+            Object.entries(objectTypeDefinition.properties).map(([propertyName, propertyDefn]) => {
 
-    let collectionDefinition: CollectionDefinition = {
-        description: null,
-        arguments: [],
-        resultType: collectionObjectType
+                let propertyTypeDefn = getPropertyTypeDefn(propertyDefn);
+
+                if (propertyTypeDefn !== null) {
+                    objectTypeProperties[propertyName] = {
+                        propertyName: propertyName,
+                        description: null,
+                        type: propertyTypeDefn
+                    };
+                }
+
+            })
+
+            objectTypeDefinitions[objectTypeName] = {
+                description: null,
+                properties: objectTypeProperties
+            }
+        }
     }
-    return [collectionDefinition, objectTypeDefnsAccumulator]
+    )
+    return objectTypeDefinitions
 }
 
 const Artist = `
@@ -170,4 +214,14 @@ const Artist = `
 ]
 `
 
-console.log("Inferred schema", JSON.stringify(infer_schema_of_json_value(JSON.parse(Artist), ["Artist"], {}), null, 2))
+
+async function run() {
+    const containerJSONSchema = await infer_schema_from_container_rows_quick_type(JSON.parse(Artist), "Artist");
+
+    const objectTypes = getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema);
+
+
+
+}
+
+run()

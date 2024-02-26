@@ -1,6 +1,6 @@
 import { CosmosClient } from "@azure/cosmos";
-import { fetch_n_rows_from_container, infer_schema_from_container_rows } from "./introspect_container_schema";
-import { CollectionDefinitions, CollectionsSchema, ObjectTypeDefinitions, ScalarTypeDefinitions, getNdcSchemaResponse } from "./schema";
+import { fetch_n_rows_from_container, getObjectTypeDefinitionsFromJSONSchema, infer_schema_from_container_rows_quick_type } from "./introspect_container_schema";
+import { CollectionDefinition, CollectionDefinitions, CollectionsSchema, NamedObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinitions, getNdcSchemaResponse } from "./schema";
 
 // TODO: accept these as arguments
 const endpoint = 'https://test-cosmosdb-connector.documents.azure.com:443/';
@@ -26,9 +26,24 @@ async function run() {
     for (const container of allContainers) {
         const dbContainer = database.container(container.id);
         const n_container_rows = await fetch_n_rows_from_container(5, dbContainer);
-        const [collectionDefinition, containerObjTypeDefinitions] = infer_schema_from_container_rows(n_container_rows, container.id);
+        const containerJsonSchema = await infer_schema_from_container_rows_quick_type(n_container_rows, container.id);
+        const containerObjectTypeDefinitions = getObjectTypeDefinitionsFromJSONSchema(containerJsonSchema);
+
+        const collectionObjectType: NamedObjectTypeDefinition = {
+            type: "named",
+            name: container.id,
+            kind: "object"
+        };
+
+        const collectionDefinition: CollectionDefinition = {
+            description: null,
+            arguments: [],
+            resultType: collectionObjectType
+        };
+
+        objectTypeDefinitions = { ...objectTypeDefinitions, ...containerObjectTypeDefinitions };
         collectionDefinitions[container.id] = collectionDefinition;
-        objectTypeDefinitions = { ...objectTypeDefinitions, ...containerObjTypeDefinitions };
+        // objectTypeDefinitions = { ...objectTypeDefinitions, ...containerObjTypeDefinitions };
     }
 
     const collectionsSchema: CollectionsSchema = {
