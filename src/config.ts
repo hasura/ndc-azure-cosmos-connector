@@ -1,19 +1,25 @@
 import { CosmosClient } from "@azure/cosmos";
 import { fetch_n_rows_from_container, getObjectTypeDefinitionsFromJSONSchema, infer_schema_from_container_rows_quick_type } from "./introspect_container_schema";
-import { CollectionDefinition, CollectionDefinitions, CollectionsSchema, NamedObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinitions, getNdcSchemaResponse } from "./schema";
+import { CollectionDefinition, CollectionDefinitions, CollectionsSchema, NamedObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinitions, getJSONScalarTypes, getNdcSchemaResponse } from "./schema";
+import * as dotenv from 'dotenv';
+import { throwError } from "./utils";
+import path from "path";
 
-// TODO: accept these as arguments
-const endpoint = 'https://test-cosmosdb-connector.documents.azure.com:443/';
-const key = 'xrgHgDgY7dvHMmUc8m5RA5OuEkd4yEl7btorY325kKDeK360aqR1itbmHQTqiD1ZGxrv9U3DL71KACDbJbDaUg=='
+dotenv.config()
+
 
 
 async function run() {
+    const endpoint = process.env.DB_ENDPOINT ?? (throwError("DB_ENDPOINT env var not found"));
+    const key = process.env.DB_KEY ?? throwError("DB_KEY env var not found");
+    const dbName = process.env.DB_NAME ?? throwError("DB_NAME env var not found");
+
     const client = new CosmosClient({
         endpoint, key
     });
 
-    // TODO: accept the database id as an argument.
-    const database = client.database("ConnectorTest");
+
+    const database = client.database(dbName);
 
     const { resources: allContainers } = await database.containers.readAll().fetchAll();
 
@@ -21,7 +27,7 @@ async function run() {
 
     var objectTypeDefinitions: ObjectTypeDefinitions = {};
 
-    var scalarTypeDefinitions: ScalarTypeDefinitions = {};
+    const scalarTypeDefinitions: ScalarTypeDefinitions = getJSONScalarTypes();
 
     for (const container of allContainers) {
         const dbContainer = database.container(container.id);

@@ -1,5 +1,5 @@
 import { Container, JSONObject, JSONValue } from "@azure/cosmos"
-import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, CollectionDefinition, CollectionsSchema, NamedObjectTypeDefinition, NullableTypeDefinition, NumberScalarTypeDefinition, ObjectTypeDefinition, ObjectTypeDefinitions, ObjectTypePropertiesMap, StringScalarTypeDefinition, TypeDefinition } from "./schema";
+import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, CollectionDefinition, CollectionsSchema, NamedObjectTypeDefinition, NullableTypeDefinition, NumberScalarTypeDefinition, ObjectTypeDefinition, ObjectTypeDefinitions, ObjectTypePropertiesMap, ScalarTypeDefinition, ScalarTypeDefinitions, StringScalarTypeDefinition, TypeDefinition } from "./schema";
 import { InputData, SerializedRenderResult, jsonInputForTargetLanguage, quicktype } from "quicktype-core";
 
 /**

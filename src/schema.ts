@@ -47,7 +47,7 @@ export type ScalarTypeDefinitions = {
     [scalarTypeName: string]: ScalarTypeDefinition
 }
 
-export type ScalarTypeDefinition = Record<string, never> // Empty object, for now
+export type ScalarTypeDefinition = BuiltInScalarTypeDefinition // Empty object, for now
 
 export type TypeDefinition = ArrayTypeDefinition | NullableTypeDefinition | NamedTypeDefinition
 
@@ -71,7 +71,7 @@ export type NamedObjectTypeDefinition = {
 
 export type NamedScalarTypeDefinition = CustomNamedScalarTypeDefinition | BuiltInScalarTypeDefinition
 
-export type BuiltInScalarTypeDefinition = StringScalarTypeDefinition | BooleanScalarTypeDefinition | NumberScalarTypeDefinition | DateTimeScalarTypeDefinition
+export type BuiltInScalarTypeDefinition = StringScalarTypeDefinition | BooleanScalarTypeDefinition | IntegerScalarTypeDefinition | NumberScalarTypeDefinition | DateTimeScalarTypeDefinition
 
 export type CustomNamedScalarTypeDefinition = {
     type: "named"
@@ -106,12 +106,43 @@ export type DateTimeScalarTypeDefinition = {
     kind: "scalar"
 }
 
+export type IntegerScalarTypeDefinition = {
+    type: "named"
+    name: BuiltInScalarTypeName.Integer
+    kind: "scalar"
+}
+
+
 export enum BuiltInScalarTypeName {
     String = "String",
     Number = "Number",
     Boolean = "Boolean",
     DateTime = "DateTime",
+    Integer = "Integer"
 }
+
+export function getJSONScalarTypes(): ScalarTypeDefinitions {
+    var scalarTypeDefinitions: ScalarTypeDefinitions = {};
+    scalarTypeDefinitions["integer"] = {
+        type: "named",
+        name: BuiltInScalarTypeName.Integer,
+        kind: "scalar"
+    };
+    scalarTypeDefinitions["number"] = {
+        type: "named",
+        name: BuiltInScalarTypeName.Number,
+        kind: "scalar"
+    };
+    scalarTypeDefinitions["boolean"] = {
+        type: "named",
+        name: BuiltInScalarTypeName.Boolean,
+        kind: "scalar"
+    };
+
+    return scalarTypeDefinitions
+}
+
+
 
 
 export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.SchemaResponse {
