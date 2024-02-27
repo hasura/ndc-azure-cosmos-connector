@@ -4,30 +4,31 @@
   "description": "NDC connector for the Azure Cosmos database",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register ./tests/**/*.test.ts",
+    "test": "mocha",
     "build": "rimraf ./build && tsc",
     "start": "ts-node ./src/introspect_container_schema.ts"
   },
   "author": "Karthikeyan Chinnakonda",
   "license": "ISC",
   "devDependencies": {
-    "@hasura/ndc-sdk-typescript": "^1.2.8",
+    "@hasura/ndc-sdk-typescript": "^4.2.0",
     "@types/chai": "^4.3.11",
+    "@types/chai-as-promised": "^7.1.8",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.17",
-    "chai": "^5.1.0",
+    "chai-as-promised": "^7.1.1",
     "commander": "^12.0.0",
     "mocha": "^10.3.0",
     "nodemon": "^3.0.3",
     "nyc": "^15.1.0",
-    "rimraf": "^5.0.5",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "rimraf": "^5.0.5"
   },
   "dependencies": {
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.0.1",
     "dotenv": "^16.4.5",
-    "quicktype-core": "^23.0.104"
+    "quicktype-core": "^23.0.104",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }

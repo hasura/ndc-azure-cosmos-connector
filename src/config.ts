@@ -1,5 +1,5 @@
 import { CosmosClient } from "@azure/cosmos";
-import { fetch_n_rows_from_container, getObjectTypeDefinitionsFromJSONSchema, infer_schema_from_container_rows_quick_type } from "./introspect_container_schema";
+import { fetchLatestNRowsFromContainer, getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "./introspect_container_schema";
 import { CollectionDefinition, CollectionDefinitions, CollectionsSchema, NamedObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinitions, getJSONScalarTypes, getNdcSchemaResponse } from "./schema";
 import * as dotenv from 'dotenv';
 import { throwError } from "./utils";
@@ -31,8 +31,8 @@ async function run() {
 
     for (const container of allContainers) {
         const dbContainer = database.container(container.id);
-        const n_container_rows = await fetch_n_rows_from_container(5, dbContainer);
-        const containerJsonSchema = await infer_schema_from_container_rows_quick_type(n_container_rows, container.id);
+        const n_container_rows = await fetchLatestNRowsFromContainer(5, dbContainer);
+        const containerJsonSchema = await inferJSONSchemaFromContainerRows(n_container_rows, container.id);
         const containerObjectTypeDefinitions = getObjectTypeDefinitionsFromJSONSchema(containerJsonSchema);
 
         const collectionObjectType: NamedObjectTypeDefinition = {

@@ -1,6 +1,7 @@
-import { Container, JSONObject, JSONValue } from "@azure/cosmos"
-import { ArrayTypeDefinition, BooleanScalarTypeDefinition, BuiltInScalarTypeName, CollectionDefinition, CollectionsSchema, NamedObjectTypeDefinition, NullableTypeDefinition, NumberScalarTypeDefinition, ObjectTypeDefinition, ObjectTypeDefinitions, ObjectTypePropertiesMap, ScalarTypeDefinition, ScalarTypeDefinitions, StringScalarTypeDefinition, TypeDefinition } from "./schema";
-import { InputData, SerializedRenderResult, jsonInputForTargetLanguage, quicktype } from "quicktype-core";
+import { Container } from "@azure/cosmos"
+import { BuiltInScalarTypeName, ObjectTypeDefinitions, TypeDefinition, ObjectTypePropertiesMap } from "./schema";
+import { InputData, jsonInputForTargetLanguage, quicktype } from "quicktype-core";
+import { JSONSchema, JSONDefinitionValueObjectTypeProperty } from "./jsonSchema";
 
 /**
    * Fetches at-most `n` latest rows from the given container
@@ -10,7 +11,7 @@ import { InputData, SerializedRenderResult, jsonInputForTargetLanguage, quicktyp
    * @returns The latest at-most `n` rows from the `container`.
 
 **/
-export async function fetch_n_rows_from_container(n: number, container: Container): Promise<string[]> {
+export async function fetchLatestNRowsFromContainer(n: number, container: Container): Promise<string[]> {
     const querySpec = {
         query: `SELECT * FROM ${container.id} c ORDER BY c._ts DESC OFFSET 0 LIMIT ${n}`,
         parameters: []
@@ -20,67 +21,8 @@ export async function fetch_n_rows_from_container(n: number, container: Containe
     return response.resources
 }
 
-interface JSONDefinitionValueStringType {
-    type: "string"
-}
 
-interface JSONDefinitionValueNumberType {
-    type: "number"
-}
-
-interface JSONDefinitionValueIntegerType {
-    type: "integer"
-}
-
-
-interface JSONDefinitionValueBooleanType {
-    type: "boolean"
-}
-
-interface JSONDefinitionValueObjectTypeProperties {
-    [propertyName: string]: JSONDefinitionValueType
-}
-
-interface JSONDefinitionValueObjectType {
-    type: "object",
-    properties: JSONDefinitionValueObjectTypeProperties
-}
-
-interface JSONDefinitionValueArrayType {
-    type: "array",
-    items: JSONDefinitionValueObjectTypeProperty
-}
-
-interface JSONDefinitionValueNullType {
-    type: "null"
-}
-
-interface JSONDefinitionValueObjectTypePropertyRef {
-    type: "ref"
-    '$ref': string
-}
-
-
-type JSONDefinitionValueType
-    = JSONDefinitionValueStringType
-    | JSONDefinitionValueArrayType
-    | JSONDefinitionValueBooleanType
-    | JSONDefinitionValueNumberType
-    | JSONDefinitionValueIntegerType
-    | JSONDefinitionValueObjectType
-    | JSONDefinitionValueNullType
-
-type JSONDefinitionValueObjectTypeProperty = JSONDefinitionValueType | JSONDefinitionValueObjectTypePropertyRef
-
-type JSONSchemaDefinitionValues = {
-    [typeName: string]: JSONDefinitionValueType
-}
-
-type JSONSchema = {
-    definitions: JSONSchemaDefinitionValues
-}
-
-export async function infer_schema_from_container_rows_quick_type(rows: string[], containerTypeName: string): Promise<JSONSchema> {
+export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
     const jsonInput = jsonInputForTargetLanguage("schema");
 
     await jsonInput.addSource({
@@ -97,12 +39,11 @@ export async function infer_schema_from_container_rows_quick_type(rows: string[]
     });
 
     return JSON.parse(jsonSchema.lines.join(""))
-
 }
 
 function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypeProperty): TypeDefinition | null {
     if (jsonValueTypeDefn.type == "ref") {
-        // Case of a reference to an object.
+        // Case of a reference to an object
         return {
             type: "named",
             name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
@@ -110,6 +51,8 @@ function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypePro
 
         }
     } else if (jsonValueTypeDefn.type == "null") {
+        // We don't have enough information to predict anything about the property. So, just
+        // return null.
         return null
     } else if (jsonValueTypeDefn.type == "array") {
         if ('$ref' in jsonValueTypeDefn.items) {
@@ -216,7 +159,7 @@ const Artist = `
 
 
 async function run() {
-    const containerJSONSchema = await infer_schema_from_container_rows_quick_type(JSON.parse(Artist), "Artist");
+    const containerJSONSchema = await inferJSONSchemaFromContainerRows(JSON.parse(Artist), "Artist");
 
     const objectTypes = getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema);
 
