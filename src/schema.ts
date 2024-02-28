@@ -123,21 +123,27 @@ export enum BuiltInScalarTypeName {
 
 export function getJSONScalarTypes(): ScalarTypeDefinitions {
     var scalarTypeDefinitions: ScalarTypeDefinitions = {};
-    scalarTypeDefinitions["integer"] = {
+    scalarTypeDefinitions["Integer"] = {
         type: "named",
         name: BuiltInScalarTypeName.Integer,
         kind: "scalar"
     };
-    scalarTypeDefinitions["number"] = {
+    scalarTypeDefinitions["Number"] = {
         type: "named",
         name: BuiltInScalarTypeName.Number,
         kind: "scalar"
     };
-    scalarTypeDefinitions["boolean"] = {
+    scalarTypeDefinitions["Boolean"] = {
         type: "named",
         name: BuiltInScalarTypeName.Boolean,
         kind: "scalar"
     };
+    scalarTypeDefinitions["String"] = {
+        type: "named",
+        name: BuiltInScalarTypeName.String,
+        kind: "scalar"
+    };
+
 
     return scalarTypeDefinitions
 }

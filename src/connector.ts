@@ -38,7 +38,8 @@ export function createConnector(options: ConnectorOptions): sdk.Connector<Config
 
         getSchema: async function(configuration: Configuration): Promise<sdk.SchemaResponse> {
             return getNdcSchemaResponse(configuration.collectionsSchema)
-        }
+        },
+
 
     }
 
