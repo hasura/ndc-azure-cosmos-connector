@@ -1,5 +1,5 @@
 import { CosmosClient } from "@azure/cosmos";
-import { fetchLatestNRowsFromContainer, getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "./introspect_container_schema";
+import { fetchLatestNRowsFromContainer, getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "./introspectContainerSchema";
 import { CollectionDefinition, CollectionDefinitions, CollectionsSchema, NamedObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinitions, getJSONScalarTypes, getNdcSchemaResponse } from "./schema";
 import * as dotenv from 'dotenv';
 import { throwError } from "./utils";
@@ -7,7 +7,7 @@ import { throwError } from "./utils";
 dotenv.config()
 
 
-async function getCollectionsSchema(endpoint: string, key: string, dbName: string): Promise<CollectionsSchema> {
+export async function getCollectionsSchema(endpoint: string, key: string, dbName: string): Promise<CollectionsSchema> {
     const client = new CosmosClient({
         endpoint, key
     });
