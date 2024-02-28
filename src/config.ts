@@ -3,17 +3,11 @@ import { fetchLatestNRowsFromContainer, getObjectTypeDefinitionsFromJSONSchema, 
 import { CollectionDefinition, CollectionDefinitions, CollectionsSchema, NamedObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinitions, getJSONScalarTypes, getNdcSchemaResponse } from "./schema";
 import * as dotenv from 'dotenv';
 import { throwError } from "./utils";
-import path from "path";
 
 dotenv.config()
 
 
-
-async function run() {
-    const endpoint = process.env.DB_ENDPOINT ?? (throwError("DB_ENDPOINT env var not found"));
-    const key = process.env.DB_KEY ?? throwError("DB_KEY env var not found");
-    const dbName = process.env.DB_NAME ?? throwError("DB_NAME env var not found");
-
+async function getCollectionsSchema(endpoint: string, key: string, dbName: string): Promise<CollectionsSchema> {
     const client = new CosmosClient({
         endpoint, key
     });
@@ -31,8 +25,8 @@ async function run() {
 
     for (const container of allContainers) {
         const dbContainer = database.container(container.id);
-        const n_container_rows = await fetchLatestNRowsFromContainer(5, dbContainer);
-        const containerJsonSchema = await inferJSONSchemaFromContainerRows(n_container_rows, container.id);
+        const nContainerRows = await fetchLatestNRowsFromContainer(5, dbContainer); // FIXME: We need to get this from config.
+        const containerJsonSchema = await inferJSONSchemaFromContainerRows(nContainerRows, container.id);
         const containerObjectTypeDefinitions = getObjectTypeDefinitionsFromJSONSchema(containerJsonSchema);
 
         const collectionObjectType: NamedObjectTypeDefinition = {
@@ -49,23 +43,22 @@ async function run() {
 
         objectTypeDefinitions = { ...objectTypeDefinitions, ...containerObjectTypeDefinitions };
         collectionDefinitions[container.id] = collectionDefinition;
-        // objectTypeDefinitions = { ...objectTypeDefinitions, ...containerObjTypeDefinitions };
     }
 
-    const collectionsSchema: CollectionsSchema = {
+    return {
         collections: collectionDefinitions,
         objectTypes: objectTypeDefinitions,
         scalarTypes: scalarTypeDefinitions,
-    };
+    }
+
+}
+
+export async function run() {
+    const endpoint = process.env.DB_ENDPOINT ?? (throwError("DB_ENDPOINT env var not found"));
+    const key = process.env.DB_KEY ?? throwError("DB_KEY env var not found");
+    const dbName = process.env.DB_NAME ?? throwError("DB_NAME env var not found");
+
+    const collectionsSchema = await getCollectionsSchema(endpoint, key, dbName);
 
     console.log("Schema response is ", JSON.stringify(getNdcSchemaResponse(collectionsSchema), null, 2));
 }
-
-async function handleError(error: { code: string }): Promise<void> {
-    console.log("\nAn error with code '" + error.code + "' has occurred:");
-    console.log(error);
-
-    process.exitCode = 1;
-}
-
-run().catch(handleError)

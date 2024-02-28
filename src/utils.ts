@@ -6,3 +6,10 @@ export function mapObjectValues<T, U>(obj: { [k: string]: T }, fn: (value: T, pr
 export function throwError<T>(...args: ConstructorParameters<typeof Error>): NonNullable<T> {
     throw new Error(...args);
 }
+
+export async function handleError(error: { code: string }): Promise<void> {
+    console.log("\nAn error with code '" + error.code + "' has occurred:");
+    console.log(error);
+
+    process.exitCode = 1;
+}
