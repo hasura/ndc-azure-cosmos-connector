@@ -2,9 +2,10 @@ import { Container } from "@azure/cosmos"
 import { BuiltInScalarTypeName, ObjectTypeDefinitions, TypeDefinition, ObjectTypePropertiesMap } from "./schema";
 import { InputData, jsonInputForTargetLanguage, quicktype } from "quicktype-core";
 import { JSONSchema, JSONDefinitionValueObjectTypeProperty } from "./jsonSchema";
+import { runSQLQuery } from "./cosmosDb"
 
 /**
-   * Fetches at-most `n` latest rows from the given container
+   * Fetches at-most `n` latest updated rows from the given container
 
    * @param n - Maximum number of rows to be fetched from the container
    * @param container - Azure Cosmos DB Container to fetch the rows from.
@@ -16,7 +17,8 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
         query: `SELECT * FROM ${container.id} c ORDER BY c._ts DESC OFFSET 0 LIMIT ${n}`,
         parameters: []
     }
-    var response = await container.items.query(querySpec).fetchAll();
+
+    const response = await runSQLQuery(querySpec, container);
 
     return response.resources
 }

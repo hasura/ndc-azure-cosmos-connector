@@ -1,6 +1,7 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import { CollectionsSchema, getNdcSchemaResponse } from "./schema"
-import { CosmosClient } from "@azure/cosmos";
+import { getCosmosDbClient } from "./cosmosDb";
+import { Database, Container } from "@azure/cosmos";
 import { throwError } from "./utils"
 import { getCollectionsSchema } from "./config";
 import path from "node:path";
@@ -8,11 +9,11 @@ import path from "node:path";
 import * as dotenv from 'dotenv';
 
 export type Configuration = {
-    collectionsSchema: CollectionsSchema
+    databaseClient: Database
 }
 
 export type State = {
-    dbClient: CosmosClient
+    collectionsSchema: CollectionsSchema
 }
 
 export type ConnectorOptions = {
@@ -26,22 +27,39 @@ export function createConnector(options: ConnectorOptions): sdk.Connector<Config
         parseConfiguration: async function(configurationDir: string): Promise<Configuration> {
             dotenv.config()
 
+            // TODO: This is going to change, we will be reading all of this from some config file.
             const endpoint = process.env.DB_ENDPOINT ?? (throwError("DB_ENDPOINT env var not found"));
             const key = process.env.DB_KEY ?? throwError("DB_KEY env var not found");
-            const dbName = process.env.DB_NAME ?? throwError("DB_NAME env var not found");
+            const databaseName = process.env.DB_NAME ?? throwError("DB_NAME env var not found");
 
-            const collectionsSchema = await getCollectionsSchema(endpoint, key, dbName)
+            const databaseClient = getCosmosDbClient({
+                endpoint, key, databaseName
+            });
+
             return {
-                collectionsSchema: collectionsSchema
+                databaseClient
+            }
+        },
+
+        tryInitState: async function(configuration: Configuration, metrics: unknown): Promise<State> {
+            const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, 5);
+            return {
+                collectionsSchema
             }
         },
 
         getSchema: async function(configuration: Configuration): Promise<sdk.SchemaResponse> {
-            return getNdcSchemaResponse(configuration.collectionsSchema)
+            const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, 5);
+            return getNdcSchemaResponse(collectionsSchema)
         },
+
+        query: async function(configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.QueryResponse> {
+
+        }
 
 
     }
+
 
     return connector;
 

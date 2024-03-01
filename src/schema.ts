@@ -203,7 +203,7 @@ function convertTypeReferenceToSdkType(typeRef: TypeDefinition): sdk.Type {
     }
 }
 
-function getBaseNamedType(typeRef: TypeDefinition): string {
+export function getBaseNamedType(typeRef: TypeDefinition): string {
     switch (typeRef.type) {
         case "array": return getBaseNamedType(typeRef.elementType)
         case "nullable": return getBaseNamedType(typeRef.underlyingType)
