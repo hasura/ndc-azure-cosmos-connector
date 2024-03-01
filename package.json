@@ -10,7 +10,7 @@
   "author": "Karthikeyan Chinnakonda",
   "license": "ISC",
   "devDependencies": {
-    "@hasura/ndc-sdk-typescript": "^1.2.8",
+    "@hasura/ndc-sdk-typescript": "^4.2.0",
     "@types/node": "^20.11.17",
     "nodemon": "^3.0.3",
     "rimraf": "^5.0.5",
