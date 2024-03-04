@@ -1,3 +1,4 @@
-import { run } from "./config"
+import * as sdk from "@hasura/ndc-sdk-typescript";
+import { createConnector } from "./connector"
 
-run()
+sdk.start(createConnector({ configFilePath: "config.json" }))

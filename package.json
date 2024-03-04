@@ -2,16 +2,15 @@
   "name": "ndc-nodejs-azure-cosmos-connector",
   "version": "1.0.0",
   "description": "NDC connector for the Azure Cosmos database",
-  "main": "index.js",
   "scripts": {
     "test": "mocha",
     "build": "rimraf ./build && tsc",
-    "start": "ts-node ./src/introspect_container_schema.ts"
+    "start": "npm run build && ts-node ./src/index.ts"
   },
   "author": "Karthikeyan Chinnakonda",
   "license": "ISC",
   "devDependencies": {
-    "@hasura/ndc-sdk-typescript": "^4.1.0",
+    "@hasura/ndc-sdk-typescript": "^4.2.1",
     "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
     "@types/mocha": "^10.0.6",
