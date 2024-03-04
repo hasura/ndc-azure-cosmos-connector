@@ -2,12 +2,15 @@ import * as sdk from "@hasura/ndc-sdk-typescript";
 import { CollectionsSchema, getNdcSchemaResponse } from "./schema"
 import { getCosmosDbClient } from "./cosmosDb";
 import { Database, Container } from "@azure/cosmos";
-import { throwError } from "./utils"
 import { getCollectionsSchema } from "./config";
 import { executeQuery } from "./execution";
-import path from "node:path";
+import { readFileSync } from "fs";
 
-import * as dotenv from 'dotenv';
+type RawConfiguration = {
+    azure_cosmos_key: string,
+    azure_cosmos_db_endpoint: string,
+    azure_cosmos_db_name: string,
+}
 
 export type Configuration = {
     databaseClient: Database
@@ -17,29 +20,34 @@ export type State = {
     collectionsSchema: CollectionsSchema
 }
 
-export type ConnectorOptions = {
-    configFilePath: string
-}
-
-export function createConnector(options: ConnectorOptions): sdk.Connector<Configuration, State> {
-    const configFilePath = path.resolve(options.configFilePath);
+export function createConnector(): sdk.Connector<Configuration, State> {
 
     const connector: sdk.Connector<Configuration, State> = {
         parseConfiguration: async function(configurationDir: string): Promise<Configuration> {
-            dotenv.config()
 
             // TODO: This is going to change, we will be reading all of this from some config file.
-            const endpoint = process.env.DB_ENDPOINT ?? (throwError("DB_ENDPOINT env var not found"));
-            const key = process.env.DB_KEY ?? throwError("DB_KEY env var not found");
-            const databaseName = process.env.DB_NAME ?? throwError("DB_NAME env var not found");
+            try {
+                const fileContent = readFileSync(configurationDir, 'utf8');
+                const configObject: RawConfiguration = JSON.parse(fileContent);
+                const databaseClient = getCosmosDbClient({
+                    endpoint: configObject.azure_cosmos_db_endpoint,
+                    key: configObject.azure_cosmos_key,
+                    databaseName: configObject.azure_cosmos_db_name
+                });
 
-            const databaseClient = getCosmosDbClient({
-                endpoint, key, databaseName
-            });
+                return {
+                    databaseClient
+                }
 
-            return {
-                databaseClient
+            } catch (error) {
+                console.error("Failed to parse configuration:", error);
+                throw new sdk.InternalServerError(
+                    "Internal Server Error, server configuration is invalid",
+                    {}
+                );
             }
+
+
         },
 
         tryInitState: async function(configuration: Configuration, metrics: unknown): Promise<State> {
