@@ -1,4 +1,5 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
+import { SqlQuerySpec } from "@azure/cosmos";
 
 /*
   The key represents the alias of the request field and the
@@ -16,22 +17,36 @@ export type SqlQueryGenerationContext = {
     orderBy?: sdk.OrderBy | null
 }
 
-function formatSQLQuery(selectColumns: string, fromContainer: string, containerAlias: string, limit?: number | null, offset?: number | null): string {
-    let sqlQuery: string[] = []
-    sqlQuery.push(["SELECT", selectColumns].join(" "));
-    sqlQuery.push(["FROM", fromContainer, containerAlias].join(" "));
+export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, containerName: string, containerAlias: string): SqlQuerySpec {
+    let sqlQueryParts: string[] = []
+    let selectColumns: string = selectColumnsJSONProjection(sqlGenCtx.fieldsToSelect, containerAlias)
+    sqlQueryParts.push(["SELECT VALUE", selectColumns].join(" "));
+    sqlQueryParts.push(["FROM", containerName, containerAlias].join(" "));
 
-    if (offset != undefined && offset != null) {
-        sqlQuery.push(["OFFSET", `${offset}`].join(" "))
+    if (sqlGenCtx.offset != undefined && sqlGenCtx.offset != null) {
+        sqlQueryParts.push(["OFFSET", `${sqlGenCtx.offset}`].join(" "))
     }
 
-    if (limit != undefined && limit != null) {
-        sqlQuery.push(["LIMIT", `${limit}`].join(" "))
+    if (sqlGenCtx.limit != undefined && sqlGenCtx.limit != null) {
+        sqlQueryParts.push(["LIMIT", `${sqlGenCtx.limit}`].join(" "))
     }
 
-    return sqlQuery.join("\n")
+    // TODO: Handle the `order_by` clause as well.
+
+    let sqlQuerySpec: SqlQuerySpec = {
+        query: sqlQueryParts.join("\n"),
+    };
+
+    return sqlQuerySpec
+
 }
 
-function generateSQLQuery(ctx: SqlQueryGenerationContext, containerName: string): string {
-    return formatSQLQuery()
+function selectColumnsJSONProjection(fieldsToSelect: AliasColumnMapping, containerAlias: string): string {
+    let selectColumns: {
+        [alias: string]: string
+    } = {};
+    Object.entries(fieldsToSelect).forEach(([alias, columnName]) => {
+        selectColumns[alias] = `${containerAlias}.${columnName}`
+    })
+    return JSON.stringify(selectColumns)
 }

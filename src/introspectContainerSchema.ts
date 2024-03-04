@@ -18,11 +18,8 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
         parameters: []
     }
 
-    const response = await runSQLQuery(querySpec, container);
-
-    return response.resources
+    return await runSQLQuery<string>(querySpec, container)
 }
-
 
 export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
     const jsonInput = jsonInputForTargetLanguage("schema");

@@ -4,6 +4,7 @@ import { getCosmosDbClient } from "./cosmosDb";
 import { Database, Container } from "@azure/cosmos";
 import { throwError } from "./utils"
 import { getCollectionsSchema } from "./config";
+import { executeQuery } from "./execution";
 import path from "node:path";
 
 import * as dotenv from 'dotenv';
@@ -53,9 +54,33 @@ export function createConnector(options: ConnectorOptions): sdk.Connector<Config
             return getNdcSchemaResponse(collectionsSchema)
         },
 
-        query: async function(configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.QueryResponse> {
+        getCapabilities(configuration: Configuration): sdk.CapabilitiesResponse {
+            throw new Error("Not implemented");
+        },
 
-        }
+        query: async function(configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.QueryResponse> {
+            return executeQuery(request, state.collectionsSchema, configuration.databaseClient)
+        },
+
+        mutation: async function(configuration: Configuration, state: State, request: sdk.MutationRequest): Promise<sdk.MutationResponse> {
+            throw new Error("Not implemented")
+        },
+
+        queryExplain: function(configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.ExplainResponse> {
+            throw new Error("Function not implemented.");
+        },
+
+        mutationExplain: function(configuration: Configuration, state: State, request: sdk.MutationRequest): Promise<sdk.ExplainResponse> {
+            throw new Error("Function not implemented.");
+        },
+
+        healthCheck: async function(configuration: Configuration, state: State): Promise<undefined> {
+            return undefined;
+        },
+
+        fetchMetrics: async function(configuration: Configuration, state: State): Promise<undefined> {
+            return undefined;
+        },
 
 
     }

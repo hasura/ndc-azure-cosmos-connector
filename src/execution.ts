@@ -2,11 +2,12 @@ import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as schema from "./schema";
 import * as sql from "./sqlGeneration";
 import { Database } from "@azure/cosmos";
+import { runSQLQuery } from "./cosmosDb";
 
 
 
 
-function validateRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.AliasColumnMapping {
+function validateRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryGenerationContext {
     const collection: string = queryRequest.collection;
 
     const collectionDefinition: schema.CollectionDefinition = collectionsSchema.collections[collection];
@@ -47,7 +48,25 @@ function validateRequest(collectionsSchema: schema.CollectionsSchema, queryReque
         })
     }
 
-    return requestedFields
+    let sqlGenCtx: sql.SqlQueryGenerationContext = {
+        fieldsToSelect: requestedFields,
+    }
+
+    if (queryRequest.query.limit != null) {
+        if (queryRequest.query.offset != null) {
+            sqlGenCtx.offset = queryRequest.query.offset
+        } else {
+            // The Azure cosmos SQL syntax always requires an
+            // offset with the limit clause, so if an offset is not
+            // provided, then assume the offset to be 0.
+            sqlGenCtx.offset = 0
+        }
+        sqlGenCtx.limit = queryRequest.query.limit
+    }
+
+    sqlGenCtx.orderBy = queryRequest.query.order_by;
+
+    return sqlGenCtx
 
 }
 
@@ -63,12 +82,20 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
     // will be the same, but it need not be the case? How to handle this?
     const dbContainer = dbClient.container(collection); // TODO: Check what happens when you give a container name that doesn't exist in the database.
 
-    if (dbContainer === undefined)
+    if (dbContainer === undefined || dbContainer == null)
         throw new sdk.InternalServerError(`Couldn't find the container '${collection}' in the schema.`)
 
-    const requestedFields = validateRequest(collectionsSchema, queryRequest);
+    const sqlGenCtx = validateRequest(collectionsSchema, queryRequest);
 
+    const sqlQuery = sql.generateSqlQuery(sqlGenCtx, collection, collection[0]);
 
+    const queryResponse = await runSQLQuery<{ [k: string]: sdk.RowFieldValue }>(sqlQuery, dbContainer);
 
+    const rowSet: sdk.RowSet = {
+        rows: queryResponse
+    }
 
+    // FIXME: When we support variables, we will need to run the query against the variables and return
+    // multiple row sets.
+    return [rowSet]
 }

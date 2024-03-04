@@ -19,6 +19,6 @@ export function getCosmosDbClient(rawDbConfig: RawCosmosDbConfig): Database {
     return database
 }
 
-export async function runSQLQuery(sqlQuerySpec: SqlQuerySpec, container: Container) {
-    return container.items.query(sqlQuerySpec).fetchAll()
+export async function runSQLQuery<T>(sqlQuerySpec: SqlQuerySpec, container: Container): Promise<T[]> {
+    return (await container.items.query(sqlQuerySpec).fetchAll()).resources
 }
