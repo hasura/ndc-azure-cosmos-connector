@@ -6,7 +6,6 @@ export type RawCosmosDbConfig = {
     key: string
 }
 
-
 /* Creates a new cosmos DB client with which the specified database can be queried. */
 export function getCosmosDbClient(rawDbConfig: RawCosmosDbConfig): Database {
     const dbClient = new CosmosClient({

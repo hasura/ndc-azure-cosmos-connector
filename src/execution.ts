@@ -87,8 +87,8 @@ function validateRequest(collectionsSchema: schema.CollectionsSchema, queryReque
     if (queryRequest.query.order_by != null && queryRequest.query.order_by != undefined) {
         validateOrderBy(queryRequest.query.order_by, collectionObjectType);
         sqlGenCtx.orderBy = queryRequest.query.order_by;
-
     }
+    sqlGenCtx.predicate = queryRequest.query.predicate;
 
     return sqlGenCtx
 
