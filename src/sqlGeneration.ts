@@ -23,6 +23,11 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
     sqlQueryParts.push(["SELECT", selectColumns].join(" "));
     sqlQueryParts.push(["FROM", containerName, containerAlias].join(" "));
 
+    if (sqlGenCtx.orderBy != null && sqlGenCtx.orderBy != null && sqlGenCtx.orderBy.elements.length > 0) {
+        const orderByClause = visit_order_by_elements(sqlGenCtx.orderBy.elements, containerAlias);
+        sqlQueryParts.push(["ORDER BY", orderByClause].join(" "))
+    }
+
     if (sqlGenCtx.offset != undefined && sqlGenCtx.offset != null) {
         sqlQueryParts.push(["OFFSET", `${sqlGenCtx.offset}`].join(" "))
     }
@@ -31,13 +36,10 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
         sqlQueryParts.push(["LIMIT", `${sqlGenCtx.limit}`].join(" "))
     }
 
-    // TODO: Handle the `order_by` clause as well.
 
     let sqlQuerySpec: SqlQuerySpec = {
         query: sqlQueryParts.join("\n"),
     };
-
-    console.log("The generated query is ", sqlQueryParts.join("\n"));
 
     return sqlQuerySpec
 
@@ -48,4 +50,35 @@ function selectColumnsJSONProjection(fieldsToSelect: AliasColumnMapping, contain
         return `${containerAlias}.${columnName} as ${alias}`
     }).join(",");
 
+}
+
+/*
+  Traverses over the order by elements and generates the ORDER BY clause.
+  NOTE that this function expects the `values` parameter to be a non-empty list.
+ */
+function visit_order_by_elements(values: sdk.OrderByElement[], containerAlias: string): string {
+    if (values.length === 0) {
+        throw new sdk.InternalServerError("visit_order_by_elements called with an empty list")
+    }
+    return values.map(element => visit_order_by_element(element, containerAlias)).join(", ");
+
+}
+
+function visit_order_by_element(value: sdk.OrderByElement, containerAlias: string): string {
+    const direction = value.order_direction === 'asc' ? 'ASC' : 'DESC';
+
+    switch (value.target.type) {
+        case 'column':
+            if (value.target.path.length > 0) {
+                throw new sdk.NotSupported("Relationships are not supported in order_by.")
+            } else {
+                return `${containerAlias}.${value.target.name} ${direction}`
+            }
+
+        case 'single_column_aggregate':
+            throw new sdk.NotSupported("Order by aggregate is not supported")
+
+        case 'star_count_aggregate':
+            throw new sdk.NotSupported("Order by aggregate is not supported")
+    }
 }
