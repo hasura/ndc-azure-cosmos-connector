@@ -5,6 +5,25 @@ import { Database } from "@azure/cosmos";
 import { runSQLQuery } from "./cosmosDb";
 
 
+function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.ObjectTypeDefinition) {
+
+    for (const orderByElement of orderBy.elements) {
+        switch (orderByElement.target.type) {
+            case 'column':
+                if (orderByElement.target.path.length > 0) {
+                    throw new sdk.NotSupported("Relationships references are not supported in order by.")
+                };
+                if (!(orderByElement.target.name in collectionObjectType.properties)) {
+                    throw new sdk.BadRequest(`Column ${orderByElement.target.name} not found in the order by clause`)
+                };
+                break;
+            case 'single_column_aggregate':
+                throw new sdk.NotSupported('Order by aggregate is not supported.')
+            case 'star_count_aggregate':
+                throw new sdk.NotSupported('Order by aggregate is not supported')
+        }
+    }
+}
 
 
 function validateRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryGenerationContext {
@@ -64,7 +83,12 @@ function validateRequest(collectionsSchema: schema.CollectionsSchema, queryReque
         sqlGenCtx.limit = queryRequest.query.limit
     }
 
-    sqlGenCtx.orderBy = queryRequest.query.order_by;
+
+    if (queryRequest.query.order_by != null && queryRequest.query.order_by != undefined) {
+        validateOrderBy(queryRequest.query.order_by, collectionObjectType);
+        sqlGenCtx.orderBy = queryRequest.query.order_by;
+
+    }
 
     return sqlGenCtx
 

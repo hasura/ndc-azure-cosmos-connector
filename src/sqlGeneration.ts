@@ -14,7 +14,9 @@ export type SqlQueryGenerationContext = {
     fieldsToSelect: AliasColumnMapping,
     limit?: number | null,
     offset?: number | null,
-    orderBy?: sdk.OrderBy | null
+    orderBy?: sdk.OrderBy | null,
+    predicate?: sdk.Expression | null,
+
 }
 
 export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, containerName: string, containerAlias: string): SqlQuerySpec {
