@@ -20,7 +20,7 @@ export type SqlQueryGenerationContext = {
 export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, containerName: string, containerAlias: string): SqlQuerySpec {
     let sqlQueryParts: string[] = []
     let selectColumns: string = selectColumnsJSONProjection(sqlGenCtx.fieldsToSelect, containerAlias)
-    sqlQueryParts.push(["SELECT VALUE", selectColumns].join(" "));
+    sqlQueryParts.push(["SELECT", selectColumns].join(" "));
     sqlQueryParts.push(["FROM", containerName, containerAlias].join(" "));
 
     if (sqlGenCtx.offset != undefined && sqlGenCtx.offset != null) {
@@ -37,16 +37,15 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
         query: sqlQueryParts.join("\n"),
     };
 
+    console.log("The generated query is ", sqlQueryParts.join("\n"));
+
     return sqlQuerySpec
 
 }
 
 function selectColumnsJSONProjection(fieldsToSelect: AliasColumnMapping, containerAlias: string): string {
-    let selectColumns: {
-        [alias: string]: string
-    } = {};
-    Object.entries(fieldsToSelect).forEach(([alias, columnName]) => {
-        selectColumns[alias] = `${containerAlias}.${columnName}`
-    })
-    return JSON.stringify(selectColumns)
+    return Object.entries(fieldsToSelect).map(([alias, columnName]) => {
+        return `${containerAlias}.${columnName} as ${alias}`
+    }).join(",");
+
 }
