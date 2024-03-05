@@ -19,12 +19,12 @@ export type SqlQueryGenerationContext = {
 
 export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, containerName: string, containerAlias: string): SqlQuerySpec {
     let sqlQueryParts: string[] = []
-    let selectColumns: string = selectColumnsJSONProjection(sqlGenCtx.fieldsToSelect, containerAlias)
+    let selectColumns: string = formatSelectColumns(sqlGenCtx.fieldsToSelect, containerAlias)
     sqlQueryParts.push(["SELECT", selectColumns].join(" "));
     sqlQueryParts.push(["FROM", containerName, containerAlias].join(" "));
 
     if (sqlGenCtx.orderBy != null && sqlGenCtx.orderBy != null && sqlGenCtx.orderBy.elements.length > 0) {
-        const orderByClause = visit_order_by_elements(sqlGenCtx.orderBy.elements, containerAlias);
+        const orderByClause = visitOrderByElements(sqlGenCtx.orderBy.elements, containerAlias);
         sqlQueryParts.push(["ORDER BY", orderByClause].join(" "))
     }
 
@@ -45,7 +45,7 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
 
 }
 
-function selectColumnsJSONProjection(fieldsToSelect: AliasColumnMapping, containerAlias: string): string {
+function formatSelectColumns(fieldsToSelect: AliasColumnMapping, containerAlias: string): string {
     return Object.entries(fieldsToSelect).map(([alias, columnName]) => {
         return `${containerAlias}.${columnName} as ${alias}`
     }).join(",");
@@ -56,15 +56,15 @@ function selectColumnsJSONProjection(fieldsToSelect: AliasColumnMapping, contain
   Traverses over the order by elements and generates the ORDER BY clause.
   NOTE that this function expects the `values` parameter to be a non-empty list.
  */
-function visit_order_by_elements(values: sdk.OrderByElement[], containerAlias: string): string {
+function visitOrderByElements(values: sdk.OrderByElement[], containerAlias: string): string {
     if (values.length === 0) {
         throw new sdk.InternalServerError("visit_order_by_elements called with an empty list")
     }
-    return values.map(element => visit_order_by_element(element, containerAlias)).join(", ");
+    return values.map(element => visitOrderByElement(element, containerAlias)).join(", ");
 
 }
 
-function visit_order_by_element(value: sdk.OrderByElement, containerAlias: string): string {
+function visitOrderByElement(value: sdk.OrderByElement, containerAlias: string): string {
     const direction = value.order_direction === 'asc' ? 'ASC' : 'DESC';
 
     switch (value.target.type) {
