@@ -1,42 +1,46 @@
-import { CosmosClient } from "@azure/cosmos";
+import { Database, Container } from "@azure/cosmos";
+import { fetchLatestNRowsFromContainer, getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "./introspectContainerSchema";
+import { CollectionDefinition, CollectionDefinitions, CollectionsSchema, NamedObjectTypeDefinition, ObjectTypeDefinitions, ScalarTypeDefinitions, getJSONScalarTypes, getNdcSchemaResponse } from "./schema";
 
-// TODO: accept these as arguments
-const endpoint = 'https://test-cosmosdb-connector.documents.azure.com:443/';
-const key = 'xrgHgDgY7dvHMmUc8m5RA5OuEkd4yEl7btorY325kKDeK360aqR1itbmHQTqiD1ZGxrv9U3DL71KACDbJbDaUg=='
+export async function getCollectionsSchema(database: Database, nRows: number): Promise<CollectionsSchema> {
+
+    let collectionDefinitions: CollectionDefinitions = {};
+
+    let objectTypeDefinitions: ObjectTypeDefinitions = {};
+
+    const scalarTypeDefinitions: ScalarTypeDefinitions = getJSONScalarTypes();
+
+    const { resources: allContainers } = await database.containers.readAll().fetchAll();
+
+    for (const container of allContainers) {
+        const dbContainer = database.container(container.id);
+
+        const nContainerRows = await fetchLatestNRowsFromContainer(nRows, dbContainer);
+        const containerJsonSchema = await inferJSONSchemaFromContainerRows(nContainerRows, container.id);
+        const containerObjectTypeDefinitions = getObjectTypeDefinitionsFromJSONSchema(containerJsonSchema);
+
+        const collectionObjectType: NamedObjectTypeDefinition = {
+            type: "named",
+            name: container.id,
+            kind: "object"
+        };
+
+        const collectionDefinition: CollectionDefinition = {
+            description: null,
+            arguments: [],
+            resultType: collectionObjectType
+        };
+
+        objectTypeDefinitions = { ...objectTypeDefinitions, ...containerObjectTypeDefinitions };
+        collectionDefinitions[container.id] = collectionDefinition;
 
 
-async function run() {
-    const client = new CosmosClient({
-        endpoint, key
-    });
+    }
 
-    console.log("aadClient created successfully");
-
-    // TODO: accept the database id as an argument.
-    const { resources: allContainers }  =  await client.database("ConnectorTest").containers.readAll().fetchAll();
-
-    console.log("allContainers are ", allContainers);
-
-    // const querySpec = {
-    //     query: 'SELECT * FROM Volcanoes v OFFSET 0 LIMIT 10',
-    //     parameters: []
-    // };
-
-    // var response = container.items.query(querySpec).fetchAll();
-
-    // for (var item of (await response).resources) {
-    //     console.log("Item is ", item);
-    // }
-
-
+    return {
+        collections: collectionDefinitions,
+        objectTypes: objectTypeDefinitions,
+        scalarTypes: scalarTypeDefinitions,
+    }
 
 }
-
-async function handleError(error: { code: string }): Promise<void> {
-    console.log("\nAn error with code '" + error.code + "' has occurred:");
-    console.log(error);
-
-    process.exitCode = 1;
-}
-
-run().catch(handleError)

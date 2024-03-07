@@ -1,1 +1,4 @@
-console.log('Hello World')
+import * as sdk from "@hasura/ndc-sdk-typescript";
+import { createConnector } from "./connector"
+
+sdk.start(createConnector())
