@@ -1,5 +1,6 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import { mapObjectValues } from "./utils";
+import { ScalarType } from "@hasura/ndc-sdk-typescript";
 
 export type CollectionsSchema = {
     collections: CollectionDefinitions
@@ -179,12 +180,264 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
         }
     });
 
-    const scalarTypes = mapObjectValues(collectionsSchema.scalarTypes, _scalar_def => {
-        return {
+    type ScalarTypes = {
+        [k: string]: ScalarType;
+    };
+    const scalarTypes : ScalarTypes = {
+        "integer": {
+            aggregate_functions: {
+                "count": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Integer,
+                    }
+                },
+                "sum": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Integer,
+                    }
+                },
+                "avg": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Integer,
+                    }
+                },
+                "min": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Integer,
+                    }
+                },
+                "max": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Integer,
+                    }
+                }
+            },
+            comparison_operators: {
+                _eq: {
+                    type: "equal"
+                },
+                _neq: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "integer"
+                    }
+                },
+                _gt: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "integer"
+                    }
+                },
+                _lt: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "integer"
+                    }
+                },
+                _gte: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "integer"
+                    }
+                },
+                _lte: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "integer"
+                    }
+                }
+            },
+        },
+        "number": {
+            aggregate_functions: {
+                "count": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Number,
+                    }
+                },
+                "sum": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Number,
+                    }
+                },
+                "avg": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Number,
+                    }
+                },
+                "min": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Number,
+                    }
+                },
+                "max": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Number,
+                    }
+                }
+            },
+            comparison_operators: {
+                _eq: {
+                    type: "equal"
+                },
+                _neq: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "number"
+                    }
+                },
+                _gt: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "number"
+                    }
+                },
+                _lt: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "number"
+                    }
+                },
+                _gte: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "number"
+                    }
+                },
+                _lte: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "number"
+                    }
+                }
+            },
+        },
+        "boolean": {
+            aggregate_functions: {
+                "bool_and": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Boolean,
+                    }
+                },
+                "bool_or": {
+                    result_type: {
+                        type: "named",	
+                        name: BuiltInScalarTypeName.Boolean,
+                    }
+                },
+                "bool_not": {
+                    result_type: {
+                        type: "named",
+                        name: BuiltInScalarTypeName.Boolean,
+                    }
+                }
+            },
+            comparison_operators: {
+                _eq: {
+                    type: "equal"
+                },
+                _neq: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "boolean"
+                    }
+                }
+            },
+        },
+        "string": {
             aggregate_functions: {},
-            comparison_operators: {},
+            comparison_operators: {
+                _eq: {
+                    type: "equal"
+                },
+                _neq: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _gt: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _lt: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _gte: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _lte: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _contains: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _endswith: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _regexmatch: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                },
+                _startswith: {
+                    type: "custom",
+                    argument_type: {
+                        type: "named",
+                        name: "string"
+                    }
+                }
+            },
         }
-    })
+    };
 
     return {
         functions: [],
