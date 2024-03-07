@@ -1,19 +1,24 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import { CollectionsSchema, getNdcSchemaResponse } from "./schema"
 import { getCosmosDbClient } from "./cosmosDb";
-import { Database, Container } from "@azure/cosmos";
+import { Database } from "@azure/cosmos";
 import { getCollectionsSchema } from "./config";
 import { executeQuery } from "./execution";
 import { readFileSync } from "fs";
+
 
 type RawConfiguration = {
     azure_cosmos_key: string,
     azure_cosmos_db_endpoint: string,
     azure_cosmos_db_name: string,
+    azure_cosmos_no_of_rows_to_fetch: number | null
 }
 
 export type Configuration = {
-    databaseClient: Database
+    /* Database client that will make requests to the Database */
+    databaseClient: Database,
+    /* Number of rows to fetch per container */
+    rowsToFetch: number
 }
 
 export type State = {
@@ -25,7 +30,6 @@ export function createConnector(): sdk.Connector<Configuration, State> {
     const connector: sdk.Connector<Configuration, State> = {
         parseConfiguration: async function(configurationDir: string): Promise<Configuration> {
 
-            // TODO: This is going to change, we will be reading all of this from some config file.
             try {
                 const fileContent = readFileSync(configurationDir, 'utf8');
                 const configObject: RawConfiguration = JSON.parse(fileContent);
@@ -34,9 +38,12 @@ export function createConnector(): sdk.Connector<Configuration, State> {
                     key: configObject.azure_cosmos_key,
                     databaseName: configObject.azure_cosmos_db_name
                 });
+                const rowsToFetch =
+                    configObject.azure_cosmos_no_of_rows_to_fetch ?? 100;
+
 
                 return {
-                    databaseClient
+                    databaseClient, rowsToFetch
                 }
 
             } catch (error) {
@@ -51,19 +58,28 @@ export function createConnector(): sdk.Connector<Configuration, State> {
         },
 
         tryInitState: async function(configuration: Configuration, metrics: unknown): Promise<State> {
-            const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, 5);
+            const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, configuration.rowsToFetch);
             return {
                 collectionsSchema
             }
         },
 
         getSchema: async function(configuration: Configuration): Promise<sdk.SchemaResponse> {
+
             const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, 5);
             return getNdcSchemaResponse(collectionsSchema)
         },
 
         getCapabilities(configuration: Configuration): sdk.CapabilitiesResponse {
-            throw new Error("Not implemented");
+            return {
+                version: "0.1.0",
+                capabilities: {
+                    query: {
+                        variables: {}
+                    },
+                    mutation: {}
+                }
+            }
         },
 
         query: async function(configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.QueryResponse> {
