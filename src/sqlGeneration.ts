@@ -53,9 +53,6 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
 
     const query = sqlQueryParts.join("\n");
 
-    console.log("query is ", query)
-
-
     return {
         query,
         parameters: serializeSqlParameters(predicateParameters)
