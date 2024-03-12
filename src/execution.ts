@@ -170,12 +170,9 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
 
     const sqlQuery = sql.generateSqlQuery(sqlGenCtx, collection, collection[0]);
 
-    console.log("Generated SQL query is ", sqlQuery);
-
     const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(sqlQuery, dbContainer);
 
     let rowSet: sdk.RowSet = {};
-
 
     if (sqlGenCtx.isAggregateQuery) {
         rowSet.aggregates = queryResponse[0]

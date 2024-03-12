@@ -17,7 +17,7 @@ type RawConfiguration = {
 export type Configuration = {
     /* Database client that will make requests to the Database */
     databaseClient: Database,
-    /* Number of rows to fetch per container */
+    /* Number of rows to fetch per container to infer the schema */
     rowsToFetch: number
 }
 
@@ -58,25 +58,38 @@ export function createConnector(): sdk.Connector<Configuration, State> {
         },
 
         tryInitState: async function(configuration: Configuration, metrics: unknown): Promise<State> {
-            const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, configuration.rowsToFetch);
-            return {
-                collectionsSchema
+            try {
+                const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, configuration.rowsToFetch);
+                return {
+                    collectionsSchema
+                }
+            } catch (error) {
+                console.error("Failed to initialize the state of the connector", error);
+                throw new sdk.InternalServerError(
+                    `Internal server error, failed to initialize the state of the connector - ${error}`, {}
+                )
             }
+
         },
 
         getSchema: async function(configuration: Configuration): Promise<sdk.SchemaResponse> {
+            try {
+                const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, 5);
+                return getNdcSchemaResponse(collectionsSchema)
+            } catch (error) {
+                console.error("Failed to get the schema ", error);
+                throw new sdk.InternalServerError(
+                    `Internal server error, failed to get the schema - ${error}`, {}
+                )
+            }
 
-            const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, 5);
-            return getNdcSchemaResponse(collectionsSchema)
         },
 
         getCapabilities(configuration: Configuration): sdk.CapabilitiesResponse {
             return {
                 version: "0.1.0",
                 capabilities: {
-                    query: {
-                        variables: {}
-                    },
+                    query: {},
                     mutation: {}
                 }
             }
