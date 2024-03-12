@@ -13,11 +13,11 @@ export function getCosmosDbClient(rawDbConfig: RawCosmosDbConfig): Database {
         endpoint: rawDbConfig.endpoint
     });
 
-    const database = dbClient.database(rawDbConfig.databaseName);
+    return dbClient.database(rawDbConfig.databaseName);
 
-    return database
 }
 
+/* Runs the `sqlQuerySpec` in the specified `container` */
 export async function runSQLQuery<T>(sqlQuerySpec: SqlQuerySpec, container: Container): Promise<T[]> {
     return (await container.items.query(sqlQuerySpec).fetchAll()).resources
 }

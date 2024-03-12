@@ -2,31 +2,44 @@ import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as cosmos from "@azure/cosmos";
 import { SqlQuerySpec } from "@azure/cosmos";
 
-/*
-  The key represents the alias of the request field and the
-  value represents the name of the column present in the container.
-*/
-export type AliasColumnMapping = {
-    [alias: string]: string
+export type SelectContainerColumn = {
+    kind: 'column',
+    columnName: string
 }
 
+export type SelectAggregate = {
+    kind: 'aggregate',
+    columnName: string,
+    aggregateFunction: string
+}
+
+/*
+  The key represents the alias of the request field and the
+  value represents the value to be selected from the container.
+*/
+export type SelectColumns = {
+    [alias: string]: (SelectContainerColumn | SelectAggregate)
+}
 
 export type SqlQueryGenerationContext = {
-    fieldsToSelect: AliasColumnMapping,
+    selectFields: SelectColumns,
     limit?: number | null,
     offset?: number | null,
     orderBy?: sdk.OrderBy | null,
     predicate?: sdk.Expression | null,
-
+    isAggregateQuery: boolean,
 }
 
+/*
+  Type to track the parameters used in the SQL query.
+ */
 type SqlParameters = {
     [column: string]: any[]
 }
 
 export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, containerName: string, containerAlias: string): SqlQuerySpec {
     let sqlQueryParts: string[] = []
-    let selectColumns: string = formatSelectColumns(sqlGenCtx.fieldsToSelect, containerAlias)
+    let selectColumns: string = formatSelectColumns(sqlGenCtx.selectFields, containerAlias)
 
     sqlQueryParts.push(["SELECT", selectColumns].join(" "));
     sqlQueryParts.push(["FROM", containerName, containerAlias].join(" "));
@@ -60,9 +73,14 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
 
 }
 
-function formatSelectColumns(fieldsToSelect: AliasColumnMapping, containerAlias: string): string {
-    return Object.entries(fieldsToSelect).map(([alias, columnName]) => {
-        return `${containerAlias}.${columnName} as ${alias}`
+function formatSelectColumns(fieldsToSelect: SelectColumns, containerAlias: string): string {
+    return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
+        switch (selectColumn.kind) {
+            case 'column':
+                return `${containerAlias}.${selectColumn.columnName} as ${alias}`
+            case 'aggregate':
+                return `${selectColumn.aggregateFunction}(${containerAlias}.${selectColumn.columnName}) as ${alias}`
+        }
     }).join(",");
 
 }
