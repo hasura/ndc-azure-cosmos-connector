@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "NDC connector for the Azure Cosmos database",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "export NODE_TLS_REJECT_UNAUTHORIZED=0 && jest --detectOpenHandles",
     "build": "rimraf ./build && tsc",
     "start": "npm run build && ts-node ./src/index.ts"
   },

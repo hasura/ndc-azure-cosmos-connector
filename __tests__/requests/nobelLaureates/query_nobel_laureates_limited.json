@@ -12,7 +12,7 @@
                     {
                         "target": {
                             "type": "column",
-                            "name": "id",
+                            "name": "prize_id",
                             "path": []
                         },
                         "order_direction": "asc"
@@ -20,9 +20,14 @@
                 ]
             },
             "fields": {
-                "id": {
+                "prize_id": {
                     "type": "column",
-                    "column": "id",
+                    "column": "prize_id",
+                    "fields": null
+                },
+                "year": {
+                    "type": "column",
+                    "column": "year",
                     "fields": null
                 },
                 "laureates": {
@@ -54,7 +59,8 @@
         {
             "rows": [
                 {
-                    "id": "prize_1",
+                    "prize_id": 1,
+                    "year": 2023,
                     "laureates": [
                         {
                             "id": "1029",

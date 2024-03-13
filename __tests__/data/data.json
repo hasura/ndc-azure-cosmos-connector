@@ -1,6 +1,6 @@
 [
     {
-        "year": "2023",
+        "year": 2023,
         "category": "chemistry",
         "laureates": [
             {
@@ -25,10 +25,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_1"
+        "prize_id": 1
     },
     {
-        "year": "2023",
+        "year": 2023,
         "category": "economics",
         "laureates": [
             {
@@ -39,10 +39,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_2"
+        "prize_id": 2
     },
     {
-        "year": "2023",
+        "year": 2023,
         "category": "literature",
         "laureates": [
             {
@@ -53,10 +53,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_3"
+        "prize_id": 3
     },
     {
-        "year": "2023",
+        "year": 2023,
         "category": "peace",
         "laureates": [
             {
@@ -67,10 +67,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_4"
+        "prize_id": 4
     },
     {
-        "year": "2023",
+        "year": 2023,
         "category": "physics",
         "laureates": [
             {
@@ -95,10 +95,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_5"
+        "prize_id": 5
     },
     {
-        "year": "2023",
+        "year": 2023,
         "category": "medicine",
         "laureates": [
             {
@@ -116,10 +116,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_6"
+        "prize_id": 6
     },
     {
-        "year": "2022",
+        "year": 2022,
         "category": "chemistry",
         "laureates": [
             {
@@ -144,10 +144,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_7"
+        "prize_id": 7
     },
     {
-        "year": "2022",
+        "year": 2022,
         "category": "economics",
         "laureates": [
             {
@@ -172,10 +172,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_8"
+        "prize_id": 8
     },
     {
-        "year": "2022",
+        "year": 2022,
         "category": "literature",
         "laureates": [
             {
@@ -186,10 +186,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_9"
+        "prize_id": 9
     },
     {
-        "year": "2022",
+        "year": 2022,
         "category": "peace",
         "laureates": [
             {
@@ -212,10 +212,10 @@
                 "firstname": "Center for Civil Liberties"
             }
         ],
-        "id": "prize_10"
+        "prize_id": 10
     },
     {
-        "year": "2022",
+        "year": 2022,
         "category": "physics",
         "laureates": [
             {
@@ -240,10 +240,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_11"
+        "prize_id": 11
     },
     {
-        "year": "2022",
+        "year": 2022,
         "category": "medicine",
         "laureates": [
             {
@@ -254,10 +254,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_12"
+        "prize_id": 12
     },
     {
-        "year": "2021",
+        "year": 2021,
         "category": "chemistry",
         "laureates": [
             {
@@ -275,10 +275,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_13"
+        "prize_id": 13
     },
     {
-        "year": "2021",
+        "year": 2021,
         "category": "economics",
         "laureates": [
             {
@@ -303,10 +303,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_14"
+        "prize_id": 14
     },
     {
-        "year": "2021",
+        "year": 2021,
         "category": "literature",
         "laureates": [
             {
@@ -317,10 +317,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_15"
+        "prize_id": 15
     },
     {
-        "year": "2021",
+        "year": 2021,
         "category": "peace",
         "laureates": [
             {
@@ -338,10 +338,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_16"
+        "prize_id": 16
     },
     {
-        "year": "2021",
+        "year": 2021,
         "category": "physics",
         "overallMotivation": "\"for groundbreaking contributions to our understanding of complex physical systems\"",
         "laureates": [
@@ -367,10 +367,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_17"
+        "prize_id": 17
     },
     {
-        "year": "2021",
+        "year": 2021,
         "category": "medicine",
         "laureates": [
             {
@@ -388,10 +388,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_18"
+        "prize_id": 18
     },
     {
-        "year": "2020",
+        "year": 2020,
         "category": "chemistry",
         "laureates": [
             {
@@ -409,10 +409,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_19"
+        "prize_id": 19
     },
     {
-        "year": "2020",
+        "year": 2020,
         "category": "economics",
         "laureates": [
             {
@@ -430,10 +430,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_20"
+        "prize_id": 20
     },
     {
-        "year": "2020",
+        "year": 2020,
         "category": "literature",
         "laureates": [
             {
@@ -444,10 +444,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_21"
+        "prize_id": 21
     },
     {
-        "year": "2020",
+        "year": 2020,
         "category": "peace",
         "laureates": [
             {
@@ -457,10 +457,10 @@
                 "firstname": "World Food Programme"
             }
         ],
-        "id": "prize_22"
+        "prize_id": 22
     },
     {
-        "year": "2020",
+        "year": 2020,
         "category": "physics",
         "laureates": [
             {
@@ -485,10 +485,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_23"
+        "prize_id": 23
     },
     {
-        "year": "2020",
+        "year": 2020,
         "category": "medicine",
         "laureates": [
             {
@@ -513,10 +513,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_24"
+        "prize_id": 24
     },
     {
-        "year": "2019",
+        "year": 2019,
         "category": "chemistry",
         "laureates": [
             {
@@ -541,10 +541,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_25"
+        "prize_id": 25
     },
     {
-        "year": "2019",
+        "year": 2019,
         "category": "economics",
         "laureates": [
             {
@@ -569,10 +569,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_26"
+        "prize_id": 26
     },
     {
-        "year": "2019",
+        "year": 2019,
         "category": "literature",
         "laureates": [
             {
@@ -583,10 +583,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_27"
+        "prize_id": 27
     },
     {
-        "year": "2019",
+        "year": 2019,
         "category": "peace",
         "laureates": [
             {
@@ -597,10 +597,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_28"
+        "prize_id": 28
     },
     {
-        "year": "2019",
+        "year": 2019,
         "category": "physics",
         "overallMotivation": "\"for contributions to our understanding of the evolution of the universe and Earth’s place in the cosmos\"",
         "laureates": [
@@ -626,10 +626,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_29"
+        "prize_id": 29
     },
     {
-        "year": "2019",
+        "year": 2019,
         "category": "medicine",
         "laureates": [
             {
@@ -654,10 +654,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_30"
+        "prize_id": 30
     },
     {
-        "year": "2018",
+        "year": 2018,
         "category": "chemistry",
         "laureates": [
             {
@@ -682,10 +682,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_31"
+        "prize_id": 31
     },
     {
-        "year": "2018",
+        "year": 2018,
         "category": "economics",
         "laureates": [
             {
@@ -703,10 +703,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_32"
+        "prize_id": 32
     },
     {
-        "year": "2018",
+        "year": 2018,
         "category": "literature",
         "laureates": [
             {
@@ -717,10 +717,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_33"
+        "prize_id": 33
     },
     {
-        "year": "2018",
+        "year": 2018,
         "category": "peace",
         "laureates": [
             {
@@ -738,10 +738,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_34"
+        "prize_id": 34
     },
     {
-        "year": "2018",
+        "year": 2018,
         "category": "physics",
         "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
         "laureates": [
@@ -767,10 +767,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_35"
+        "prize_id": 35
     },
     {
-        "year": "2018",
+        "year": 2018,
         "category": "medicine",
         "laureates": [
             {
@@ -788,10 +788,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_36"
+        "prize_id": 36
     },
     {
-        "year": "2017",
+        "year": 2017,
         "category": "chemistry",
         "laureates": [
             {
@@ -816,10 +816,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_37"
+        "prize_id": 37
     },
     {
-        "year": "2017",
+        "year": 2017,
         "category": "economics",
         "laureates": [
             {
@@ -830,10 +830,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_38"
+        "prize_id": 38
     },
     {
-        "year": "2017",
+        "year": 2017,
         "category": "literature",
         "laureates": [
             {
@@ -844,10 +844,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_39"
+        "prize_id": 39
     },
     {
-        "year": "2017",
+        "year": 2017,
         "category": "peace",
         "laureates": [
             {
@@ -857,10 +857,10 @@
                 "firstname": "International Campaign to Abolish Nuclear Weapons"
             }
         ],
-        "id": "prize_40"
+        "prize_id": 40
     },
     {
-        "year": "2017",
+        "year": 2017,
         "category": "physics",
         "laureates": [
             {
@@ -885,10 +885,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_41"
+        "prize_id": 41
     },
     {
-        "year": "2017",
+        "year": 2017,
         "category": "medicine",
         "laureates": [
             {
@@ -913,10 +913,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_42"
+        "prize_id": 42
     },
     {
-        "year": "2016",
+        "year": 2016,
         "category": "chemistry",
         "laureates": [
             {
@@ -941,10 +941,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_43"
+        "prize_id": 43
     },
     {
-        "year": "2016",
+        "year": 2016,
         "category": "economics",
         "laureates": [
             {
@@ -962,10 +962,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_44"
+        "prize_id": 44
     },
     {
-        "year": "2016",
+        "year": 2016,
         "category": "literature",
         "laureates": [
             {
@@ -976,10 +976,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_45"
+        "prize_id": 45
     },
     {
-        "year": "2016",
+        "year": 2016,
         "category": "peace",
         "laureates": [
             {
@@ -990,10 +990,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_46"
+        "prize_id": 46
     },
     {
-        "year": "2016",
+        "year": 2016,
         "category": "physics",
         "laureates": [
             {
@@ -1018,10 +1018,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_47"
+        "prize_id": 47
     },
     {
-        "year": "2016",
+        "year": 2016,
         "category": "medicine",
         "laureates": [
             {
@@ -1032,10 +1032,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_48"
+        "prize_id": 48
     },
     {
-        "year": "2015",
+        "year": 2015,
         "category": "chemistry",
         "laureates": [
             {
@@ -1060,10 +1060,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_49"
+        "prize_id": 49
     },
     {
-        "year": "2015",
+        "year": 2015,
         "category": "economics",
         "laureates": [
             {
@@ -1074,10 +1074,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_50"
+        "prize_id": 50
     },
     {
-        "year": "2015",
+        "year": 2015,
         "category": "literature",
         "laureates": [
             {
@@ -1088,10 +1088,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_51"
+        "prize_id": 51
     },
     {
-        "year": "2015",
+        "year": 2015,
         "category": "peace",
         "laureates": [
             {
@@ -1101,10 +1101,10 @@
                 "firstname": "National Dialogue Quartet"
             }
         ],
-        "id": "prize_52"
+        "prize_id": 52
     },
     {
-        "year": "2015",
+        "year": 2015,
         "category": "physics",
         "laureates": [
             {
@@ -1122,10 +1122,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_53"
+        "prize_id": 53
     },
     {
-        "year": "2015",
+        "year": 2015,
         "category": "medicine",
         "laureates": [
             {
@@ -1150,10 +1150,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_54"
+        "prize_id": 54
     },
     {
-        "year": "2014",
+        "year": 2014,
         "category": "chemistry",
         "laureates": [
             {
@@ -1178,10 +1178,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_55"
+        "prize_id": 55
     },
     {
-        "year": "2014",
+        "year": 2014,
         "category": "economics",
         "laureates": [
             {
@@ -1192,10 +1192,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_56"
+        "prize_id": 56
     },
     {
-        "year": "2014",
+        "year": 2014,
         "category": "literature",
         "laureates": [
             {
@@ -1206,10 +1206,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_57"
+        "prize_id": 57
     },
     {
-        "year": "2014",
+        "year": 2014,
         "category": "peace",
         "laureates": [
             {
@@ -1227,10 +1227,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_58"
+        "prize_id": 58
     },
     {
-        "year": "2014",
+        "year": 2014,
         "category": "physics",
         "laureates": [
             {
@@ -1255,10 +1255,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_59"
+        "prize_id": 59
     },
     {
-        "year": "2014",
+        "year": 2014,
         "category": "medicine",
         "laureates": [
             {
@@ -1283,10 +1283,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_60"
+        "prize_id": 60
     },
     {
-        "year": "2013",
+        "year": 2013,
         "category": "chemistry",
         "laureates": [
             {
@@ -1311,10 +1311,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_61"
+        "prize_id": 61
     },
     {
-        "year": "2013",
+        "year": 2013,
         "category": "economics",
         "laureates": [
             {
@@ -1339,10 +1339,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_62"
+        "prize_id": 62
     },
     {
-        "year": "2013",
+        "year": 2013,
         "category": "literature",
         "laureates": [
             {
@@ -1353,10 +1353,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_63"
+        "prize_id": 63
     },
     {
-        "year": "2013",
+        "year": 2013,
         "category": "peace",
         "laureates": [
             {
@@ -1366,10 +1366,10 @@
                 "firstname": "Organisation for the Prohibition of Chemical Weapons"
             }
         ],
-        "id": "prize_64"
+        "prize_id": 64
     },
     {
-        "year": "2013",
+        "year": 2013,
         "category": "physics",
         "laureates": [
             {
@@ -1387,10 +1387,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_65"
+        "prize_id": 65
     },
     {
-        "year": "2013",
+        "year": 2013,
         "category": "medicine",
         "laureates": [
             {
@@ -1415,10 +1415,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_66"
+        "prize_id": 66
     },
     {
-        "year": "2012",
+        "year": 2012,
         "category": "chemistry",
         "laureates": [
             {
@@ -1436,10 +1436,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_67"
+        "prize_id": 67
     },
     {
-        "year": "2012",
+        "year": 2012,
         "category": "economics",
         "laureates": [
             {
@@ -1457,10 +1457,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_68"
+        "prize_id": 68
     },
     {
-        "year": "2012",
+        "year": 2012,
         "category": "literature",
         "laureates": [
             {
@@ -1471,10 +1471,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_69"
+        "prize_id": 69
     },
     {
-        "year": "2012",
+        "year": 2012,
         "category": "peace",
         "laureates": [
             {
@@ -1484,10 +1484,10 @@
                 "firstname": "European Union"
             }
         ],
-        "id": "prize_70"
+        "prize_id": 70
     },
     {
-        "year": "2012",
+        "year": 2012,
         "category": "physics",
         "laureates": [
             {
@@ -1505,10 +1505,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_71"
+        "prize_id": 71
     },
     {
-        "year": "2012",
+        "year": 2012,
         "category": "medicine",
         "laureates": [
             {
@@ -1526,10 +1526,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_72"
+        "prize_id": 72
     },
     {
-        "year": "2011",
+        "year": 2011,
         "category": "chemistry",
         "laureates": [
             {
@@ -1540,10 +1540,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_73"
+        "prize_id": 73
     },
     {
-        "year": "2011",
+        "year": 2011,
         "category": "economics",
         "laureates": [
             {
@@ -1561,10 +1561,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_74"
+        "prize_id": 74
     },
     {
-        "year": "2011",
+        "year": 2011,
         "category": "literature",
         "laureates": [
             {
@@ -1575,10 +1575,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_75"
+        "prize_id": 75
     },
     {
-        "year": "2011",
+        "year": 2011,
         "category": "peace",
         "laureates": [
             {
@@ -1603,10 +1603,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_76"
+        "prize_id": 76
     },
     {
-        "year": "2011",
+        "year": 2011,
         "category": "physics",
         "laureates": [
             {
@@ -1631,10 +1631,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_77"
+        "prize_id": 77
     },
     {
-        "year": "2011",
+        "year": 2011,
         "category": "medicine",
         "laureates": [
             {
@@ -1659,10 +1659,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_78"
+        "prize_id": 78
     },
     {
-        "year": "2010",
+        "year": 2010,
         "category": "chemistry",
         "laureates": [
             {
@@ -1687,10 +1687,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_79"
+        "prize_id": 79
     },
     {
-        "year": "2010",
+        "year": 2010,
         "category": "economics",
         "laureates": [
             {
@@ -1715,10 +1715,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_80"
+        "prize_id": 80
     },
     {
-        "year": "2010",
+        "year": 2010,
         "category": "literature",
         "laureates": [
             {
@@ -1729,10 +1729,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_81"
+        "prize_id": 81
     },
     {
-        "year": "2010",
+        "year": 2010,
         "category": "peace",
         "laureates": [
             {
@@ -1743,10 +1743,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_82"
+        "prize_id": 82
     },
     {
-        "year": "2010",
+        "year": 2010,
         "category": "physics",
         "laureates": [
             {
@@ -1764,10 +1764,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_83"
+        "prize_id": 83
     },
     {
-        "year": "2010",
+        "year": 2010,
         "category": "medicine",
         "laureates": [
             {
@@ -1778,10 +1778,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_84"
+        "prize_id": 84
     },
     {
-        "year": "2009",
+        "year": 2009,
         "category": "chemistry",
         "laureates": [
             {
@@ -1806,10 +1806,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_85"
+        "prize_id": 85
     },
     {
-        "year": "2009",
+        "year": 2009,
         "category": "economics",
         "laureates": [
             {
@@ -1827,10 +1827,10 @@
                 "share": "2"
             }
         ],
-        "id": "prize_86"
+        "prize_id": 86
     },
     {
-        "year": "2009",
+        "year": 2009,
         "category": "literature",
         "laureates": [
             {
@@ -1841,10 +1841,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_87"
+        "prize_id": 87
     },
     {
-        "year": "2009",
+        "year": 2009,
         "category": "peace",
         "laureates": [
             {
@@ -1855,10 +1855,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_88"
+        "prize_id": 88
     },
     {
-        "year": "2009",
+        "year": 2009,
         "category": "physics",
         "laureates": [
             {
@@ -1883,10 +1883,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_89"
+        "prize_id": 89
     },
     {
-        "year": "2009",
+        "year": 2009,
         "category": "medicine",
         "laureates": [
             {
@@ -1911,10 +1911,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_90"
+        "prize_id": 90
     },
     {
-        "year": "2008",
+        "year": 2008,
         "category": "chemistry",
         "laureates": [
             {
@@ -1939,10 +1939,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_91"
+        "prize_id": 91
     },
     {
-        "year": "2008",
+        "year": 2008,
         "category": "economics",
         "laureates": [
             {
@@ -1953,10 +1953,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_92"
+        "prize_id": 92
     },
     {
-        "year": "2008",
+        "year": 2008,
         "category": "literature",
         "laureates": [
             {
@@ -1967,10 +1967,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_93"
+        "prize_id": 93
     },
     {
-        "year": "2008",
+        "year": 2008,
         "category": "peace",
         "laureates": [
             {
@@ -1981,10 +1981,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_94"
+        "prize_id": 94
     },
     {
-        "year": "2008",
+        "year": 2008,
         "category": "physics",
         "laureates": [
             {
@@ -2009,10 +2009,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_95"
+        "prize_id": 95
     },
     {
-        "year": "2008",
+        "year": 2008,
         "category": "medicine",
         "laureates": [
             {
@@ -2037,10 +2037,10 @@
                 "share": "4"
             }
         ],
-        "id": "prize_96"
+        "prize_id": 96
     },
     {
-        "year": "2007",
+        "year": 2007,
         "category": "chemistry",
         "laureates": [
             {
@@ -2051,10 +2051,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_97"
+        "prize_id": 97
     },
     {
-        "year": "2007",
+        "year": 2007,
         "category": "economics",
         "laureates": [
             {
@@ -2079,10 +2079,10 @@
                 "share": "3"
             }
         ],
-        "id": "prize_98"
+        "prize_id": 98
     },
     {
-        "year": "2007",
+        "year": 2007,
         "category": "literature",
         "laureates": [
             {
@@ -2093,10 +2093,10 @@
                 "share": "1"
             }
         ],
-        "id": "prize_99"
+        "prize_id": 99
     },
     {
-        "year": "2007",
+        "year": 2007,
         "category": "peace",
         "laureates": [
             {
@@ -2113,6 +2113,6 @@
                 "share": "2"
             }
         ],
-        "id": "prize_100"
+        "prize_id": 100
     }
 ]
