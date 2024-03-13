@@ -1,0 +1,2118 @@
+[
+    {
+        "year": "2023",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "1029",
+                "firstname": "Moungi",
+                "surname": "Bawendi",
+                "motivation": "\"for the discovery and synthesis of quantum dots\"",
+                "share": "3"
+            },
+            {
+                "id": "1030",
+                "firstname": "Louis",
+                "surname": "Brus",
+                "motivation": "\"for the discovery and synthesis of quantum dots\"",
+                "share": "3"
+            },
+            {
+                "id": "1031",
+                "firstname": "Aleksey",
+                "surname": "Yekimov",
+                "motivation": "\"for the discovery and synthesis of quantum dots\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_1"
+    },
+    {
+        "year": "2023",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "1034",
+                "firstname": "Claudia",
+                "surname": "Goldin",
+                "motivation": "\"for having advanced our understanding of women’s labour market outcomes\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_2"
+    },
+    {
+        "year": "2023",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "1032",
+                "firstname": "Jon",
+                "surname": "Fosse",
+                "motivation": "\"for his innovative plays and prose which give voice to the unsayable\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_3"
+    },
+    {
+        "year": "2023",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "1033",
+                "firstname": "Narges",
+                "surname": "Mohammadi",
+                "motivation": "\"for her fight against the oppression of women in Iran and her fight to promote human rights and freedom for all\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_4"
+    },
+    {
+        "year": "2023",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "1026",
+                "firstname": "Pierre",
+                "surname": "Agostini",
+                "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+                "share": "3"
+            },
+            {
+                "id": "1027",
+                "firstname": "Ferenc",
+                "surname": "Krausz",
+                "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+                "share": "3"
+            },
+            {
+                "id": "1028",
+                "firstname": "Anne",
+                "surname": "L’Huillier",
+                "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_5"
+    },
+    {
+        "year": "2023",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "1024",
+                "firstname": "Katalin",
+                "surname": "Karikó",
+                "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
+                "share": "2"
+            },
+            {
+                "id": "1025",
+                "firstname": "Drew",
+                "surname": "Weissman",
+                "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_6"
+    },
+    {
+        "year": "2022",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "1015",
+                "firstname": "Carolyn",
+                "surname": "Bertozzi",
+                "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+                "share": "3"
+            },
+            {
+                "id": "1016",
+                "firstname": "Morten",
+                "surname": "Meldal",
+                "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+                "share": "3"
+            },
+            {
+                "id": "743",
+                "firstname": "Barry",
+                "surname": "Sharpless",
+                "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_7"
+    },
+    {
+        "year": "2022",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "1021",
+                "firstname": "Ben",
+                "surname": "Bernanke",
+                "motivation": "\"for research on banks and financial crises\"",
+                "share": "3"
+            },
+            {
+                "id": "1022",
+                "firstname": "Douglas",
+                "surname": "Diamond",
+                "motivation": "\"for research on banks and financial crises\"",
+                "share": "3"
+            },
+            {
+                "id": "1023",
+                "firstname": "Philip",
+                "surname": "Dybvig",
+                "motivation": "\"for research on banks and financial crises\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_8"
+    },
+    {
+        "year": "2022",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "1017",
+                "firstname": "Annie",
+                "surname": "Ernaux",
+                "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_9"
+    },
+    {
+        "year": "2022",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "1018",
+                "firstname": "Ales",
+                "surname": "Bialiatski ",
+                "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+                "share": "3"
+            },
+            {
+                "id": "1019",
+                "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+                "share": "3",
+                "firstname": "Memorial"
+            },
+            {
+                "id": "1020",
+                "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+                "share": "3",
+                "firstname": "Center for Civil Liberties"
+            }
+        ],
+        "id": "prize_10"
+    },
+    {
+        "year": "2022",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "1012",
+                "firstname": "Alain",
+                "surname": "Aspect",
+                "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+                "share": "3"
+            },
+            {
+                "id": "1013",
+                "firstname": "John ",
+                "surname": "Clauser",
+                "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+                "share": "3"
+            },
+            {
+                "id": "1014",
+                "firstname": "Anton",
+                "surname": "Zeilinger",
+                "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_11"
+    },
+    {
+        "year": "2022",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "1011",
+                "firstname": "Svante",
+                "surname": "Pääbo",
+                "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_12"
+    },
+    {
+        "year": "2021",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "1002",
+                "firstname": "Benjamin",
+                "surname": "List",
+                "motivation": "\"for the development of asymmetric organocatalysis\"",
+                "share": "2"
+            },
+            {
+                "id": "1003",
+                "firstname": "David",
+                "surname": "MacMillan",
+                "motivation": "\"for the development of asymmetric organocatalysis\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_13"
+    },
+    {
+        "year": "2021",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "1007",
+                "firstname": "David",
+                "surname": "Card",
+                "motivation": "\"for his empirical contributions to labour economics\"",
+                "share": "2"
+            },
+            {
+                "id": "1008",
+                "firstname": "Joshua",
+                "surname": "Angrist",
+                "motivation": "\"for their methodological contributions to the analysis of causal relationships\"",
+                "share": "4"
+            },
+            {
+                "id": "1009",
+                "firstname": "Guido",
+                "surname": "Imbens",
+                "motivation": "\"for their methodological contributions to the analysis of causal relationships\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_14"
+    },
+    {
+        "year": "2021",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "1004",
+                "firstname": "Abdulrazak",
+                "surname": "Gurnah",
+                "motivation": "\"for his uncompromising and compassionate penetration of the effects of colonialism and the fate of the refugee in the gulf between cultures and continents\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_15"
+    },
+    {
+        "year": "2021",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "1005",
+                "firstname": "Maria",
+                "surname": "Ressa",
+                "motivation": "\"for their efforts to safeguard freedom of expression, which is a precondition for democracy and lasting peace\"",
+                "share": "2"
+            },
+            {
+                "id": "1006",
+                "firstname": "Dmitry",
+                "surname": "Muratov",
+                "motivation": "\"for their efforts to safeguard freedom of expression, which is a precondition for democracy and lasting peace\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_16"
+    },
+    {
+        "year": "2021",
+        "category": "physics",
+        "overallMotivation": "\"for groundbreaking contributions to our understanding of complex physical systems\"",
+        "laureates": [
+            {
+                "id": "999",
+                "firstname": "Syukuro",
+                "surname": "Manabe",
+                "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
+                "share": "4"
+            },
+            {
+                "id": "1000",
+                "firstname": "Klaus",
+                "surname": "Hasselmann",
+                "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
+                "share": "4"
+            },
+            {
+                "id": "1001",
+                "firstname": "Giorgio",
+                "surname": "Parisi",
+                "motivation": "\"for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_17"
+    },
+    {
+        "year": "2021",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "997",
+                "firstname": "David",
+                "surname": "Julius",
+                "motivation": "\"for their discoveries of receptors for temperature and touch\"",
+                "share": "2"
+            },
+            {
+                "id": "998",
+                "firstname": "Ardem",
+                "surname": "Patapoutian",
+                "motivation": "\"for their discoveries of receptors for temperature and touch\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_18"
+    },
+    {
+        "year": "2020",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "991",
+                "firstname": "Emmanuelle",
+                "surname": "Charpentier",
+                "motivation": "\"for the development of a method for genome editing\"",
+                "share": "2"
+            },
+            {
+                "id": "992",
+                "firstname": "Jennifer A.",
+                "surname": "Doudna",
+                "motivation": "\"for the development of a method for genome editing\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_19"
+    },
+    {
+        "year": "2020",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "995",
+                "firstname": "Paul",
+                "surname": "Milgrom",
+                "motivation": "\"for improvements to auction theory and inventions of new auction formats\"",
+                "share": "2"
+            },
+            {
+                "id": "996",
+                "firstname": "Robert",
+                "surname": "Wilson",
+                "motivation": "\"for improvements to auction theory and inventions of new auction formats\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_20"
+    },
+    {
+        "year": "2020",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "993",
+                "firstname": "Louise",
+                "surname": "Glück",
+                "motivation": "\"for her unmistakable poetic voice that with austere beauty makes individual existence universal\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_21"
+    },
+    {
+        "year": "2020",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "994",
+                "motivation": "\"for its efforts to combat hunger, for its contribution to bettering conditions for peace in conflict-affected areas and for acting as a driving force in efforts to prevent the use of hunger as a weapon of war and conflict\"",
+                "share": "1",
+                "firstname": "World Food Programme"
+            }
+        ],
+        "id": "prize_22"
+    },
+    {
+        "year": "2020",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "988",
+                "firstname": "Roger",
+                "surname": "Penrose",
+                "motivation": "\"for the discovery that black hole formation is a robust prediction of the general theory of relativity\"",
+                "share": "2"
+            },
+            {
+                "id": "989",
+                "firstname": "Reinhard",
+                "surname": "Genzel",
+                "motivation": "\"for the discovery of a supermassive compact object at the centre of our galaxy\"",
+                "share": "4"
+            },
+            {
+                "id": "990",
+                "firstname": "Andrea",
+                "surname": "Ghez",
+                "motivation": "\"for the discovery of a supermassive compact object at the centre of our galaxy\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_23"
+    },
+    {
+        "year": "2020",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "985",
+                "firstname": "Harvey",
+                "surname": "Alter",
+                "motivation": "\"for the discovery of Hepatitis C virus\"",
+                "share": "3"
+            },
+            {
+                "id": "986",
+                "firstname": "Michael",
+                "surname": "Houghton",
+                "motivation": "\"for the discovery of Hepatitis C virus\"",
+                "share": "3"
+            },
+            {
+                "id": "987",
+                "firstname": "Charles",
+                "surname": "Rice",
+                "motivation": "\"for the discovery of Hepatitis C virus\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_24"
+    },
+    {
+        "year": "2019",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "976",
+                "firstname": "John",
+                "surname": "Goodenough",
+                "motivation": "\"for the development of lithium-ion batteries\"",
+                "share": "3"
+            },
+            {
+                "id": "977",
+                "firstname": "M. Stanley",
+                "surname": "Whittingham",
+                "motivation": "\"for the development of lithium-ion batteries\"",
+                "share": "3"
+            },
+            {
+                "id": "978",
+                "firstname": "Akira",
+                "surname": "Yoshino",
+                "motivation": "\"for the development of lithium-ion batteries\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_25"
+    },
+    {
+        "year": "2019",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "982",
+                "firstname": "Abhijit",
+                "surname": "Banerjee",
+                "motivation": "\"for their experimental approach to alleviating global poverty\"",
+                "share": "3"
+            },
+            {
+                "id": "983",
+                "firstname": "Esther",
+                "surname": "Duflo",
+                "motivation": "\"for their experimental approach to alleviating global poverty\"",
+                "share": "3"
+            },
+            {
+                "id": "984",
+                "firstname": "Michael",
+                "surname": "Kremer",
+                "motivation": "\"for their experimental approach to alleviating global poverty\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_26"
+    },
+    {
+        "year": "2019",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "980",
+                "firstname": "Peter",
+                "surname": "Handke",
+                "motivation": "\"for an influential work that with linguistic ingenuity has explored the periphery and the specificity of human experience\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_27"
+    },
+    {
+        "year": "2019",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "981",
+                "firstname": "Abiy",
+                "surname": "Ahmed Ali",
+                "motivation": "\"for his efforts to achieve peace and international cooperation, and in particular for his decisive initiative to resolve the border conflict with neighbouring Eritrea\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_28"
+    },
+    {
+        "year": "2019",
+        "category": "physics",
+        "overallMotivation": "\"for contributions to our understanding of the evolution of the universe and Earth’s place in the cosmos\"",
+        "laureates": [
+            {
+                "id": "973",
+                "firstname": "James",
+                "surname": "Peebles",
+                "motivation": "\"for theoretical discoveries in physical cosmology\"",
+                "share": "2"
+            },
+            {
+                "id": "974",
+                "firstname": "Michel",
+                "surname": "Mayor",
+                "motivation": "\"for the discovery of an exoplanet orbiting a solar-type star\"",
+                "share": "4"
+            },
+            {
+                "id": "975",
+                "firstname": "Didier",
+                "surname": "Queloz",
+                "motivation": "\"for the discovery of an exoplanet orbiting a solar-type star\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_29"
+    },
+    {
+        "year": "2019",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "970",
+                "firstname": "William",
+                "surname": "Kaelin",
+                "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
+                "share": "3"
+            },
+            {
+                "id": "971",
+                "firstname": "Peter",
+                "surname": "Ratcliffe",
+                "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
+                "share": "3"
+            },
+            {
+                "id": "972",
+                "firstname": "Gregg",
+                "surname": "Semenza",
+                "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_30"
+    },
+    {
+        "year": "2018",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "963",
+                "firstname": "Frances H.",
+                "surname": "Arnold",
+                "motivation": "\"for the directed evolution of enzymes\"",
+                "share": "2"
+            },
+            {
+                "id": "964",
+                "firstname": "George P.",
+                "surname": "Smith",
+                "motivation": "\"for the phage display of peptides and antibodies\"",
+                "share": "4"
+            },
+            {
+                "id": "965",
+                "firstname": "Sir Gregory P.",
+                "surname": "Winter",
+                "motivation": "\"for the phage display of peptides and antibodies\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_31"
+    },
+    {
+        "year": "2018",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "968",
+                "firstname": "William D.",
+                "surname": "Nordhaus",
+                "motivation": "\"for integrating climate change into long-run macroeconomic analysis\"",
+                "share": "2"
+            },
+            {
+                "id": "969",
+                "firstname": "Paul M.",
+                "surname": "Romer",
+                "motivation": "\"for integrating technological innovations into long-run macroeconomic analysis\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_32"
+    },
+    {
+        "year": "2018",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "979",
+                "firstname": "Olga",
+                "surname": "Tokarczuk",
+                "motivation": "\"for a narrative imagination that with encyclopedic passion represents the crossing of boundaries as a form of life\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_33"
+    },
+    {
+        "year": "2018",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "966",
+                "firstname": "Denis",
+                "surname": "Mukwege",
+                "motivation": "\"for their efforts to end the use of sexual violence as a weapon of war and armed conflict\"",
+                "share": "2"
+            },
+            {
+                "id": "967",
+                "firstname": "Nadia",
+                "surname": "Murad",
+                "motivation": "\"for their efforts to end the use of sexual violence as a weapon of war and armed conflict\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_34"
+    },
+    {
+        "year": "2018",
+        "category": "physics",
+        "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
+        "laureates": [
+            {
+                "id": "960",
+                "firstname": "Arthur",
+                "surname": "Ashkin",
+                "motivation": "\"for the optical tweezers and their application to biological systems\"",
+                "share": "2"
+            },
+            {
+                "id": "961",
+                "firstname": "Gérard",
+                "surname": "Mourou",
+                "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+                "share": "4"
+            },
+            {
+                "id": "962",
+                "firstname": "Donna",
+                "surname": "Strickland",
+                "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_35"
+    },
+    {
+        "year": "2018",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "958",
+                "firstname": "James P.",
+                "surname": "Allison",
+                "motivation": "\"for their discovery of cancer therapy by inhibition of negative immune regulation\"",
+                "share": "2"
+            },
+            {
+                "id": "959",
+                "firstname": "Tasuku",
+                "surname": "Honjo",
+                "motivation": "\"for their discovery of cancer therapy by inhibition of negative immune regulation\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_36"
+    },
+    {
+        "year": "2017",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "944",
+                "firstname": "Jacques",
+                "surname": "Dubochet",
+                "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
+                "share": "3"
+            },
+            {
+                "id": "945",
+                "firstname": "Joachim",
+                "surname": "Frank",
+                "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
+                "share": "3"
+            },
+            {
+                "id": "946",
+                "firstname": "Richard",
+                "surname": "Henderson",
+                "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_37"
+    },
+    {
+        "year": "2017",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "949",
+                "firstname": "Richard H.",
+                "surname": "Thaler",
+                "motivation": "\"for his contributions to behavioural economics\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_38"
+    },
+    {
+        "year": "2017",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "947",
+                "firstname": "Kazuo",
+                "surname": "Ishiguro",
+                "motivation": "\"who, in novels of great emotional force, has uncovered the abyss beneath our illusory sense of connection with the world\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_39"
+    },
+    {
+        "year": "2017",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "948",
+                "motivation": "\"for its work to draw attention to the catastrophic humanitarian consequences of any use of nuclear weapons and for its ground-breaking efforts to achieve a treaty-based prohibition of such weapons\"",
+                "share": "1",
+                "firstname": "International Campaign to Abolish Nuclear Weapons"
+            }
+        ],
+        "id": "prize_40"
+    },
+    {
+        "year": "2017",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "941",
+                "firstname": "Rainer",
+                "surname": "Weiss",
+                "motivation": "\"for decisive contributions to the LIGO detector and the observation of gravitational waves\"",
+                "share": "2"
+            },
+            {
+                "id": "942",
+                "firstname": "Barry C.",
+                "surname": "Barish",
+                "motivation": "\"for decisive contributions to the LIGO detector and the observation of gravitational waves\"",
+                "share": "4"
+            },
+            {
+                "id": "943",
+                "firstname": "Kip S.",
+                "surname": "Thorne",
+                "motivation": "\"for decisive contributions to the LIGO detector and the observation of gravitational waves\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_41"
+    },
+    {
+        "year": "2017",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "938",
+                "firstname": "Jeffrey C.",
+                "surname": "Hall",
+                "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
+                "share": "3"
+            },
+            {
+                "id": "939",
+                "firstname": "Michael",
+                "surname": "Rosbash",
+                "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
+                "share": "3"
+            },
+            {
+                "id": "940",
+                "firstname": "Michael W.",
+                "surname": "Young",
+                "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_42"
+    },
+    {
+        "year": "2016",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "931",
+                "firstname": "Jean-Pierre",
+                "surname": "Sauvage",
+                "motivation": "\"for the design and synthesis of molecular machines\"",
+                "share": "3"
+            },
+            {
+                "id": "932",
+                "firstname": "Sir J. Fraser",
+                "surname": "Stoddart",
+                "motivation": "\"for the design and synthesis of molecular machines\"",
+                "share": "3"
+            },
+            {
+                "id": "933",
+                "firstname": "Bernard L.",
+                "surname": "Feringa",
+                "motivation": "\"for the design and synthesis of molecular machines\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_43"
+    },
+    {
+        "year": "2016",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "935",
+                "firstname": "Oliver",
+                "surname": "Hart",
+                "motivation": "\"for their contributions to contract theory\"",
+                "share": "2"
+            },
+            {
+                "id": "936",
+                "firstname": "Bengt",
+                "surname": "Holmström",
+                "motivation": "\"for their contributions to contract theory\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_44"
+    },
+    {
+        "year": "2016",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "937",
+                "firstname": "Bob",
+                "surname": "Dylan",
+                "motivation": "\"for having created new poetic expressions within the great American song tradition\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_45"
+    },
+    {
+        "year": "2016",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "934",
+                "firstname": "Juan Manuel",
+                "surname": "Santos",
+                "motivation": "\"for his resolute efforts to bring the country's more than 50-year-long civil war to an end\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_46"
+    },
+    {
+        "year": "2016",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "928",
+                "firstname": "David J.",
+                "surname": "Thouless",
+                "motivation": "\"for theoretical discoveries of topological phase transitions and topological phases of matter\"",
+                "share": "2"
+            },
+            {
+                "id": "929",
+                "firstname": "F. Duncan M.",
+                "surname": "Haldane",
+                "motivation": "\"for theoretical discoveries of topological phase transitions and topological phases of matter\"",
+                "share": "4"
+            },
+            {
+                "id": "930",
+                "firstname": "J. Michael",
+                "surname": "Kosterlitz",
+                "motivation": "\"for theoretical discoveries of topological phase transitions and topological phases of matter\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_47"
+    },
+    {
+        "year": "2016",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "927",
+                "firstname": "Yoshinori",
+                "surname": "Ohsumi",
+                "motivation": "\"for his discoveries of mechanisms for autophagy\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_48"
+    },
+    {
+        "year": "2015",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "921",
+                "firstname": "Tomas",
+                "surname": "Lindahl",
+                "motivation": "\"for mechanistic studies of DNA repair\"",
+                "share": "3"
+            },
+            {
+                "id": "922",
+                "firstname": "Paul",
+                "surname": "Modrich",
+                "motivation": "\"for mechanistic studies of DNA repair\"",
+                "share": "3"
+            },
+            {
+                "id": "923",
+                "firstname": "Aziz",
+                "surname": "Sancar",
+                "motivation": "\"for mechanistic studies of DNA repair\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_49"
+    },
+    {
+        "year": "2015",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "926",
+                "firstname": "Angus",
+                "surname": "Deaton",
+                "motivation": "\"for his analysis of consumption, poverty, and welfare\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_50"
+    },
+    {
+        "year": "2015",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "924",
+                "firstname": "Svetlana",
+                "surname": "Alexievich",
+                "motivation": "\"for her polyphonic writings, a monument to suffering and courage in our time\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_51"
+    },
+    {
+        "year": "2015",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "925",
+                "motivation": "\"for its decisive contribution to the building of a pluralistic democracy in Tunisia in the wake of the Jasmine Revolution of 2011\"",
+                "share": "1",
+                "firstname": "National Dialogue Quartet"
+            }
+        ],
+        "id": "prize_52"
+    },
+    {
+        "year": "2015",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "919",
+                "firstname": "Takaaki",
+                "surname": "Kajita",
+                "motivation": "\"for the discovery of neutrino oscillations, which shows that neutrinos have mass\"",
+                "share": "2"
+            },
+            {
+                "id": "920",
+                "firstname": "Arthur B.",
+                "surname": "McDonald",
+                "motivation": "\"for the discovery of neutrino oscillations, which shows that neutrinos have mass\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_53"
+    },
+    {
+        "year": "2015",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "916",
+                "firstname": "William C.",
+                "surname": "Campbell",
+                "motivation": "\"for their discoveries concerning a novel therapy against infections caused by roundworm parasites\"",
+                "share": "4"
+            },
+            {
+                "id": "917",
+                "firstname": "Satoshi",
+                "surname": "Ōmura",
+                "motivation": "\"for their discoveries concerning a novel therapy against infections caused by roundworm parasites\"",
+                "share": "4"
+            },
+            {
+                "id": "918",
+                "firstname": "Youyou",
+                "surname": "Tu",
+                "motivation": "\"for her discoveries concerning a novel therapy against Malaria\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_54"
+    },
+    {
+        "year": "2014",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "909",
+                "firstname": "Eric",
+                "surname": "Betzig",
+                "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
+                "share": "3"
+            },
+            {
+                "id": "910",
+                "firstname": "Stefan W.",
+                "surname": "Hell",
+                "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
+                "share": "3"
+            },
+            {
+                "id": "911",
+                "firstname": "William E.",
+                "surname": "Moerner",
+                "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_55"
+    },
+    {
+        "year": "2014",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "915",
+                "firstname": "Jean",
+                "surname": "Tirole",
+                "motivation": "\"for his analysis of market power and regulation\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_56"
+    },
+    {
+        "year": "2014",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "912",
+                "firstname": "Patrick",
+                "surname": "Modiano",
+                "motivation": "\"for the art of memory with which he has evoked the most ungraspable human destinies and\r\nuncovered the life-world of the occupation\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_57"
+    },
+    {
+        "year": "2014",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "913",
+                "firstname": "Kailash",
+                "surname": "Satyarthi",
+                "motivation": "\"for their struggle against the suppression of children and young people and for the right of all children to education\"",
+                "share": "2"
+            },
+            {
+                "id": "914",
+                "firstname": "Malala",
+                "surname": "Yousafzai",
+                "motivation": "\"for their struggle against the suppression of children and young people and for the right of all children to education\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_58"
+    },
+    {
+        "year": "2014",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "906",
+                "firstname": "Isamu",
+                "surname": "Akasaki",
+                "motivation": "\"for the invention of efficient blue light-emitting diodes which has enabled bright and energy-saving white light sources\"",
+                "share": "3"
+            },
+            {
+                "id": "907",
+                "firstname": "Hiroshi",
+                "surname": "Amano",
+                "motivation": "\"for the invention of efficient blue light-emitting diodes which has enabled bright and energy-saving white light sources\"",
+                "share": "3"
+            },
+            {
+                "id": "908",
+                "firstname": "Shuji",
+                "surname": "Nakamura",
+                "motivation": "\"for the invention of efficient blue light-emitting diodes which has enabled bright and energy-saving white light sources\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_59"
+    },
+    {
+        "year": "2014",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "903",
+                "firstname": "John",
+                "surname": "O'Keefe",
+                "motivation": "\"for their discoveries of cells that constitute a positioning system in the brain\"",
+                "share": "2"
+            },
+            {
+                "id": "904",
+                "firstname": "May-Britt",
+                "surname": "Moser",
+                "motivation": "\"for their discoveries of cells that constitute a positioning system in the brain\"",
+                "share": "4"
+            },
+            {
+                "id": "905",
+                "firstname": "Edvard I.",
+                "surname": "Moser",
+                "motivation": "\"for their discoveries of cells that constitute a positioning system in the brain\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_60"
+    },
+    {
+        "year": "2013",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "889",
+                "firstname": "Martin",
+                "surname": "Karplus",
+                "motivation": "\"for the development of multiscale models for complex chemical systems\"",
+                "share": "3"
+            },
+            {
+                "id": "890",
+                "firstname": "Michael",
+                "surname": "Levitt",
+                "motivation": "\"for the development of multiscale models for complex chemical systems\"",
+                "share": "3"
+            },
+            {
+                "id": "891",
+                "firstname": "Arieh",
+                "surname": "Warshel",
+                "motivation": "\"for the development of multiscale models for complex chemical systems\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_61"
+    },
+    {
+        "year": "2013",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "894",
+                "firstname": "Eugene F.",
+                "surname": "Fama",
+                "motivation": "\"for their empirical analysis of asset prices\"",
+                "share": "3"
+            },
+            {
+                "id": "895",
+                "firstname": "Lars Peter",
+                "surname": "Hansen",
+                "motivation": "\"for their empirical analysis of asset prices\"",
+                "share": "3"
+            },
+            {
+                "id": "896",
+                "firstname": "Robert J.",
+                "surname": "Shiller",
+                "motivation": "\"for their empirical analysis of asset prices\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_62"
+    },
+    {
+        "year": "2013",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "892",
+                "firstname": "Alice",
+                "surname": "Munro",
+                "motivation": "\"master of the contemporary short story\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_63"
+    },
+    {
+        "year": "2013",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "893",
+                "motivation": "\"for its extensive efforts to eliminate chemical weapons\"",
+                "share": "1",
+                "firstname": "Organisation for the Prohibition of Chemical Weapons"
+            }
+        ],
+        "id": "prize_64"
+    },
+    {
+        "year": "2013",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "887",
+                "firstname": "François",
+                "surname": "Englert",
+                "motivation": "\"for the theoretical discovery of a mechanism that contributes to our understanding of the origin of mass of subatomic particles, and which recently was confirmed through the discovery of the predicted fundamental particle, by the ATLAS and CMS experiments at CERN's Large Hadron Collider\"",
+                "share": "2"
+            },
+            {
+                "id": "888",
+                "firstname": "Peter",
+                "surname": "Higgs",
+                "motivation": "\"for the theoretical discovery of a mechanism that contributes to our understanding of the origin of mass of subatomic particles, and which recently was confirmed through the discovery of the predicted fundamental particle, by the ATLAS and CMS experiments at CERN's Large Hadron Collider\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_65"
+    },
+    {
+        "year": "2013",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "884",
+                "firstname": "James E.",
+                "surname": "Rothman",
+                "motivation": "\"for their discoveries of machinery regulating vesicle traffic, a major transport system in our cells\"",
+                "share": "3"
+            },
+            {
+                "id": "885",
+                "firstname": "Randy W.",
+                "surname": "Schekman",
+                "motivation": "\"for their discoveries of machinery regulating vesicle traffic, a major transport system in our cells\"",
+                "share": "3"
+            },
+            {
+                "id": "886",
+                "firstname": "Thomas C.",
+                "surname": "Südhof",
+                "motivation": "\"for their discoveries of machinery regulating vesicle traffic, a major transport system in our cells\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_66"
+    },
+    {
+        "year": "2012",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "878",
+                "firstname": "Robert J.",
+                "surname": "Lefkowitz",
+                "motivation": "\"for studies of G-protein-coupled receptors\"",
+                "share": "2"
+            },
+            {
+                "id": "879",
+                "firstname": "Brian",
+                "surname": "Kobilka",
+                "motivation": "\"for studies of G-protein-coupled receptors\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_67"
+    },
+    {
+        "year": "2012",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "882",
+                "firstname": "Alvin E.",
+                "surname": "Roth",
+                "motivation": "\"for the theory of stable allocations and the practice of market design\"",
+                "share": "2"
+            },
+            {
+                "id": "883",
+                "firstname": "Lloyd S.",
+                "surname": "Shapley",
+                "motivation": "\"for the theory of stable allocations and the practice of market design\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_68"
+    },
+    {
+        "year": "2012",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "880",
+                "firstname": "Mo",
+                "surname": "Yan",
+                "motivation": "\"who with hallucinatory realism merges folk tales, history and the contemporary\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_69"
+    },
+    {
+        "year": "2012",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "881",
+                "motivation": "\"for over six decades contributed to the advancement of peace and reconciliation, democracy and human rights in Europe\"",
+                "share": "1",
+                "firstname": "European Union"
+            }
+        ],
+        "id": "prize_70"
+    },
+    {
+        "year": "2012",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "876",
+                "firstname": "Serge",
+                "surname": "Haroche",
+                "motivation": "\"for ground-breaking experimental methods that enable measuring and manipulation of individual quantum systems\"",
+                "share": "2"
+            },
+            {
+                "id": "877",
+                "firstname": "David J.",
+                "surname": "Wineland",
+                "motivation": "\"for ground-breaking experimental methods that enable measuring and manipulation of individual quantum systems\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_71"
+    },
+    {
+        "year": "2012",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "874",
+                "firstname": "Sir John B.",
+                "surname": "Gurdon",
+                "motivation": "\"for the discovery that mature cells can be reprogrammed to become pluripotent\"",
+                "share": "2"
+            },
+            {
+                "id": "875",
+                "firstname": "Shinya",
+                "surname": "Yamanaka",
+                "motivation": "\"for the discovery that mature cells can be reprogrammed to become pluripotent\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_72"
+    },
+    {
+        "year": "2011",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "867",
+                "firstname": "Dan",
+                "surname": "Shechtman",
+                "motivation": "\"for the discovery of quasicrystals\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_73"
+    },
+    {
+        "year": "2011",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "872",
+                "firstname": "Thomas J.",
+                "surname": "Sargent",
+                "motivation": "\"for their empirical research on cause and effect in the macroeconomy\"",
+                "share": "2"
+            },
+            {
+                "id": "873",
+                "firstname": "Christopher A.",
+                "surname": "Sims",
+                "motivation": "\"for their empirical research on cause and effect in the macroeconomy\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_74"
+    },
+    {
+        "year": "2011",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "868",
+                "firstname": "Tomas",
+                "surname": "Tranströmer",
+                "motivation": "\"because, through his condensed, translucent images, he gives us fresh access to reality\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_75"
+    },
+    {
+        "year": "2011",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "869",
+                "firstname": "Ellen",
+                "surname": "Johnson Sirleaf",
+                "motivation": "\"for their non-violent struggle for the safety of women and for women's rights to full participation in peace-building work\"",
+                "share": "3"
+            },
+            {
+                "id": "870",
+                "firstname": "Leymah",
+                "surname": "Gbowee",
+                "motivation": "\"for their non-violent struggle for the safety of women and for women's rights to full participation in peace-building work\"",
+                "share": "3"
+            },
+            {
+                "id": "871",
+                "firstname": "Tawakkol",
+                "surname": "Karman",
+                "motivation": "\"for their non-violent struggle for the safety of women and for women's rights to full participation in peace-building work\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_76"
+    },
+    {
+        "year": "2011",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "864",
+                "firstname": "Saul",
+                "surname": "Perlmutter",
+                "motivation": "\"for the discovery of the accelerating expansion of the Universe through observations of distant supernovae\"",
+                "share": "2"
+            },
+            {
+                "id": "865",
+                "firstname": "Brian P.",
+                "surname": "Schmidt",
+                "motivation": "\"for the discovery of the accelerating expansion of the Universe through observations of distant supernovae\"",
+                "share": "4"
+            },
+            {
+                "id": "866",
+                "firstname": "Adam G.",
+                "surname": "Riess",
+                "motivation": "\"for the discovery of the accelerating expansion of the Universe through observations of distant supernovae\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_77"
+    },
+    {
+        "year": "2011",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "861",
+                "firstname": "Bruce A.",
+                "surname": "Beutler",
+                "motivation": "\"for their discoveries concerning the activation of innate immunity\"",
+                "share": "4"
+            },
+            {
+                "id": "862",
+                "firstname": "Jules A.",
+                "surname": "Hoffmann",
+                "motivation": "\"for their discoveries concerning the activation of innate immunity\"",
+                "share": "4"
+            },
+            {
+                "id": "863",
+                "firstname": "Ralph M.",
+                "surname": "Steinman",
+                "motivation": "\"for his discovery of the dendritic cell and its role in adaptive immunity\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_78"
+    },
+    {
+        "year": "2010",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "851",
+                "firstname": "Richard F.",
+                "surname": "Heck",
+                "motivation": "\"for palladium-catalyzed cross couplings in organic synthesis\"",
+                "share": "3"
+            },
+            {
+                "id": "852",
+                "firstname": "Ei-ichi",
+                "surname": "Negishi",
+                "motivation": "\"for palladium-catalyzed cross couplings in organic synthesis\"",
+                "share": "3"
+            },
+            {
+                "id": "853",
+                "firstname": "Akira",
+                "surname": "Suzuki",
+                "motivation": "\"for palladium-catalyzed cross couplings in organic synthesis\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_79"
+    },
+    {
+        "year": "2010",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "856",
+                "firstname": "Peter A.",
+                "surname": "Diamond",
+                "motivation": "\"for their analysis of markets with search frictions\"",
+                "share": "3"
+            },
+            {
+                "id": "857",
+                "firstname": "Dale T.",
+                "surname": "Mortensen",
+                "motivation": "\"for their analysis of markets with search frictions\"",
+                "share": "3"
+            },
+            {
+                "id": "858",
+                "firstname": "Christopher A.",
+                "surname": "Pissarides",
+                "motivation": "\"for their analysis of markets with search frictions\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_80"
+    },
+    {
+        "year": "2010",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "854",
+                "firstname": "Mario",
+                "surname": "Vargas Llosa",
+                "motivation": "\"for his cartography of structures of power and his trenchant images of the individual's resistance, revolt, and defeat\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_81"
+    },
+    {
+        "year": "2010",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "855",
+                "firstname": "Xiaobo",
+                "surname": "Liu",
+                "motivation": "\"for his long and non-violent struggle for fundamental human rights in China\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_82"
+    },
+    {
+        "year": "2010",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "849",
+                "firstname": "Andre",
+                "surname": "Geim",
+                "motivation": "\"for groundbreaking experiments regarding the two-dimensional material graphene\"",
+                "share": "2"
+            },
+            {
+                "id": "850",
+                "firstname": "Konstantin",
+                "surname": "Novoselov",
+                "motivation": "\"for groundbreaking experiments regarding the two-dimensional material graphene\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_83"
+    },
+    {
+        "year": "2010",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "848",
+                "firstname": "Robert G.",
+                "surname": "Edwards",
+                "motivation": "\"for the development of in vitro fertilization\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_84"
+    },
+    {
+        "year": "2009",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "841",
+                "firstname": "Venkatraman",
+                "surname": "Ramakrishnan",
+                "motivation": "\"for studies of the structure and function of the ribosome\"",
+                "share": "3"
+            },
+            {
+                "id": "842",
+                "firstname": "Thomas A.",
+                "surname": "Steitz",
+                "motivation": "\"for studies of the structure and function of the ribosome\"",
+                "share": "3"
+            },
+            {
+                "id": "843",
+                "firstname": "Ada E.",
+                "surname": "Yonath",
+                "motivation": "\"for studies of the structure and function of the ribosome\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_85"
+    },
+    {
+        "year": "2009",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "846",
+                "firstname": "Elinor",
+                "surname": "Ostrom",
+                "motivation": "\"for her analysis of economic governance, especially the commons\"",
+                "share": "2"
+            },
+            {
+                "id": "847",
+                "firstname": "Oliver E.",
+                "surname": "Williamson",
+                "motivation": "\"for his analysis of economic governance, especially the boundaries of the firm\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_86"
+    },
+    {
+        "year": "2009",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "844",
+                "firstname": "Herta",
+                "surname": "Müller",
+                "motivation": "\"who, with the concentration of poetry and the frankness of prose, depicts the landscape of the dispossessed\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_87"
+    },
+    {
+        "year": "2009",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "845",
+                "firstname": "Barack",
+                "surname": "Obama",
+                "motivation": "\"for his extraordinary efforts to strengthen international diplomacy and cooperation between peoples\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_88"
+    },
+    {
+        "year": "2009",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "838",
+                "firstname": "Charles K.",
+                "surname": "Kao",
+                "motivation": "\"for groundbreaking achievements concerning the transmission of light in fibers for optical communication\"",
+                "share": "2"
+            },
+            {
+                "id": "839",
+                "firstname": "Willard S.",
+                "surname": "Boyle",
+                "motivation": "\"for the invention of an imaging semiconductor circuit - the CCD sensor\"",
+                "share": "4"
+            },
+            {
+                "id": "840",
+                "firstname": "George E.",
+                "surname": "Smith",
+                "motivation": "\"for the invention of an imaging semiconductor circuit - the CCD sensor\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_89"
+    },
+    {
+        "year": "2009",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "835",
+                "firstname": "Elizabeth H.",
+                "surname": "Blackburn",
+                "motivation": "\"for the discovery of how chromosomes are protected by telomeres and the enzyme telomerase\"",
+                "share": "3"
+            },
+            {
+                "id": "836",
+                "firstname": "Carol W.",
+                "surname": "Greider",
+                "motivation": "\"for the discovery of how chromosomes are protected by telomeres and the enzyme telomerase\"",
+                "share": "3"
+            },
+            {
+                "id": "837",
+                "firstname": "Jack W.",
+                "surname": "Szostak",
+                "motivation": "\"for the discovery of how chromosomes are protected by telomeres and the enzyme telomerase\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_90"
+    },
+    {
+        "year": "2008",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "829",
+                "firstname": "Osamu",
+                "surname": "Shimomura",
+                "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                "share": "3"
+            },
+            {
+                "id": "830",
+                "firstname": "Martin",
+                "surname": "Chalfie",
+                "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                "share": "3"
+            },
+            {
+                "id": "831",
+                "firstname": "Roger Y.",
+                "surname": "Tsien",
+                "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_91"
+    },
+    {
+        "year": "2008",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "834",
+                "firstname": "Paul",
+                "surname": "Krugman",
+                "motivation": "\"for his analysis of trade patterns and location of economic activity\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_92"
+    },
+    {
+        "year": "2008",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "832",
+                "firstname": "Jean-Marie Gustave",
+                "surname": "Le Clézio",
+                "motivation": "\"author of new departures, poetic adventure and sensual ecstasy, explorer of a humanity beyond and below the reigning civilization\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_93"
+    },
+    {
+        "year": "2008",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "833",
+                "firstname": "Martti",
+                "surname": "Ahtisaari",
+                "motivation": "\"for his important efforts, on several continents and over more than three decades, to resolve international conflicts\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_94"
+    },
+    {
+        "year": "2008",
+        "category": "physics",
+        "laureates": [
+            {
+                "id": "826",
+                "firstname": "Yoichiro",
+                "surname": "Nambu",
+                "motivation": "\"for the discovery of the mechanism of spontaneous broken symmetry in subatomic physics\"",
+                "share": "2"
+            },
+            {
+                "id": "827",
+                "firstname": "Makoto",
+                "surname": "Kobayashi",
+                "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+                "share": "4"
+            },
+            {
+                "id": "828",
+                "firstname": "Toshihide",
+                "surname": "Maskawa",
+                "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_95"
+    },
+    {
+        "year": "2008",
+        "category": "medicine",
+        "laureates": [
+            {
+                "id": "823",
+                "firstname": "Harald",
+                "surname": "zur Hausen",
+                "motivation": "\"for his discovery of human papilloma viruses causing cervical cancer\"",
+                "share": "2"
+            },
+            {
+                "id": "824",
+                "firstname": "Françoise",
+                "surname": "Barré-Sinoussi",
+                "motivation": "\"for their discovery of human immunodeficiency virus\"",
+                "share": "4"
+            },
+            {
+                "id": "825",
+                "firstname": "Luc",
+                "surname": "Montagnier",
+                "motivation": "\"for their discovery of human immunodeficiency virus\"",
+                "share": "4"
+            }
+        ],
+        "id": "prize_96"
+    },
+    {
+        "year": "2007",
+        "category": "chemistry",
+        "laureates": [
+            {
+                "id": "816",
+                "firstname": "Gerhard",
+                "surname": "Ertl",
+                "motivation": "\"for his studies of chemical processes on solid surfaces\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_97"
+    },
+    {
+        "year": "2007",
+        "category": "economics",
+        "laureates": [
+            {
+                "id": "820",
+                "firstname": "Leonid",
+                "surname": "Hurwicz",
+                "motivation": "\"for having laid the foundations of mechanism design theory\"",
+                "share": "3"
+            },
+            {
+                "id": "821",
+                "firstname": "Eric S.",
+                "surname": "Maskin",
+                "motivation": "\"for having laid the foundations of mechanism design theory\"",
+                "share": "3"
+            },
+            {
+                "id": "822",
+                "firstname": "Roger B.",
+                "surname": "Myerson",
+                "motivation": "\"for having laid the foundations of mechanism design theory\"",
+                "share": "3"
+            }
+        ],
+        "id": "prize_98"
+    },
+    {
+        "year": "2007",
+        "category": "literature",
+        "laureates": [
+            {
+                "id": "817",
+                "firstname": "Doris",
+                "surname": "Lessing",
+                "motivation": "\"that epicist of the female experience, who with scepticism, fire and visionary power has subjected a divided civilisation to scrutiny\"",
+                "share": "1"
+            }
+        ],
+        "id": "prize_99"
+    },
+    {
+        "year": "2007",
+        "category": "peace",
+        "laureates": [
+            {
+                "id": "818",
+                "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+                "share": "2",
+                "firstname": "Intergovernmental Panel on Climate Change"
+            },
+            {
+                "id": "819",
+                "firstname": "Al",
+                "surname": "Gore",
+                "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+                "share": "2"
+            }
+        ],
+        "id": "prize_100"
+    }
+]
