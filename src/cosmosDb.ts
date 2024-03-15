@@ -1,20 +1,25 @@
 import { CosmosClient, Database, Container, SqlQuerySpec } from "@azure/cosmos"
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 export type RawCosmosDbConfig = {
     databaseName: string,
     endpoint: string,
     key: string
 }
 
+export function getCosmosClient(key: string, endpoint: string): CosmosClient {
+    const cosmosClient = new CosmosClient({
+        key, endpoint
+    });
+    return cosmosClient
+}
+
 /* Creates a new cosmos DB client with which the specified database can be queried. */
 export function getCosmosDbClient(rawDbConfig: RawCosmosDbConfig): Database {
-    const dbClient = new CosmosClient({
-        key: rawDbConfig.key,
-        endpoint: rawDbConfig.endpoint
-    });
+    const cosmosClient = getCosmosClient(rawDbConfig.key, rawDbConfig.endpoint);
 
-    return dbClient.database(rawDbConfig.databaseName);
-
+    return cosmosClient.database(rawDbConfig.databaseName);
 }
 
 /* Runs the `sqlQuerySpec` in the specified `container` */
