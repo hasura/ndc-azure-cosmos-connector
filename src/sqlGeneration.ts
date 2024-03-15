@@ -77,6 +77,8 @@ function formatSelectColumns(fieldsToSelect: SelectColumns, containerAlias: stri
     return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
         switch (selectColumn.kind) {
             case 'column':
+                // `??` is the coalesce operator, we want the query to expicitly return
+                // a `null` value when a field is `undefined`.
                 return `${containerAlias}.${selectColumn.columnName} ?? null as ${alias}`
             case 'aggregate':
                 return `${selectColumn.aggregateFunction}(${containerAlias}.${selectColumn.columnName}) as ${alias}`
