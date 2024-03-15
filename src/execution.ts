@@ -26,12 +26,14 @@ function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.Obje
 }
 
 
-function validateRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryGenerationContext {
+function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryGenerationContext {
+    let isAggregateQuery = false;
+
     const collection: string = queryRequest.collection;
 
     const collectionDefinition: schema.CollectionDefinition = collectionsSchema.collections[collection];
 
-    let requestedFields: sql.AliasColumnMapping = {};
+    let requestedFields: sql.SelectColumns = {};
 
     if (collectionDefinition === undefined)
         throw new sdk.BadRequest(`Couldn't find collection '${collection}' in the schema.`)
@@ -47,28 +49,84 @@ function validateRequest(collectionsSchema: schema.CollectionsSchema, queryReque
     const collectionObjectType = collectionsSchema.objectTypes[collectionObjectBaseType];
 
     if (collectionObjectType === undefined)
-        throw new sdk.InternalServerError(`Couldn't find the schema of the object type: '${collectionObjectType}'`)
+        throw new sdk.InternalServerError(`Couldn't find the schema of the object type: '${collectionObjectBaseType}'`)
+
+    if (queryRequest.query.fields != null && queryRequest.query.aggregates != null) {
+        throw new sdk.NotSupported("Aggregates and fields cannot be requested together.")
+    }
 
     if (queryRequest.query.fields != null) {
         Object.entries(queryRequest.query.fields).forEach(([fieldName, queryField]) => {
             switch (queryField.type) {
                 case "column":
                     if (!(queryField.column in collectionObjectType.properties)) {
-                        throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectType}'`)
+                        throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectBaseType}'`)
                     } else {
-                        requestedFields[fieldName] = queryField.column;
+                        requestedFields[fieldName] = {
+                            kind: 'column',
+                            columnName: queryField.column
+                        }
                     };
 
                     break;
                 case "relationship":
-                    throw new sdk.NotSupported('Querying relationship fields are not supported yet');
+                    throw new sdk.NotSupported('Querying relationship fields are not supported.');
             }
 
         })
     }
 
+    if (queryRequest.query.aggregates != null) {
+        isAggregateQuery = true;
+        Object.entries(queryRequest.query.aggregates).forEach(([fieldName, aggregateField]) => {
+            switch (aggregateField.type) {
+                case "column_count":
+                    if (!(aggregateField.column in collectionObjectType.properties)) {
+                        throw new sdk.BadRequest(`Couldn't find field '${aggregateField.column}' in object type '${collectionObjectBaseType}'`);
+                    } else {
+                        if (aggregateField.distinct) {
+                            requestedFields[fieldName] = {
+                                kind: 'aggregate',
+                                columnName: aggregateField.column,
+                                aggregateFunction: 'DISTINCT COUNT'
+                            };
+
+                        } else {
+                            requestedFields[fieldName] = {
+                                kind: 'aggregate',
+                                columnName: aggregateField.column,
+                                aggregateFunction: 'COUNT'
+                            }
+                        }
+
+                    }
+                    break;
+                case "single_column":
+                    if (!(aggregateField.column in collectionObjectType.properties)) {
+                        throw new sdk.BadRequest(`Couldn't find field '${aggregateField.column}' in object type '${collectionObjectType}'`);
+                    } else {
+                        requestedFields[fieldName] = {
+                            kind: 'aggregate',
+                            columnName: aggregateField.column,
+                            aggregateFunction: aggregateField.function
+                        }
+
+                    }
+                    break;
+                case "star_count":
+                    requestedFields[fieldName] = {
+                        kind: 'aggregate',
+                        columnName: '*',
+                        aggregateFunction: 'COUNT'
+                    };
+                    break;
+            }
+        })
+    }
+
     let sqlGenCtx: sql.SqlQueryGenerationContext = {
-        fieldsToSelect: requestedFields,
+        selectFields: requestedFields,
+        isAggregateQuery
     }
 
     if (queryRequest.query.limit != null) {
@@ -102,21 +160,24 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
     if (collectionDefinition === undefined)
         throw new sdk.BadRequest(`Couldn't find collection '${collection}' in the schema.`)
 
-    // This just assumes that the name of the collection and the container
-    // will be the same, but it need not be the case? How to handle this?
-    const dbContainer = dbClient.container(collection); // TODO: Check what happens when you give a container name that doesn't exist in the database.
+
+    const dbContainer = dbClient.container(collection);
 
     if (dbContainer === undefined || dbContainer == null)
         throw new sdk.InternalServerError(`Couldn't find the container '${collection}' in the schema.`)
 
-    const sqlGenCtx = validateRequest(collectionsSchema, queryRequest);
+    const sqlGenCtx: sql.SqlQueryGenerationContext = parseQueryRequest(collectionsSchema, queryRequest);
 
     const sqlQuery = sql.generateSqlQuery(sqlGenCtx, collection, collection[0]);
 
-    const queryResponse = await runSQLQuery<{ [k: string]: sdk.RowFieldValue }>(sqlQuery, dbContainer);
+    const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(sqlQuery, dbContainer);
 
-    const rowSet: sdk.RowSet = {
-        rows: queryResponse
+    let rowSet: sdk.RowSet = {};
+
+    if (sqlGenCtx.isAggregateQuery) {
+        rowSet.aggregates = queryResponse[0]
+    } else {
+        rowSet.rows = queryResponse
     }
 
     // FIXME: When we support variables, we will need to run the query against the variables and return
