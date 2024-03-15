@@ -1,0 +1,91 @@
+{
+    "method": "POST",
+    "url": "query",
+    "request": {
+        "collection": "NobelLaureates",
+        "arguments": {},
+        "collection_relationships": {},
+        "query": {
+            "limit": 1,
+            "order_by": {
+                "elements": [
+                    {
+                        "target": {
+                            "type": "column",
+                            "name": "prize_id",
+                            "path": []
+                        },
+                        "order_direction": "asc"
+                    }
+                ]
+            },
+            "fields": {
+                "prize_id": {
+                    "type": "column",
+                    "column": "prize_id",
+                    "fields": null
+                },
+                "year": {
+                    "type": "column",
+                    "column": "year",
+                    "fields": null
+                },
+                "laureates": {
+                    "type": "column",
+                    "column": "laureates",
+                    "fields": {
+                        "type": "array",
+                        "fields": {
+                            "type": "object",
+                            "fields": {
+                                "firstname": {
+                                    "type": "column",
+                                    "column": "firstname",
+                                    "fields": null
+                                },
+                                "surname": {
+                                    "type": "column",
+                                    "column": "surname",
+                                    "fields": null
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "response": [
+        {
+            "rows": [
+                {
+                    "prize_id": 1,
+                    "year": 2023,
+                    "laureates": [
+                        {
+                            "id": "1029",
+                            "firstname": "Moungi",
+                            "surname": "Bawendi",
+                            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+                            "share": "3"
+                        },
+                        {
+                            "id": "1030",
+                            "firstname": "Louis",
+                            "surname": "Brus",
+                            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+                            "share": "3"
+                        },
+                        {
+                            "id": "1031",
+                            "firstname": "Aleksey",
+                            "surname": "Yekimov",
+                            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+                            "share": "3"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
