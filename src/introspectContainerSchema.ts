@@ -22,6 +22,7 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
 }
 
 export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
+    console.log("Container rows are ", JSON.stringify(rows, null, 2));
     const jsonInput = jsonInputForTargetLanguage("schema");
 
     await jsonInput.addSource({
@@ -133,37 +134,3 @@ export function getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema: JSON
     )
     return objectTypeDefinitions
 }
-
-const Artist = `
-[
-{
-  "Albums": [
-    {
-      "AlbumId": 1,
-      "Name": "Album 1",
-      "Artist": {
-        "Name": "Artist 1",
-        "Albums": [
-          {
-            "AlbumId": 1,
-            "Name": "Album 1"
-          }
-        ]
-      }
-    }
-  ]
-}
-]
-`
-
-
-async function run() {
-    const containerJSONSchema = await inferJSONSchemaFromContainerRows(JSON.parse(Artist), "Artist");
-
-    const objectTypes = getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema);
-
-
-
-}
-
-run()
