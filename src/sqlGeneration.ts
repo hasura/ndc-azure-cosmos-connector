@@ -77,7 +77,7 @@ function formatSelectColumns(fieldsToSelect: SelectColumns, containerAlias: stri
     return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
         switch (selectColumn.kind) {
             case 'column':
-                return `${containerAlias}.${selectColumn.columnName} as ${alias}`
+                return `${containerAlias}.${selectColumn.columnName} ?? null as ${alias}`
             case 'aggregate':
                 return `${selectColumn.aggregateFunction}(${containerAlias}.${selectColumn.columnName}) as ${alias}`
         }
