@@ -49,7 +49,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
     const collectionObjectType = collectionsSchema.objectTypes[collectionObjectBaseType];
 
     if (collectionObjectType === undefined)
-        throw new sdk.InternalServerError(`Couldn't find the schema of the object type: '${collectionObjectType}'`)
+        throw new sdk.InternalServerError(`Couldn't find the schema of the object type: '${collectionObjectBaseType}'`)
 
     if (queryRequest.query.fields != null && queryRequest.query.aggregates != null) {
         throw new sdk.NotSupported("Aggregates and fields cannot be requested together.")
@@ -60,7 +60,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
             switch (queryField.type) {
                 case "column":
                     if (!(queryField.column in collectionObjectType.properties)) {
-                        throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectType}'`)
+                        throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectBaseType}'`)
                     } else {
                         requestedFields[fieldName] = {
                             kind: 'column',
@@ -82,7 +82,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
             switch (aggregateField.type) {
                 case "column_count":
                     if (!(aggregateField.column in collectionObjectType.properties)) {
-                        throw new sdk.BadRequest(`Couldn't find field '${aggregateField.column}' in object type '${collectionObjectType}'`);
+                        throw new sdk.BadRequest(`Couldn't find field '${aggregateField.column}' in object type '${collectionObjectBaseType}'`);
                     } else {
                         if (aggregateField.distinct) {
                             requestedFields[fieldName] = {

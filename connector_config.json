@@ -1,5 +1,6 @@
 {
   "azure_cosmos_key": "xrgHgDgY7dvHMmUc8m5RA5OuEkd4yEl7btorY325kKDeK360aqR1itbmHQTqiD1ZGxrv9U3DL71KACDbJbDaUg==",
   "azure_cosmos_db_endpoint": "https://test-cosmosdb-connector.documents.azure.com:443/",
-  "azure_cosmos_db_name": "ConnectorTest"
+  "azure_cosmos_db_name": "ConnectorTest",
+  "azure_cosmos_no_of_rows_to_fetch": 100
 }

@@ -22,6 +22,7 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
 }
 
 export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
+    console.log("Container rows are ", JSON.stringify(rows, null, 2));
     const jsonInput = jsonInputForTargetLanguage("schema");
 
     await jsonInput.addSource({
@@ -41,14 +42,16 @@ export async function inferJSONSchemaFromContainerRows(rows: string[], container
 }
 
 function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypeProperty): TypeDefinition | null {
-    if (jsonValueTypeDefn.type == "ref") {
+    if (jsonValueTypeDefn.type == "ref" || jsonValueTypeDefn.type === null) {
         // Case of a reference to an object
-        return {
-            type: "named",
-            name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
-            kind: "object"
-
+        if (jsonValueTypeDefn['$ref'] !== null) {
+            return {
+                type: "named",
+                name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
+                kind: "object"
+            }
         }
+
     } else if (jsonValueTypeDefn.type == "null") {
         // We don't have enough information to predict anything about the property. So, just
         // return null.
@@ -133,37 +136,3 @@ export function getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema: JSON
     )
     return objectTypeDefinitions
 }
-
-const Artist = `
-[
-{
-  "Albums": [
-    {
-      "AlbumId": 1,
-      "Name": "Album 1",
-      "Artist": {
-        "Name": "Artist 1",
-        "Albums": [
-          {
-            "AlbumId": 1,
-            "Name": "Album 1"
-          }
-        ]
-      }
-    }
-  ]
-}
-]
-`
-
-
-async function run() {
-    const containerJSONSchema = await inferJSONSchemaFromContainerRows(JSON.parse(Artist), "Artist");
-
-    const objectTypes = getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema);
-
-
-
-}
-
-run()

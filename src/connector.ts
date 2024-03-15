@@ -74,7 +74,7 @@ export function createConnector(): sdk.Connector<Configuration, State> {
 
         getSchema: async function(configuration: Configuration): Promise<sdk.SchemaResponse> {
             try {
-                const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, 5);
+                const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, configuration.rowsToFetch);
                 return getNdcSchemaResponse(collectionsSchema)
             } catch (error) {
                 console.error("Failed to get the schema ", error);

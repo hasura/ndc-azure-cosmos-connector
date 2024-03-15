@@ -25,7 +25,9 @@ export async function getCollectionsSchema(database: Database, nRows: number): P
         const dbContainer = database.container(container.id);
 
         const nContainerRows = await fetchLatestNRowsFromContainer(nRows, dbContainer);
+        nContainerRows.reverse();
         const containerJsonSchema = await inferJSONSchemaFromContainerRows(nContainerRows, container.id);
+
         const containerObjectTypeDefinitions = getObjectTypeDefinitionsFromJSONSchema(containerJsonSchema);
 
         const collectionObjectType: NamedObjectTypeDefinition = {
