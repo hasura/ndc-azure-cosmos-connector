@@ -218,38 +218,38 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
                 }
             },
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Integer"
                     }
                 },
-                _gt: {
+                gt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Integer"
                     }
                 },
-                _lt: {
+                lt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Integer"
                     }
                 },
-                _gte: {
+                gte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Integer"
                     }
                 },
-                _lte: {
+                lte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
@@ -292,38 +292,38 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
                 }
             },
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Number"
                     }
                 },
-                _gt: {
+                gt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Number"
                     }
                 },
-                _lt: {
+                lt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Number"
                     }
                 },
-                _gte: {
+                gte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "Number"
                     }
                 },
-                _lte: {
+                lte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
@@ -354,10 +354,10 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
                 }
             },
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
@@ -369,66 +369,66 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
         "String": {
             aggregate_functions: {},
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _gt: {
+                gt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _lt: {
+                lt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _gte: {
+                gte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _lte: {
+                lte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _contains: {
+                contains: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _endswith: {
+                endswith: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _regexmatch: {
+                regexmatch: {
                     type: "custom",
                     argument_type: {
                         type: "named",
                         name: "String"
                     }
                 },
-                _startswith: {
+                startswith: {
                     type: "custom",
                     argument_type: {
                         type: "named",
