@@ -42,14 +42,16 @@ export async function inferJSONSchemaFromContainerRows(rows: string[], container
 }
 
 function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypeProperty): TypeDefinition | null {
-    if (jsonValueTypeDefn.type == "ref") {
+    if (jsonValueTypeDefn.type == "ref" || jsonValueTypeDefn.type === null) {
         // Case of a reference to an object
-        return {
-            type: "named",
-            name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
-            kind: "object"
-
+        if (jsonValueTypeDefn['$ref'] !== null) {
+            return {
+                type: "named",
+                name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
+                kind: "object"
+            }
         }
+
     } else if (jsonValueTypeDefn.type == "null") {
         // We don't have enough information to predict anything about the property. So, just
         // return null.

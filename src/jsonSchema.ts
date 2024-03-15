@@ -34,7 +34,7 @@ export interface JSONDefinitionValueNullType {
 }
 
 export interface JSONDefinitionValueObjectTypePropertyRef {
-    type: "ref"
+    type?: "ref"
     '$ref': string
 }
 
