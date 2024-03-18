@@ -50,7 +50,6 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
         sqlQueryParts.push(`WHERE ${whereExp}`);
     }
 
-
     if (sqlGenCtx.orderBy != null && sqlGenCtx.orderBy != null && sqlGenCtx.orderBy.elements.length > 0) {
         const orderByClause = visitOrderByElements(sqlGenCtx.orderBy.elements, containerAlias);
         sqlQueryParts.push(["ORDER BY", orderByClause].join(" "))
@@ -154,17 +153,17 @@ function visitExpression(parameters: SqlParameters, expression: sdk.Expression, 
             const comparisonTarget = visitComparisonTarget(expression.column, containerAlias);
             switch (expression.operator) {
                 case "eq":
-                    return `${comparisonTarget} = ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} = ${visitComparisonValue(parameters, expression.value, comparisonTarget, containerAlias)}`
                 case "neq":
-                    return `${comparisonTarget} != ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} != ${visitComparisonValue(parameters, expression.value, comparisonTarget, containerAlias)}`
                 case "gte":
-                    return `${comparisonTarget} >= ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} >= ${visitComparisonValue(parameters, expression.value, comparisonTarget, containerAlias)}`
                 case "gt":
-                    return `${comparisonTarget} > ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} > ${visitComparisonValue(parameters, expression.value, comparisonTarget, containerAlias)}`
                 case "lte":
-                    return `${comparisonTarget} <= ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} <= ${visitComparisonValue(parameters, expression.value, comparisonTarget, containerAlias)}`
                 case "lt":
-                    return `${comparisonTarget} < ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} < ${visitComparisonValue(parameters, expression.value, comparisonTarget, containerAlias)}`
                 default:
                     throw new sdk.BadRequest(`Unknown binary comparison operator ${expression.operator} found`)
             }
@@ -184,11 +183,11 @@ function visitComparisonTarget(target: sdk.ComparisonTarget, containerAlias: str
             }
             return `${containerAlias}.${target.name}`;
         case 'root_collection_column':
-            throw new sdk.NotSupported("Relationships are not supported");
+            throw new sdk.NotSupported("Root collection column comparison is not supported");
     }
 }
 
-function visitComparisonValue(parameters: SqlParameters, target: sdk.ComparisonValue, comparisonTarget: string): string {
+function visitComparisonValue(parameters: SqlParameters, target: sdk.ComparisonValue, comparisonTarget: string, containerAlias: string): string {
     switch (target.type) {
         case 'scalar':
             const comparisonTargetName = comparisonTarget.replace(".", "_");
@@ -196,18 +195,18 @@ function visitComparisonValue(parameters: SqlParameters, target: sdk.ComparisonV
             if (comparisonTargetParameterValues != null) {
                 const index = comparisonTargetParameterValues.findIndex((element) => element === target.value);
                 if (index !== -1) {
-                    return `@${comparisonTargetName}${index}`
+                    return `@${comparisonTargetName}_${index}`
                 } else {
                     let newIndex = parameters[comparisonTargetName].push(target.value);
-                    return `@${comparisonTargetName}${newIndex}`
+                    return `@${comparisonTargetName}_${newIndex}`
                 }
             } else {
                 parameters[comparisonTargetName] = [target.value];
-                return `@${comparisonTargetName}0`
+                return `@${comparisonTargetName}_0`
             }
 
         case 'column':
-            throw new sdk.NotSupported("Column comparisons are not supported in field predicates yet");
+            return visitComparisonTarget(target.column, containerAlias)
         case 'variable':
             throw new sdk.NotSupported("Variables are not supported yet")
     }
@@ -221,7 +220,7 @@ function serializeSqlParameters(parameters: SqlParameters): cosmos.SqlParameter[
 
         for (let i = 0; i < comparisonTargetValues.length; i++) {
             sqlParameters.push({
-                name: `@${comparisonTarget}${i}`,
+                name: `@${comparisonTarget}_${i}`,
                 value: comparisonTargetValues[i]
             })
         }
