@@ -50,7 +50,6 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
         sqlQueryParts.push(`WHERE ${whereExp}`);
     }
 
-
     if (sqlGenCtx.orderBy != null && sqlGenCtx.orderBy != null && sqlGenCtx.orderBy.elements.length > 0) {
         const orderByClause = visitOrderByElements(sqlGenCtx.orderBy.elements, containerAlias);
         sqlQueryParts.push(["ORDER BY", orderByClause].join(" "))
@@ -65,8 +64,6 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
     }
 
     const query = sqlQueryParts.join("\n");
-
-    console.log("Generated query is ", query);
 
     return {
         query,
