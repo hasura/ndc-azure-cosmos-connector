@@ -96,8 +96,6 @@ export function createConnector(): sdk.Connector<Configuration, State> {
         },
 
         query: async function (configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.QueryResponse> {
-            console.log("Executing query:", JSON.stringify(request));
-            // console.log("_attachments", request.query.fields);
             return executeQuery(request, state.collectionsSchema, configuration.databaseClient)
         },
 
