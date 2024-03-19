@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "../src/introspect_container_schema"
+import { getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "../src/introspectContainerSchema"
 
 describe("Infer schema of JSON value", function() {
     it("infers the schema of a simple object", async function() {
