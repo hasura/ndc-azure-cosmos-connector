@@ -168,17 +168,9 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
 
     const sqlGenCtx: sql.SqlQueryGenerationContext = parseQueryRequest(collectionsSchema, queryRequest);
 
-    var queryResponse: { [k: string]: unknown; }[] = [];
-    // if there are no fields to select, then return an empty response.
-    if (sqlGenCtx.selectFields == null || sqlGenCtx.selectFields == undefined || Object.keys(sqlGenCtx.selectFields).length === 0) {
-        queryResponse = [];
-    }
-    else {
-        const sqlQuery = sql.generateSqlQuery(sqlGenCtx, collection, collection[0]);
+    const sqlQuery = sql.generateSqlQuery(sqlGenCtx, collection, collection[0]);
 
-        const sqlQueryResponse = await runSQLQuery<{ [k: string]: unknown }>(sqlQuery, dbContainer);
-        queryResponse = sqlQueryResponse;
-    }
+    const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(sqlQuery, dbContainer);
 
     let rowSet: sdk.RowSet = {};
 

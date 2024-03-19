@@ -75,7 +75,7 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
 
 function formatSelectColumns(fieldsToSelect: SelectColumns, containerAlias: string): string {
     if (Object.keys(fieldsToSelect).length === 0) {
-        return `*`
+        return "VALUE {}"
     }
     else return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
         switch (selectColumn.kind) {
