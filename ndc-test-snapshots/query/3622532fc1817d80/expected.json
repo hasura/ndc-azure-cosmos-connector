@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "id": "d143b5ee-38c4-4ef3-aad2-1967b2d5b664",
+        "laureates": [
+          {
+            "id": "949",
+            "firstname": "Richard H.",
+            "surname": "Thaler",
+            "motivation": "\"for his contributions to behavioural economics\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 38,
+        "year": 2017
+      }
+    ]
+  }
+]

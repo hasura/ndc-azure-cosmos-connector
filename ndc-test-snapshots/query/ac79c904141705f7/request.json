@@ -1,0 +1,35 @@
+{
+  "collection": "NobelLaureates",
+  "query": {
+    "fields": {
+      "id": {
+        "type": "column",
+        "column": "id",
+        "fields": null
+      },
+      "laureates": {
+        "type": "column",
+        "column": "laureates",
+        "fields": null
+      },
+      "overallMotivation": {
+        "type": "column",
+        "column": "overallMotivation",
+        "fields": null
+      },
+      "prize_id": {
+        "type": "column",
+        "column": "prize_id",
+        "fields": null
+      },
+      "year": {
+        "type": "column",
+        "column": "year",
+        "fields": null
+      }
+    },
+    "limit": 10
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

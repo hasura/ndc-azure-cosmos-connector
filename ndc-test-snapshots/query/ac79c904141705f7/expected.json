@@ -1,0 +1,226 @@
+[
+  {
+    "rows": [
+      {
+        "id": "080cb108-dee7-4482-83bd-648a66d7cf0f",
+        "laureates": [
+          {
+            "id": "1011",
+            "firstname": "Svante",
+            "surname": "Pääbo",
+            "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 12,
+        "year": 2022
+      },
+      {
+        "id": "4fbd898e-52d1-4e8a-8dd1-2522b6ac51df",
+        "laureates": [
+          {
+            "id": "963",
+            "firstname": "Frances H.",
+            "surname": "Arnold",
+            "motivation": "\"for the directed evolution of enzymes\"",
+            "share": "2"
+          },
+          {
+            "id": "964",
+            "firstname": "George P.",
+            "surname": "Smith",
+            "motivation": "\"for the phage display of peptides and antibodies\"",
+            "share": "4"
+          },
+          {
+            "id": "965",
+            "firstname": "Sir Gregory P.",
+            "surname": "Winter",
+            "motivation": "\"for the phage display of peptides and antibodies\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 31,
+        "year": 2018
+      },
+      {
+        "id": "f73061c5-a2b1-4083-96c9-9cbffd12fb60",
+        "laureates": [
+          {
+            "id": "960",
+            "firstname": "Arthur",
+            "surname": "Ashkin",
+            "motivation": "\"for the optical tweezers and their application to biological systems\"",
+            "share": "2"
+          },
+          {
+            "id": "961",
+            "firstname": "Gérard",
+            "surname": "Mourou",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          },
+          {
+            "id": "962",
+            "firstname": "Donna",
+            "surname": "Strickland",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
+        "prize_id": 35,
+        "year": 2018
+      },
+      {
+        "id": "d330db91-c145-4ac6-8ff9-10918e6ef211",
+        "laureates": [
+          {
+            "id": "1017",
+            "firstname": "Annie",
+            "surname": "Ernaux",
+            "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 9,
+        "year": 2022
+      },
+      {
+        "id": "453fe8ae-f47d-4f47-ad04-17cd5b367711",
+        "laureates": [
+          {
+            "id": "1029",
+            "firstname": "Moungi",
+            "surname": "Bawendi",
+            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+            "share": "3"
+          },
+          {
+            "id": "1030",
+            "firstname": "Louis",
+            "surname": "Brus",
+            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+            "share": "3"
+          },
+          {
+            "id": "1031",
+            "firstname": "Aleksey",
+            "surname": "Yekimov",
+            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 1,
+        "year": 2023
+      },
+      {
+        "id": "3f723c05-fe2c-46f1-a21a-463833a394dd",
+        "laureates": [
+          {
+            "id": "958",
+            "firstname": "James P.",
+            "surname": "Allison",
+            "motivation": "\"for their discovery of cancer therapy by inhibition of negative immune regulation\"",
+            "share": "2"
+          },
+          {
+            "id": "959",
+            "firstname": "Tasuku",
+            "surname": "Honjo",
+            "motivation": "\"for their discovery of cancer therapy by inhibition of negative immune regulation\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 36,
+        "year": 2018
+      },
+      {
+        "id": "4c5486df-5578-4d7b-ba3f-7c4d4a6662a0",
+        "laureates": [
+          {
+            "id": "979",
+            "firstname": "Olga",
+            "surname": "Tokarczuk",
+            "motivation": "\"for a narrative imagination that with encyclopedic passion represents the crossing of boundaries as a form of life\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 33,
+        "year": 2018
+      },
+      {
+        "id": "acd29db6-8ed5-4554-9f4a-fa48fb7bb4f4",
+        "laureates": [
+          {
+            "id": "944",
+            "firstname": "Jacques",
+            "surname": "Dubochet",
+            "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
+            "share": "3"
+          },
+          {
+            "id": "945",
+            "firstname": "Joachim",
+            "surname": "Frank",
+            "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
+            "share": "3"
+          },
+          {
+            "id": "946",
+            "firstname": "Richard",
+            "surname": "Henderson",
+            "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 37,
+        "year": 2017
+      },
+      {
+        "id": "ec070a4f-3a9d-476a-9620-a9568086b3a7",
+        "laureates": [
+          {
+            "id": "968",
+            "firstname": "William D.",
+            "surname": "Nordhaus",
+            "motivation": "\"for integrating climate change into long-run macroeconomic analysis\"",
+            "share": "2"
+          },
+          {
+            "id": "969",
+            "firstname": "Paul M.",
+            "surname": "Romer",
+            "motivation": "\"for integrating technological innovations into long-run macroeconomic analysis\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 32,
+        "year": 2018
+      },
+      {
+        "id": "d143b5ee-38c4-4ef3-aad2-1967b2d5b664",
+        "laureates": [
+          {
+            "id": "949",
+            "firstname": "Richard H.",
+            "surname": "Thaler",
+            "motivation": "\"for his contributions to behavioural economics\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 38,
+        "year": 2017
+      }
+    ]
+  }
+]
