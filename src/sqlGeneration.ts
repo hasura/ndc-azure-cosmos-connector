@@ -2,14 +2,19 @@ import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as cosmos from "@azure/cosmos";
 import { SqlQuerySpec } from "@azure/cosmos";
 
+export type Column = {
+    name: string,
+    prefix: string[],
+}
+
 export type SelectContainerColumn = {
     kind: 'column',
-    columnName: string
+    column: Column,
 }
 
 export type SelectAggregate = {
     kind: 'aggregate',
-    columnName: string,
+    column: Column,
     aggregateFunction: string
 }
 
@@ -21,6 +26,12 @@ export type SelectColumns = {
     [alias: string]: (SelectContainerColumn | SelectAggregate)
 }
 
+export type QueryVariable = {
+    [k: string]: unknown
+}
+
+export type QueryVariables = QueryVariable[] | null | undefined
+
 export type SqlQueryGenerationContext = {
     selectFields: SelectColumns,
     limit?: number | null,
@@ -28,6 +39,7 @@ export type SqlQueryGenerationContext = {
     orderBy?: sdk.OrderBy | null,
     predicate?: sdk.Expression | null,
     isAggregateQuery: boolean,
+    variables?: QueryVariables
 }
 
 /*
@@ -37,49 +49,143 @@ type SqlParameters = {
     [column: string]: any[]
 }
 
-export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, containerName: string, containerAlias: string): SqlQuerySpec {
-    let sqlQueryParts: string[] = []
-    let selectColumns: string = formatSelectColumns(sqlGenCtx.selectFields, containerAlias)
+export type FromClause = {
+    source: string,
+    sourceAlias: string,
+    in?: string,
+}
 
-    sqlQueryParts.push(["SELECT", selectColumns].join(" "));
-    sqlQueryParts.push(["FROM", containerName, containerAlias].join(" "));
+export type ContainerExpression = {
+    kind: 'containerExpression',
+    containerExpression: string
+}
 
+export type SqlExpression = {
+    kind: 'sqlExpression',
+    sqlExpression: SqlQueryParts
+}
+
+export type ArrayJoinTarget = ContainerExpression | SqlExpression
+
+export type ArrayJoinClause = {
+    joinIdentifier: string,
+    arrayJoinTarget: ArrayJoinTarget,
+}
+
+export type JoinClause = ArrayJoinClause; // TODO: Handle the case of `JOIN ((SELECT VALUE t FROM t IN p.tags WHERE t.name IN ("winter", "fall")))`, if needed.
+
+export type SqlQueryParts = {
+    select: SelectColumns, // TODO: Handle `SELECT VALUE` and `SELECT DISTINCT` here itself? If there is a need for it.
+    from?: FromClause | null,
+    join?: JoinClause[] | null,
+    predicate?: sdk.Expression | null,
+    offset?: number | null,
+    limit?: number | null,
+    orderBy?: sdk.OrderBy | null,
+    isAggregateQuery: boolean,
+
+}
+
+
+
+type VariablesMappings = {
+    /*
+      The variableTarget will be the name of the column
+      which gets the value of the variable
+     */
+    [variableTarget: string]: string
+}
+
+function formatJoinClause(joinClause: JoinClause): string {
+    let joinTarget =
+        joinClause.arrayJoinTarget.kind === 'containerExpression'
+            ? joinClause.arrayJoinTarget.containerExpression
+            : constructSqlQuery(joinClause.arrayJoinTarget.sqlExpression, joinClause.joinIdentifier);
+
+    return `${joinClause.arrayJoinTarget} in ${joinTarget}`
+}
+
+function constructSqlQuery(sqlQueryParts: SqlQueryParts, fromContainerAlias: string): cosmos.SqlQuerySpec {
+    let selectColumns = formatSelectColumns(sqlQueryParts.select);
+
+    let fromClause =
+        sqlQueryParts.from === null || sqlQueryParts.from === undefined
+            ? null
+            : `${sqlQueryParts.from.source} ${sqlQueryParts.from.sourceAlias}${sqlQueryParts.from.in ? ' IN' + sqlQueryParts.from.in : ''}`;
+
+    let joinClause = null;
+
+    if (sqlQueryParts.join !== null && sqlQueryParts.join !== undefined) {
+        joinClause = "JOIN " + sqlQueryParts.join?.map(joinClause => formatJoinClause(joinClause)).join("\nJOIN ")
+    }
+
+    let whereClause = null;
     let predicateParameters: SqlParameters = {};
-    if (sqlGenCtx.predicate != null && sqlGenCtx.predicate != undefined) {
-        const whereExp = visitExpression(predicateParameters, sqlGenCtx.predicate, containerAlias);
-        sqlQueryParts.push(`WHERE ${whereExp}`);
+    let utilisedVariables: VariablesMappings = {}; // This will be used to add the join mappings to the where expression.
+
+
+
+    if (sqlQueryParts.predicate != null && sqlQueryParts.predicate != undefined) {
+
+        const whereExp = visitExpression(predicateParameters, utilisedVariables, sqlQueryParts.predicate, fromContainerAlias);
+        // TODO: incorporate the `predicateParameters` obtained above.
+        whereClause = `WHERE ${whereExp}`;
     }
 
 
-    if (sqlGenCtx.orderBy != null && sqlGenCtx.orderBy != null && sqlGenCtx.orderBy.elements.length > 0) {
-        const orderByClause = visitOrderByElements(sqlGenCtx.orderBy.elements, containerAlias);
-        sqlQueryParts.push(["ORDER BY", orderByClause].join(" "))
+    let orderByClause = null;
+
+    if (sqlQueryParts.orderBy != null && sqlQueryParts.orderBy != null && sqlQueryParts.orderBy.elements.length > 0) {
+        orderByClause = visitOrderByElements(sqlQueryParts.orderBy.elements, fromContainerAlias);
     }
 
-    if (sqlGenCtx.offset != undefined && sqlGenCtx.offset != null) {
-        sqlQueryParts.push(["OFFSET", `${sqlGenCtx.offset}`].join(" "))
+    let offsetClause = null;
+
+    if (sqlQueryParts.offset != undefined && sqlQueryParts.offset != null) {
+        offsetClause = `${sqlQueryParts.offset}`;
     }
 
-    if (sqlGenCtx.limit != undefined && sqlGenCtx.limit != null) {
-        sqlQueryParts.push(["LIMIT", `${sqlGenCtx.limit}`].join(" "))
+    let limitClause = null;
+
+    if (sqlQueryParts.limit != undefined && sqlQueryParts.limit != null) {
+        limitClause = `${sqlQueryParts.limit}`
+
     }
 
-    const query = sqlQueryParts.join("\n");
+    const query =
+        `SELECT ${selectColumns}
+        ${fromClause ? 'FROM ' + fromClause : ''}
+        ${joinClause ?? ''}
+        ${whereClause ?? ''}
+        ${orderByClause ? 'ORDER BY ' + orderByClause : ''}
+        ${offsetClause ? 'OFFSET ' + offsetClause : ''}
+        ${limitClause ? 'LIMIT ' + limitClause : ''}`;
 
     return {
         query,
         parameters: serializeSqlParameters(predicateParameters)
-    };
+    }
+}
+
+export function generateSqlQuerySpec(sqlGenCtx: SqlQueryParts, containerName: string, queryVariables: QueryVariables): SqlQuerySpec {
+
+    const querySpec = constructSqlQuery(sqlGenCtx, `${containerName[0]}`);
+
+    return querySpec
 
 }
 
-function formatSelectColumns(fieldsToSelect: SelectColumns, containerAlias: string): string {
+function formatColumn(column: Column) {
+    return `${column.prefix.join(".")}.${column.name}`
+}
+
+function formatSelectColumns(fieldsToSelect: SelectColumns): string {
     return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
         switch (selectColumn.kind) {
             case 'column':
-                return `${containerAlias}.${selectColumn.columnName} as ${alias}`
+                return `${formatColumn(selectColumn.column)} as ${alias}`
             case 'aggregate':
-                return `${selectColumn.aggregateFunction}(${containerAlias}.${selectColumn.columnName}) as ${alias}`
+                return `${selectColumn.aggregateFunction} (${formatColumn(selectColumn.column)}) as ${alias} `
         }
     }).join(",");
 
@@ -105,7 +211,7 @@ function visitOrderByElement(value: sdk.OrderByElement, containerAlias: string):
             if (value.target.path.length > 0) {
                 throw new sdk.NotSupported("Relationships are not supported in order_by.")
             } else {
-                return `${containerAlias}.${value.target.name} ${direction}`
+                return `${containerAlias}.${value.target.name} ${direction} `
             }
 
         case 'single_column_aggregate':
@@ -119,31 +225,32 @@ function visitOrderByElement(value: sdk.OrderByElement, containerAlias: string):
 /*
   Wraps the expression in parantheses to avoid generating SQL with wrong operator precedence.
  */
-function visitExpressionWithParentheses(parameters: SqlParameters, expression: sdk.Expression, containerAlias: string): string {
-    return `(${visitExpression(parameters, expression, containerAlias)})`
+function visitExpressionWithParentheses(parameters: SqlParameters, variables: VariablesMappings, expression: sdk.Expression, containerAlias: string): string {
+    return `(${visitExpression(parameters, variables, expression, containerAlias)})`
 }
 
-function visitExpression(parameters: SqlParameters, expression: sdk.Expression, containerAlias: string): String {
+function visitExpression(parameters: SqlParameters, variables: VariablesMappings, expression: sdk.Expression, containerAlias: string): string {
     switch (expression.type) {
         case "and":
             if (expression.expressions.length > 0) {
-                return expression.expressions.map(expr => visitExpressionWithParentheses(parameters, expr, containerAlias)).join(" AND ")
+                return expression.expressions.map(expr => visitExpressionWithParentheses(parameters, variables, expr, containerAlias)).join(" AND ")
             } else {
                 return "true"
             };
 
         case "or":
             if (expression.expressions.length > 0) {
-                return expression.expressions.map(expr => visitExpressionWithParentheses(parameters, expr, containerAlias)).join(" OR ")
+                return expression.expressions.map(expr => visitExpressionWithParentheses(parameters, variables, expr, containerAlias)).join(" OR ")
             } else {
                 return "false"
             };
         case "not":
-            return `NOT ${visitExpressionWithParentheses(parameters, expression.expression, containerAlias)}`
+            return `NOT ${visitExpressionWithParentheses(parameters, variables, expression.expression, containerAlias)} `
         case "unary_comparison_operator":
             switch (expression.operator) {
                 case "is_null":
-                    return `IS_NULL(${visitComparisonTarget(expression.column, containerAlias)})`
+                    return `IS_NULL(${visitComparisonTarget(expression.column, containerAlias)
+                        })`
                 default:
                     throw new sdk.BadRequest("Unknown unary comparison operator")
 
@@ -152,17 +259,17 @@ function visitExpression(parameters: SqlParameters, expression: sdk.Expression, 
             const comparisonTarget = visitComparisonTarget(expression.column, containerAlias);
             switch (expression.operator) {
                 case "eq":
-                    return `${comparisonTarget} = ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} = ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
                 case "neq":
-                    return `${comparisonTarget} != ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} != ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
                 case "gte":
-                    return `${comparisonTarget} >= ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} >= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
                 case "gt":
-                    return `${comparisonTarget} > ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} > ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
                 case "lte":
-                    return `${comparisonTarget} <= ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} <= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
                 case "lt":
-                    return `${comparisonTarget} < ${visitComparisonValue(parameters, expression.value, comparisonTarget)}`
+                    return `${comparisonTarget} <${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)}`
                 default:
                     throw new sdk.BadRequest(`Unknown binary comparison operator ${expression.operator} found`)
             }
@@ -174,11 +281,11 @@ function visitExpression(parameters: SqlParameters, expression: sdk.Expression, 
     }
 }
 
-function visitComparisonTarget(target: sdk.ComparisonTarget, containerAlias: string): string {
+export function visitComparisonTarget(target: sdk.ComparisonTarget, containerAlias: string): string {
     switch (target.type) {
         case 'column':
             if (target.path.length > 0) {
-                throw new sdk.NotSupported("Relationships are not supported");
+                throw new sdk.NotSupported("Nested fields are not supported yet");
             }
             return `${containerAlias}.${target.name}`;
         case 'root_collection_column':
@@ -186,7 +293,7 @@ function visitComparisonTarget(target: sdk.ComparisonTarget, containerAlias: str
     }
 }
 
-function visitComparisonValue(parameters: SqlParameters, target: sdk.ComparisonValue, comparisonTarget: string): string {
+export function visitComparisonValue(parameters: SqlParameters, variables: VariablesMappings, target: sdk.ComparisonValue, comparisonTarget: string, containerAlias: string): string {
     switch (target.type) {
         case 'scalar':
             const comparisonTargetName = comparisonTarget.replace(".", "_");
@@ -194,20 +301,22 @@ function visitComparisonValue(parameters: SqlParameters, target: sdk.ComparisonV
             if (comparisonTargetParameterValues != null) {
                 const index = comparisonTargetParameterValues.findIndex((element) => element === target.value);
                 if (index !== -1) {
-                    return `@${comparisonTargetName}${index}`
+                    return `@${comparisonTargetName}_${index} `
                 } else {
                     let newIndex = parameters[comparisonTargetName].push(target.value);
-                    return `@${comparisonTargetName}${newIndex}`
+                    return `@${comparisonTargetName}_${newIndex} `
                 }
             } else {
                 parameters[comparisonTargetName] = [target.value];
-                return `@${comparisonTargetName}0`
+                return `@${comparisonTargetName}_0`
             }
 
         case 'column':
             throw new sdk.NotSupported("Column comparisons are not supported in field predicates yet");
         case 'variable':
-            throw new sdk.NotSupported("Variables are not supported yet")
+            variables[comparisonTarget] = `vars.${target.name} `
+            return `vars.${target.name} `
+
     }
 }
 
@@ -219,7 +328,7 @@ function serializeSqlParameters(parameters: SqlParameters): cosmos.SqlParameter[
 
         for (let i = 0; i < comparisonTargetValues.length; i++) {
             sqlParameters.push({
-                name: `@${comparisonTarget}${i}`,
+                name: `@${comparisonTarget}_${i}`,
                 value: comparisonTargetValues[i]
             })
         }

@@ -25,13 +25,14 @@ function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.Obje
     }
 }
 
-
-function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryGenerationContext {
+function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryParts {
     let isAggregateQuery = false;
 
     const collection: string = queryRequest.collection;
 
     const collectionDefinition: schema.CollectionDefinition = collectionsSchema.collections[collection];
+
+    const rootContainerAlias = `${collection[0]}`;
 
     let requestedFields: sql.SelectColumns = {};
 
@@ -64,7 +65,10 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                     } else {
                         requestedFields[fieldName] = {
                             kind: 'column',
-                            columnName: queryField.column
+                            column: {
+                                name: queryField.column,
+                                prefix: [rootContainerAlias]
+                            }
                         }
                     };
 
@@ -87,14 +91,20 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                         if (aggregateField.distinct) {
                             requestedFields[fieldName] = {
                                 kind: 'aggregate',
-                                columnName: aggregateField.column,
+                                column: {
+                                    name: aggregateField.column,
+                                    prefix: [rootContainerAlias],
+                                },
                                 aggregateFunction: 'DISTINCT COUNT'
                             };
 
                         } else {
                             requestedFields[fieldName] = {
                                 kind: 'aggregate',
-                                columnName: aggregateField.column,
+                                column: {
+                                    name: aggregateField.column,
+                                    prefix: [rootContainerAlias],
+                                },
                                 aggregateFunction: 'COUNT'
                             }
                         }
@@ -107,7 +117,11 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                     } else {
                         requestedFields[fieldName] = {
                             kind: 'aggregate',
-                            columnName: aggregateField.column,
+                            column: {
+                                name: aggregateField.column,
+                                prefix: [rootContainerAlias]
+                            },
+
                             aggregateFunction: aggregateField.function
                         }
 
@@ -116,7 +130,10 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                 case "star_count":
                     requestedFields[fieldName] = {
                         kind: 'aggregate',
-                        columnName: '*',
+                        column: {
+                            name: "*",
+                            prefix: [rootContainerAlias],
+                        },
                         aggregateFunction: 'COUNT'
                     };
                     break;
@@ -124,10 +141,16 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
         })
     }
 
-    let sqlGenCtx: sql.SqlQueryGenerationContext = {
-        selectFields: requestedFields,
+    let fromClause: sql.FromClause = {
+        source: collection,
+        sourceAlias: `${collection[0]}`,
+    };
+
+    let sqlGenCtx: sql.SqlQueryParts = {
+        select: requestedFields,
+        from: fromClause,
         isAggregateQuery
-    }
+    };
 
     if (queryRequest.query.limit != null) {
         if (queryRequest.query.offset != null) {
@@ -148,6 +171,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
     }
     sqlGenCtx.predicate = queryRequest.query.predicate;
 
+
     return sqlGenCtx
 
 }
@@ -166,9 +190,9 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
     if (dbContainer === undefined || dbContainer == null)
         throw new sdk.InternalServerError(`Couldn't find the container '${collection}' in the schema.`)
 
-    const sqlGenCtx: sql.SqlQueryGenerationContext = parseQueryRequest(collectionsSchema, queryRequest);
+    const sqlGenCtx: sql.SqlQueryParts = parseQueryRequest(collectionsSchema, queryRequest);
 
-    const sqlQuery = sql.generateSqlQuery(sqlGenCtx, collection, collection[0]);
+    const sqlQuery = sql.generateSqlQuerySpec(sqlGenCtx, collection, queryRequest.variables);
 
     const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(sqlQuery, dbContainer);
 

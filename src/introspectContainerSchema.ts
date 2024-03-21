@@ -22,7 +22,6 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
 }
 
 export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
-    console.log("Container rows are ", JSON.stringify(rows, null, 2));
     const jsonInput = jsonInputForTargetLanguage("schema");
 
     await jsonInput.addSource({
