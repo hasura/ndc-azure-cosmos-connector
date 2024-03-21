@@ -44,12 +44,14 @@ The emulator can be setup by following [this](https://learn.microsoft.com/en-us/
 
 ```sh
 cd script
+npm i
 node app.js
 ```
 
 3. Start the connector using,
 
 ```sh
+npm run build
 npm run start serve --configuration connector_config_emulator.json
 ```
 
