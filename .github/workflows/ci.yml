@@ -28,7 +28,7 @@ jobs:
       - name: Build connector
         run: cd cosmos && npm install --save @azure/cosmos && npm i -g rimraf && npm run build
       - name: Start connector
-        run: cd cosmos && npm run start serve --configuration connector_config_emulator.json
+        run: cd cosmos && export HASURA_CONFIGURATION_DIRECTORY="./connector_config_emulator.json" && npm run start serve --configuration connector_config_emulator.json
       - name: Check out ndc-spec
         uses: actions/checkout@v3
         with:
