@@ -27,7 +27,7 @@ jobs:
           Start-CosmosDbEmulator
       - name: Setup database
         # working-directory: script
-        run: tree && cd ../script && npm i && npm install --save @azure/cosmos && node app.js
+        run: tree && cd D:\cosmos\script && npm i && npm install --save @azure/cosmos && node app.js
       - name: Build connector
         run: npm run build
       - name: Start connector
