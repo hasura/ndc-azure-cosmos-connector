@@ -2,8 +2,8 @@
   {
     "rows": [
       {
-        "id": "080cb108-dee7-4482-83bd-648a66d7cf0f",
-        "laureates": [
+        "id_6776": "080cb108-dee7-4482-83bd-648a66d7cf0f",
+        "laureates_7252": [
           {
             "id": "1011",
             "firstname": "Svante",
@@ -12,13 +12,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 12,
-        "year": 2022
+        "overallMotivation_6623": null,
+        "prize_id_2142": 12,
+        "year_2602": 2022
       },
       {
-        "id": "4fbd898e-52d1-4e8a-8dd1-2522b6ac51df",
-        "laureates": [
+        "id_6776": "4fbd898e-52d1-4e8a-8dd1-2522b6ac51df",
+        "laureates_7252": [
           {
             "id": "963",
             "firstname": "Frances H.",
@@ -41,42 +41,13 @@
             "share": "4"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 31,
-        "year": 2018
+        "overallMotivation_6623": null,
+        "prize_id_2142": 31,
+        "year_2602": 2018
       },
       {
-        "id": "f73061c5-a2b1-4083-96c9-9cbffd12fb60",
-        "laureates": [
-          {
-            "id": "960",
-            "firstname": "Arthur",
-            "surname": "Ashkin",
-            "motivation": "\"for the optical tweezers and their application to biological systems\"",
-            "share": "2"
-          },
-          {
-            "id": "961",
-            "firstname": "Gérard",
-            "surname": "Mourou",
-            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
-            "share": "4"
-          },
-          {
-            "id": "962",
-            "firstname": "Donna",
-            "surname": "Strickland",
-            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
-            "share": "4"
-          }
-        ],
-        "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
-        "prize_id": 35,
-        "year": 2018
-      },
-      {
-        "id": "d330db91-c145-4ac6-8ff9-10918e6ef211",
-        "laureates": [
+        "id_6776": "d330db91-c145-4ac6-8ff9-10918e6ef211",
+        "laureates_7252": [
           {
             "id": "1017",
             "firstname": "Annie",
@@ -85,13 +56,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 9,
-        "year": 2022
+        "overallMotivation_6623": null,
+        "prize_id_2142": 9,
+        "year_2602": 2022
       },
       {
-        "id": "453fe8ae-f47d-4f47-ad04-17cd5b367711",
-        "laureates": [
+        "id_6776": "453fe8ae-f47d-4f47-ad04-17cd5b367711",
+        "laureates_7252": [
           {
             "id": "1029",
             "firstname": "Moungi",
@@ -114,13 +85,13 @@
             "share": "3"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 1,
-        "year": 2023
+        "overallMotivation_6623": null,
+        "prize_id_2142": 1,
+        "year_2602": 2023
       },
       {
-        "id": "3f723c05-fe2c-46f1-a21a-463833a394dd",
-        "laureates": [
+        "id_6776": "3f723c05-fe2c-46f1-a21a-463833a394dd",
+        "laureates_7252": [
           {
             "id": "958",
             "firstname": "James P.",
@@ -136,13 +107,13 @@
             "share": "2"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 36,
-        "year": 2018
+        "overallMotivation_6623": null,
+        "prize_id_2142": 36,
+        "year_2602": 2018
       },
       {
-        "id": "4c5486df-5578-4d7b-ba3f-7c4d4a6662a0",
-        "laureates": [
+        "id_6776": "4c5486df-5578-4d7b-ba3f-7c4d4a6662a0",
+        "laureates_7252": [
           {
             "id": "979",
             "firstname": "Olga",
@@ -151,13 +122,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 33,
-        "year": 2018
+        "overallMotivation_6623": null,
+        "prize_id_2142": 33,
+        "year_2602": 2018
       },
       {
-        "id": "acd29db6-8ed5-4554-9f4a-fa48fb7bb4f4",
-        "laureates": [
+        "id_6776": "acd29db6-8ed5-4554-9f4a-fa48fb7bb4f4",
+        "laureates_7252": [
           {
             "id": "944",
             "firstname": "Jacques",
@@ -180,13 +151,13 @@
             "share": "3"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 37,
-        "year": 2017
+        "overallMotivation_6623": null,
+        "prize_id_2142": 37,
+        "year_2602": 2017
       },
       {
-        "id": "ec070a4f-3a9d-476a-9620-a9568086b3a7",
-        "laureates": [
+        "id_6776": "ec070a4f-3a9d-476a-9620-a9568086b3a7",
+        "laureates_7252": [
           {
             "id": "968",
             "firstname": "William D.",
@@ -202,13 +173,13 @@
             "share": "2"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 32,
-        "year": 2018
+        "overallMotivation_6623": null,
+        "prize_id_2142": 32,
+        "year_2602": 2018
       },
       {
-        "id": "d143b5ee-38c4-4ef3-aad2-1967b2d5b664",
-        "laureates": [
+        "id_6776": "d143b5ee-38c4-4ef3-aad2-1967b2d5b664",
+        "laureates_7252": [
           {
             "id": "949",
             "firstname": "Richard H.",
@@ -217,9 +188,38 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 38,
-        "year": 2017
+        "overallMotivation_6623": null,
+        "prize_id_2142": 38,
+        "year_2602": 2017
+      },
+      {
+        "id_6776": "e0bad29a-4d01-4ccd-85bd-1a882c62e279",
+        "laureates_7252": [
+          {
+            "id": "970",
+            "firstname": "William",
+            "surname": "Kaelin",
+            "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
+            "share": "3"
+          },
+          {
+            "id": "971",
+            "firstname": "Peter",
+            "surname": "Ratcliffe",
+            "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
+            "share": "3"
+          },
+          {
+            "id": "972",
+            "firstname": "Gregg",
+            "surname": "Semenza",
+            "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_6623": null,
+        "prize_id_2142": 30,
+        "year_2602": 2019
       }
     ]
   }

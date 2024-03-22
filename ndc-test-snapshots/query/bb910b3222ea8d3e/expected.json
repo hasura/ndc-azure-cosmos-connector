@@ -2,7 +2,37 @@
   {
     "rows": [
       {
-        "id": "11",
+        "id": "080cb108-dee7-4482-83bd-648a66d7cf0f",
+        "laureates": [
+          {
+            "id": "1011",
+            "firstname": "Svante",
+            "surname": "Pääbo",
+            "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 12,
+        "year": 2022
+      },
+      {
+        "id": "d330db91-c145-4ac6-8ff9-10918e6ef211",
+        "laureates": [
+          {
+            "id": "1017",
+            "firstname": "Annie",
+            "surname": "Ernaux",
+            "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 9,
+        "year": 2022
+      },
+      {
+        "id": "9a3b3ff8-79d3-4a3d-bcaf-a6184f061f65",
         "laureates": [
           {
             "id": "1012",
@@ -31,37 +61,34 @@
         "year": 2022
       },
       {
-        "id": "12",
+        "id": "38bb7b08-b7e3-49df-95f0-d839570bb7eb",
         "laureates": [
           {
-            "id": "1011",
-            "firstname": "Svante",
-            "surname": "Pääbo",
-            "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
-            "share": "1"
+            "id": "1018",
+            "firstname": "Ales",
+            "surname": "Bialiatski ",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3"
+          },
+          {
+            "id": "1019",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Memorial"
+          },
+          {
+            "id": "1020",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Center for Civil Liberties"
           }
         ],
         "overallMotivation": null,
-        "prize_id": 12,
+        "prize_id": 10,
         "year": 2022
       },
       {
-        "id": "9",
-        "laureates": [
-          {
-            "id": "1017",
-            "firstname": "Annie",
-            "surname": "Ernaux",
-            "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation": null,
-        "prize_id": 9,
-        "year": 2022
-      },
-      {
-        "id": "8",
+        "id": "0c0739ae-8d20-49fe-9470-9b53cdcae27d",
         "laureates": [
           {
             "id": "1021",
@@ -90,7 +117,7 @@
         "year": 2022
       },
       {
-        "id": "7",
+        "id": "c668f536-a327-4857-8d66-5962b87deb0f",
         "laureates": [
           {
             "id": "1015",
@@ -116,33 +143,6 @@
         ],
         "overallMotivation": null,
         "prize_id": 7,
-        "year": 2022
-      },
-      {
-        "id": "10",
-        "laureates": [
-          {
-            "id": "1018",
-            "firstname": "Ales",
-            "surname": "Bialiatski ",
-            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
-            "share": "3"
-          },
-          {
-            "id": "1019",
-            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
-            "share": "3",
-            "firstname": "Memorial"
-          },
-          {
-            "id": "1020",
-            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
-            "share": "3",
-            "firstname": "Center for Civil Liberties"
-          }
-        ],
-        "overallMotivation": null,
-        "prize_id": 10,
         "year": 2022
       }
     ]

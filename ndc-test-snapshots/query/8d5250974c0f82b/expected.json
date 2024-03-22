@@ -1,0 +1,35 @@
+[
+  {
+    "rows": [
+      {
+        "id": "1dbf4faa-55be-457f-922b-854ee887132f",
+        "laureates": [
+          {
+            "id": "960",
+            "firstname": "Arthur",
+            "surname": "Ashkin",
+            "motivation": "\"for the optical tweezers and their application to biological systems\"",
+            "share": "2"
+          },
+          {
+            "id": "961",
+            "firstname": "Gérard",
+            "surname": "Mourou",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          },
+          {
+            "id": "962",
+            "firstname": "Donna",
+            "surname": "Strickland",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
+        "prize_id": 35,
+        "year": 2018
+      }
+    ]
+  }
+]
