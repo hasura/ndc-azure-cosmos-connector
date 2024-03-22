@@ -35,7 +35,6 @@ jobs:
       - name: Check out ndc-spec
         uses: actions/checkout@v3
         with:
-          token: test-token
           repository: hasura/ndc-spec
           path: ndc-spec
       - name: Run ndc-test
