@@ -1,0 +1,28 @@
+[
+  {
+    "rows": [
+      {
+        "id": "1a4503d1-6636-49c7-907f-619fd994b0fc",
+        "laureates": [
+          {
+            "id": "1005",
+            "firstname": "Maria",
+            "surname": "Ressa",
+            "motivation": "\"for their efforts to safeguard freedom of expression, which is a precondition for democracy and lasting peace\"",
+            "share": "2"
+          },
+          {
+            "id": "1006",
+            "firstname": "Dmitry",
+            "surname": "Muratov",
+            "motivation": "\"for their efforts to safeguard freedom of expression, which is a precondition for democracy and lasting peace\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 16,
+        "year": 2021
+      }
+    ]
+  }
+]

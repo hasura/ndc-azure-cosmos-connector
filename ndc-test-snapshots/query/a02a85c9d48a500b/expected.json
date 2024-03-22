@@ -2,8 +2,8 @@
   {
     "rows": [
       {
-        "id": "71d96af0-bdc6-4dc7-8c11-9c86ddfeb494",
-        "laureates": [
+        "id_9408": "71d96af0-bdc6-4dc7-8c11-9c86ddfeb494",
+        "laureates_5478": [
           {
             "id": "1004",
             "firstname": "Abdulrazak",
@@ -12,13 +12,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 15,
-        "year": 2021
+        "overallMotivation_6748": null,
+        "prize_id_2012": 15,
+        "year_0886": 2021
       },
       {
-        "id": "353bc8f5-138b-4f6d-b4e7-59db5e68e910",
-        "laureates": [
+        "id_9408": "353bc8f5-138b-4f6d-b4e7-59db5e68e910",
+        "laureates_5478": [
           {
             "id": "980",
             "firstname": "Peter",
@@ -27,13 +27,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 27,
-        "year": 2019
+        "overallMotivation_6748": null,
+        "prize_id_2012": 27,
+        "year_0886": 2019
       },
       {
-        "id": "1a4503d1-6636-49c7-907f-619fd994b0fc",
-        "laureates": [
+        "id_9408": "1a4503d1-6636-49c7-907f-619fd994b0fc",
+        "laureates_5478": [
           {
             "id": "1005",
             "firstname": "Maria",
@@ -49,13 +49,13 @@
             "share": "2"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 16,
-        "year": 2021
+        "overallMotivation_6748": null,
+        "prize_id_2012": 16,
+        "year_0886": 2021
       },
       {
-        "id": "b977f094-d4ed-44a7-9aab-711bb1e9b69f",
-        "laureates": [
+        "id_9408": "b977f094-d4ed-44a7-9aab-711bb1e9b69f",
+        "laureates_5478": [
           {
             "id": "1032",
             "firstname": "Jon",
@@ -64,13 +64,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 3,
-        "year": 2023
+        "overallMotivation_6748": null,
+        "prize_id_2012": 3,
+        "year_0886": 2023
       },
       {
-        "id": "df9d941a-c0d2-4fec-97c8-add8a407d2ec",
-        "laureates": [
+        "id_9408": "df9d941a-c0d2-4fec-97c8-add8a407d2ec",
+        "laureates_5478": [
           {
             "id": "1017",
             "firstname": "Annie",
@@ -79,13 +79,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 9,
-        "year": 2022
+        "overallMotivation_6748": null,
+        "prize_id_2012": 9,
+        "year_0886": 2022
       },
       {
-        "id": "499ed077-4568-405b-83ee-4659c1c3991b",
-        "laureates": [
+        "id_9408": "499ed077-4568-405b-83ee-4659c1c3991b",
+        "laureates_5478": [
           {
             "id": "1033",
             "firstname": "Narges",
@@ -94,13 +94,13 @@
             "share": "1"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 4,
-        "year": 2023
+        "overallMotivation_6748": null,
+        "prize_id_2012": 4,
+        "year_0886": 2023
       },
       {
-        "id": "ee126950-acde-4ba7-8b8f-20e4e1bd7762",
-        "laureates": [
+        "id_9408": "ee126950-acde-4ba7-8b8f-20e4e1bd7762",
+        "laureates_5478": [
           {
             "id": "1024",
             "firstname": "Katalin",
@@ -116,13 +116,13 @@
             "share": "2"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 6,
-        "year": 2023
+        "overallMotivation_6748": null,
+        "prize_id_2012": 6,
+        "year_0886": 2023
       },
       {
-        "id": "c46c3d4d-4dab-4961-8e7f-d50880e68960",
-        "laureates": [
+        "id_9408": "c46c3d4d-4dab-4961-8e7f-d50880e68960",
+        "laureates_5478": [
           {
             "id": "1026",
             "firstname": "Pierre",
@@ -145,13 +145,13 @@
             "share": "3"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 5,
-        "year": 2023
+        "overallMotivation_6748": null,
+        "prize_id_2012": 5,
+        "year_0886": 2023
       },
       {
-        "id": "81444d44-d20b-4e9f-917f-cb0cd1a7e0eb",
-        "laureates": [
+        "id_9408": "81444d44-d20b-4e9f-917f-cb0cd1a7e0eb",
+        "laureates_5478": [
           {
             "id": "1015",
             "firstname": "Carolyn",
@@ -174,38 +174,31 @@
             "share": "3"
           }
         ],
-        "overallMotivation": null,
-        "prize_id": 7,
-        "year": 2022
+        "overallMotivation_6748": null,
+        "prize_id_2012": 7,
+        "year_0886": 2022
       },
       {
-        "id": "2e5ca647-1329-4d38-bea9-35345881c53e",
-        "laureates": [
+        "id_9408": "99748c5f-00a2-4916-9e67-413e70780d91",
+        "laureates_5478": [
           {
-            "id": "999",
-            "firstname": "Syukuro",
-            "surname": "Manabe",
-            "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
-            "share": "4"
+            "id": "995",
+            "firstname": "Paul",
+            "surname": "Milgrom",
+            "motivation": "\"for improvements to auction theory and inventions of new auction formats\"",
+            "share": "2"
           },
           {
-            "id": "1000",
-            "firstname": "Klaus",
-            "surname": "Hasselmann",
-            "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
-            "share": "4"
-          },
-          {
-            "id": "1001",
-            "firstname": "Giorgio",
-            "surname": "Parisi",
-            "motivation": "\"for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales\"",
+            "id": "996",
+            "firstname": "Robert",
+            "surname": "Wilson",
+            "motivation": "\"for improvements to auction theory and inventions of new auction formats\"",
             "share": "2"
           }
         ],
-        "overallMotivation": "\"for groundbreaking contributions to our understanding of complex physical systems\"",
-        "prize_id": 17,
-        "year": 2021
+        "overallMotivation_6748": null,
+        "prize_id_2012": 20,
+        "year_0886": 2020
       }
     ]
   }

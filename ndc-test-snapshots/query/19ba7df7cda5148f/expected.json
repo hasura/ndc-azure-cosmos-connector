@@ -1,0 +1,35 @@
+[
+  {
+    "rows": [
+      {
+        "id": "81444d44-d20b-4e9f-917f-cb0cd1a7e0eb",
+        "laureates": [
+          {
+            "id": "1015",
+            "firstname": "Carolyn",
+            "surname": "Bertozzi",
+            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "share": "3"
+          },
+          {
+            "id": "1016",
+            "firstname": "Morten",
+            "surname": "Meldal",
+            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "share": "3"
+          },
+          {
+            "id": "743",
+            "firstname": "Barry",
+            "surname": "Sharpless",
+            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 7,
+        "year": 2022
+      }
+    ]
+  }
+]

@@ -1,0 +1,218 @@
+[
+  {
+    "rows": [
+      {
+        "id_5763": "e72b940f-b36d-4274-8927-2fc0db5b9a63",
+        "laureates_9381": [
+          {
+            "id": "818",
+            "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+            "share": "2",
+            "firstname": "Intergovernmental Panel on Climate Change"
+          },
+          {
+            "id": "819",
+            "firstname": "Al",
+            "surname": "Gore",
+            "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 100,
+        "year_1210": 2007
+      },
+      {
+        "id_5763": "e3fd659b-18d5-4944-9a0a-339ca93ead96",
+        "laureates_9381": [
+          {
+            "id": "817",
+            "firstname": "Doris",
+            "surname": "Lessing",
+            "motivation": "\"that epicist of the female experience, who with scepticism, fire and visionary power has subjected a divided civilisation to scrutiny\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 99,
+        "year_1210": 2007
+      },
+      {
+        "id_5763": "905c78ea-0839-4b81-9194-84b2b142e688",
+        "laureates_9381": [
+          {
+            "id": "820",
+            "firstname": "Leonid",
+            "surname": "Hurwicz",
+            "motivation": "\"for having laid the foundations of mechanism design theory\"",
+            "share": "3"
+          },
+          {
+            "id": "821",
+            "firstname": "Eric S.",
+            "surname": "Maskin",
+            "motivation": "\"for having laid the foundations of mechanism design theory\"",
+            "share": "3"
+          },
+          {
+            "id": "822",
+            "firstname": "Roger B.",
+            "surname": "Myerson",
+            "motivation": "\"for having laid the foundations of mechanism design theory\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 98,
+        "year_1210": 2007
+      },
+      {
+        "id_5763": "930c989a-2b6f-4afc-bc6e-6045675e79b2",
+        "laureates_9381": [
+          {
+            "id": "816",
+            "firstname": "Gerhard",
+            "surname": "Ertl",
+            "motivation": "\"for his studies of chemical processes on solid surfaces\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 97,
+        "year_1210": 2007
+      },
+      {
+        "id_5763": "ec66e7bb-bec8-4162-8e51-95432e4b5598",
+        "laureates_9381": [
+          {
+            "id": "823",
+            "firstname": "Harald",
+            "surname": "zur Hausen",
+            "motivation": "\"for his discovery of human papilloma viruses causing cervical cancer\"",
+            "share": "2"
+          },
+          {
+            "id": "824",
+            "firstname": "Françoise",
+            "surname": "Barré-Sinoussi",
+            "motivation": "\"for their discovery of human immunodeficiency virus\"",
+            "share": "4"
+          },
+          {
+            "id": "825",
+            "firstname": "Luc",
+            "surname": "Montagnier",
+            "motivation": "\"for their discovery of human immunodeficiency virus\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 96,
+        "year_1210": 2008
+      },
+      {
+        "id_5763": "b3509580-fa1c-4478-9bfb-6e77cb183f98",
+        "laureates_9381": [
+          {
+            "id": "826",
+            "firstname": "Yoichiro",
+            "surname": "Nambu",
+            "motivation": "\"for the discovery of the mechanism of spontaneous broken symmetry in subatomic physics\"",
+            "share": "2"
+          },
+          {
+            "id": "827",
+            "firstname": "Makoto",
+            "surname": "Kobayashi",
+            "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+            "share": "4"
+          },
+          {
+            "id": "828",
+            "firstname": "Toshihide",
+            "surname": "Maskawa",
+            "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 95,
+        "year_1210": 2008
+      },
+      {
+        "id_5763": "e4ec0074-9cee-4645-bcc9-ef6dd4f56a91",
+        "laureates_9381": [
+          {
+            "id": "833",
+            "firstname": "Martti",
+            "surname": "Ahtisaari",
+            "motivation": "\"for his important efforts, on several continents and over more than three decades, to resolve international conflicts\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 94,
+        "year_1210": 2008
+      },
+      {
+        "id_5763": "c1b003c2-aed2-41e0-9c1b-3a5e1b3e1d30",
+        "laureates_9381": [
+          {
+            "id": "832",
+            "firstname": "Jean-Marie Gustave",
+            "surname": "Le Clézio",
+            "motivation": "\"author of new departures, poetic adventure and sensual ecstasy, explorer of a humanity beyond and below the reigning civilization\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 93,
+        "year_1210": 2008
+      },
+      {
+        "id_5763": "3ebc475e-366f-4b82-a324-ae389ace218c",
+        "laureates_9381": [
+          {
+            "id": "834",
+            "firstname": "Paul",
+            "surname": "Krugman",
+            "motivation": "\"for his analysis of trade patterns and location of economic activity\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 92,
+        "year_1210": 2008
+      },
+      {
+        "id_5763": "296dcd1f-a18a-4747-994a-6027465d4790",
+        "laureates_9381": [
+          {
+            "id": "829",
+            "firstname": "Osamu",
+            "surname": "Shimomura",
+            "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+            "share": "3"
+          },
+          {
+            "id": "830",
+            "firstname": "Martin",
+            "surname": "Chalfie",
+            "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+            "share": "3"
+          },
+          {
+            "id": "831",
+            "firstname": "Roger Y.",
+            "surname": "Tsien",
+            "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_5436": null,
+        "prize_id_6952": 91,
+        "year_1210": 2008
+      }
+    ]
+  }
+]

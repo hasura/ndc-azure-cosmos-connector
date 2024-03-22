@@ -1,0 +1,211 @@
+[
+  {
+    "rows": [
+      {
+        "prize_id_9530": 1,
+        "laureates_5236": [
+          {
+            "id": "1029",
+            "firstname": "Moungi",
+            "surname": "Bawendi",
+            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+            "share": "3"
+          },
+          {
+            "id": "1030",
+            "firstname": "Louis",
+            "surname": "Brus",
+            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+            "share": "3"
+          },
+          {
+            "id": "1031",
+            "firstname": "Aleksey",
+            "surname": "Yekimov",
+            "motivation": "\"for the discovery and synthesis of quantum dots\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 2,
+        "laureates_5236": [
+          {
+            "id": "1034",
+            "firstname": "Claudia",
+            "surname": "Goldin",
+            "motivation": "\"for having advanced our understanding of women’s labour market outcomes\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 5,
+        "laureates_5236": [
+          {
+            "id": "1026",
+            "firstname": "Pierre",
+            "surname": "Agostini",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          },
+          {
+            "id": "1027",
+            "firstname": "Ferenc",
+            "surname": "Krausz",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          },
+          {
+            "id": "1028",
+            "firstname": "Anne",
+            "surname": "L’Huillier",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 6,
+        "laureates_5236": [
+          {
+            "id": "1024",
+            "firstname": "Katalin",
+            "surname": "Karikó",
+            "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
+            "share": "2"
+          },
+          {
+            "id": "1025",
+            "firstname": "Drew",
+            "surname": "Weissman",
+            "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 4,
+        "laureates_5236": [
+          {
+            "id": "1033",
+            "firstname": "Narges",
+            "surname": "Mohammadi",
+            "motivation": "\"for her fight against the oppression of women in Iran and her fight to promote human rights and freedom for all\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 3,
+        "laureates_5236": [
+          {
+            "id": "1032",
+            "firstname": "Jon",
+            "surname": "Fosse",
+            "motivation": "\"for his innovative plays and prose which give voice to the unsayable\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 12,
+        "laureates_5236": [
+          {
+            "id": "1011",
+            "firstname": "Svante",
+            "surname": "Pääbo",
+            "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 10,
+        "laureates_5236": [
+          {
+            "id": "1018",
+            "firstname": "Ales",
+            "surname": "Bialiatski ",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3"
+          },
+          {
+            "id": "1019",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Memorial"
+          },
+          {
+            "id": "1020",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Center for Civil Liberties"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 11,
+        "laureates_5236": [
+          {
+            "id": "1012",
+            "firstname": "Alain",
+            "surname": "Aspect",
+            "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+            "share": "3"
+          },
+          {
+            "id": "1013",
+            "firstname": "John ",
+            "surname": "Clauser",
+            "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+            "share": "3"
+          },
+          {
+            "id": "1014",
+            "firstname": "Anton",
+            "surname": "Zeilinger",
+            "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_1193": null
+      },
+      {
+        "prize_id_9530": 8,
+        "laureates_5236": [
+          {
+            "id": "1021",
+            "firstname": "Ben",
+            "surname": "Bernanke",
+            "motivation": "\"for research on banks and financial crises\"",
+            "share": "3"
+          },
+          {
+            "id": "1022",
+            "firstname": "Douglas",
+            "surname": "Diamond",
+            "motivation": "\"for research on banks and financial crises\"",
+            "share": "3"
+          },
+          {
+            "id": "1023",
+            "firstname": "Philip",
+            "surname": "Dybvig",
+            "motivation": "\"for research on banks and financial crises\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_1193": null
+      }
+    ]
+  }
+]

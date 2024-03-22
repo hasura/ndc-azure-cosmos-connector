@@ -1,0 +1,246 @@
+[
+  {
+    "rows": [
+      {
+        "id_6692": "0af0c0b5-7176-4d6b-86ae-f8a15bb44789",
+        "laureates_5870": [
+          {
+            "id": "960",
+            "firstname": "Arthur",
+            "surname": "Ashkin",
+            "motivation": "\"for the optical tweezers and their application to biological systems\"",
+            "share": "2"
+          },
+          {
+            "id": "961",
+            "firstname": "Gérard",
+            "surname": "Mourou",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          },
+          {
+            "id": "962",
+            "firstname": "Donna",
+            "surname": "Strickland",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation_6069": "\"for groundbreaking inventions in the field of laser physics\"",
+        "prize_id_5977": 35,
+        "year_1377": 2018
+      },
+      {
+        "id_6692": "2e5ca647-1329-4d38-bea9-35345881c53e",
+        "laureates_5870": [
+          {
+            "id": "999",
+            "firstname": "Syukuro",
+            "surname": "Manabe",
+            "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
+            "share": "4"
+          },
+          {
+            "id": "1000",
+            "firstname": "Klaus",
+            "surname": "Hasselmann",
+            "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
+            "share": "4"
+          },
+          {
+            "id": "1001",
+            "firstname": "Giorgio",
+            "surname": "Parisi",
+            "motivation": "\"for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation_6069": "\"for groundbreaking contributions to our understanding of complex physical systems\"",
+        "prize_id_5977": 17,
+        "year_1377": 2021
+      },
+      {
+        "id_6692": "a2a303dc-d1d5-4aa6-b82b-57b55d5577a3",
+        "laureates_5870": [
+          {
+            "id": "973",
+            "firstname": "James",
+            "surname": "Peebles",
+            "motivation": "\"for theoretical discoveries in physical cosmology\"",
+            "share": "2"
+          },
+          {
+            "id": "974",
+            "firstname": "Michel",
+            "surname": "Mayor",
+            "motivation": "\"for the discovery of an exoplanet orbiting a solar-type star\"",
+            "share": "4"
+          },
+          {
+            "id": "975",
+            "firstname": "Didier",
+            "surname": "Queloz",
+            "motivation": "\"for the discovery of an exoplanet orbiting a solar-type star\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation_6069": "\"for contributions to our understanding of the evolution of the universe and Earth’s place in the cosmos\"",
+        "prize_id_5977": 29,
+        "year_1377": 2019
+      },
+      {
+        "id_6692": "930c989a-2b6f-4afc-bc6e-6045675e79b2",
+        "laureates_5870": [
+          {
+            "id": "816",
+            "firstname": "Gerhard",
+            "surname": "Ertl",
+            "motivation": "\"for his studies of chemical processes on solid surfaces\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_6069": null,
+        "prize_id_5977": 97,
+        "year_1377": 2007
+      },
+      {
+        "id_6692": "24fe2fdc-ff89-4e72-91b7-62c387733074",
+        "laureates_5870": [
+          {
+            "id": "835",
+            "firstname": "Elizabeth H.",
+            "surname": "Blackburn",
+            "motivation": "\"for the discovery of how chromosomes are protected by telomeres and the enzyme telomerase\"",
+            "share": "3"
+          },
+          {
+            "id": "836",
+            "firstname": "Carol W.",
+            "surname": "Greider",
+            "motivation": "\"for the discovery of how chromosomes are protected by telomeres and the enzyme telomerase\"",
+            "share": "3"
+          },
+          {
+            "id": "837",
+            "firstname": "Jack W.",
+            "surname": "Szostak",
+            "motivation": "\"for the discovery of how chromosomes are protected by telomeres and the enzyme telomerase\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_6069": null,
+        "prize_id_5977": 90,
+        "year_1377": 2009
+      },
+      {
+        "id_6692": "905c78ea-0839-4b81-9194-84b2b142e688",
+        "laureates_5870": [
+          {
+            "id": "820",
+            "firstname": "Leonid",
+            "surname": "Hurwicz",
+            "motivation": "\"for having laid the foundations of mechanism design theory\"",
+            "share": "3"
+          },
+          {
+            "id": "821",
+            "firstname": "Eric S.",
+            "surname": "Maskin",
+            "motivation": "\"for having laid the foundations of mechanism design theory\"",
+            "share": "3"
+          },
+          {
+            "id": "822",
+            "firstname": "Roger B.",
+            "surname": "Myerson",
+            "motivation": "\"for having laid the foundations of mechanism design theory\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation_6069": null,
+        "prize_id_5977": 98,
+        "year_1377": 2007
+      },
+      {
+        "id_6692": "e72b940f-b36d-4274-8927-2fc0db5b9a63",
+        "laureates_5870": [
+          {
+            "id": "818",
+            "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+            "share": "2",
+            "firstname": "Intergovernmental Panel on Climate Change"
+          },
+          {
+            "id": "819",
+            "firstname": "Al",
+            "surname": "Gore",
+            "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation_6069": null,
+        "prize_id_5977": 100,
+        "year_1377": 2007
+      },
+      {
+        "id_6692": "e3fd659b-18d5-4944-9a0a-339ca93ead96",
+        "laureates_5870": [
+          {
+            "id": "817",
+            "firstname": "Doris",
+            "surname": "Lessing",
+            "motivation": "\"that epicist of the female experience, who with scepticism, fire and visionary power has subjected a divided civilisation to scrutiny\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_6069": null,
+        "prize_id_5977": 99,
+        "year_1377": 2007
+      },
+      {
+        "id_6692": "b3509580-fa1c-4478-9bfb-6e77cb183f98",
+        "laureates_5870": [
+          {
+            "id": "826",
+            "firstname": "Yoichiro",
+            "surname": "Nambu",
+            "motivation": "\"for the discovery of the mechanism of spontaneous broken symmetry in subatomic physics\"",
+            "share": "2"
+          },
+          {
+            "id": "827",
+            "firstname": "Makoto",
+            "surname": "Kobayashi",
+            "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+            "share": "4"
+          },
+          {
+            "id": "828",
+            "firstname": "Toshihide",
+            "surname": "Maskawa",
+            "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation_6069": null,
+        "prize_id_5977": 95,
+        "year_1377": 2008
+      },
+      {
+        "id_6692": "e4ec0074-9cee-4645-bcc9-ef6dd4f56a91",
+        "laureates_5870": [
+          {
+            "id": "833",
+            "firstname": "Martti",
+            "surname": "Ahtisaari",
+            "motivation": "\"for his important efforts, on several continents and over more than three decades, to resolve international conflicts\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation_6069": null,
+        "prize_id_5977": 94,
+        "year_1377": 2008
+      }
+    ]
+  }
+]

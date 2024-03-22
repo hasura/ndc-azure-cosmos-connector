@@ -1,0 +1,32 @@
+{
+  "collection": "NobelLaureates",
+  "query": {
+    "fields": {
+      "id_2881": {
+        "type": "column",
+        "column": "id",
+        "fields": null
+      },
+      "overallMotivation_0041": {
+        "type": "column",
+        "column": "overallMotivation",
+        "fields": null
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "year",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

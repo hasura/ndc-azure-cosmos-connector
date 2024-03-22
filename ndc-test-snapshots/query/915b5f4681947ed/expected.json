@@ -1,0 +1,35 @@
+[
+  {
+    "rows": [
+      {
+        "id": "c46c3d4d-4dab-4961-8e7f-d50880e68960",
+        "laureates": [
+          {
+            "id": "1026",
+            "firstname": "Pierre",
+            "surname": "Agostini",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          },
+          {
+            "id": "1027",
+            "firstname": "Ferenc",
+            "surname": "Krausz",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          },
+          {
+            "id": "1028",
+            "firstname": "Anne",
+            "surname": "L’Huillier",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 5,
+        "year": 2023
+      }
+    ]
+  }
+]
