@@ -25,7 +25,7 @@ function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.Obje
     }
 }
 
-function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryParts {
+function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryContext {
     let isAggregateQuery = false;
 
     const collection: string = queryRequest.collection;
@@ -146,7 +146,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
         sourceAlias: `${collection[0]}`,
     };
 
-    let sqlGenCtx: sql.SqlQueryParts = {
+    let sqlGenCtx: sql.SqlQueryContext = {
         select: requestedFields,
         from: fromClause,
         isAggregateQuery
@@ -190,7 +190,7 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
     if (dbContainer === undefined || dbContainer == null)
         throw new sdk.InternalServerError(`Couldn't find the container '${collection}' in the schema.`)
 
-    const sqlGenCtx: sql.SqlQueryParts = parseQueryRequest(collectionsSchema, queryRequest);
+    const sqlGenCtx: sql.SqlQueryContext = parseQueryRequest(collectionsSchema, queryRequest);
 
     const sqlQuery = sql.generateSqlQuerySpec(sqlGenCtx, collection, queryRequest.variables);
 

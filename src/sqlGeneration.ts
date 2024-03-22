@@ -62,7 +62,7 @@ export type ContainerExpression = {
 
 export type SqlExpression = {
     kind: 'sqlExpression',
-    sqlExpression: SqlQueryParts
+    sqlExpression: SqlQueryContext
 }
 
 export type ArrayJoinTarget = ContainerExpression | SqlExpression
@@ -74,7 +74,7 @@ export type ArrayJoinClause = {
 
 export type JoinClause = ArrayJoinClause; // TODO: Handle the case of `JOIN ((SELECT VALUE t FROM t IN p.tags WHERE t.name IN ("winter", "fall")))`, if needed.
 
-export type SqlQueryParts = {
+export type SqlQueryContext = {
     select: SelectColumns, // TODO: Handle `SELECT VALUE` and `SELECT DISTINCT` here itself? If there is a need for it.
     from?: FromClause | null,
     join?: JoinClause[] | null,
@@ -83,10 +83,7 @@ export type SqlQueryParts = {
     limit?: number | null,
     orderBy?: sdk.OrderBy | null,
     isAggregateQuery: boolean,
-
 }
-
-
 
 type VariablesMappings = {
     /*
@@ -105,7 +102,7 @@ function formatJoinClause(joinClause: JoinClause): string {
     return `${joinClause.arrayJoinTarget} in ${joinTarget}`
 }
 
-function constructSqlQuery(sqlQueryParts: SqlQueryParts, fromContainerAlias: string): cosmos.SqlQuerySpec {
+function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: string): cosmos.SqlQuerySpec {
     let selectColumns = formatSelectColumns(sqlQueryParts.select);
 
     let fromClause =
@@ -167,7 +164,7 @@ function constructSqlQuery(sqlQueryParts: SqlQueryParts, fromContainerAlias: str
     }
 }
 
-export function generateSqlQuerySpec(sqlGenCtx: SqlQueryParts, containerName: string, queryVariables: QueryVariables): SqlQuerySpec {
+export function generateSqlQuerySpec(sqlGenCtx: SqlQueryContext, containerName: string, queryVariables: QueryVariables): SqlQuerySpec {
 
     const querySpec = constructSqlQuery(sqlGenCtx, `${containerName[0]}`);
 
