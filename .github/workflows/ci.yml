@@ -21,15 +21,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Start Azure Cosmos DB emulator
-        run: docker run --detach --publish 8081:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+        run: docker run --detach --publish 8082:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
       - name: Setup database
         # working-directory: script
         run: sleep 100 && cd cosmos/script && npm install --save @azure/cosmos && node app.js
       - name: Build connector
-        run: |
-          cd cosmos
-          npm i -g rimraf
-          npm run build
+        run: cd cosmos && npm i -g rimraf && npm run build
       - name: Start connector
         run: cd cosmos && npm run start serve --configuration connector_config_emulator.json
       - name: Check out ndc-spec
