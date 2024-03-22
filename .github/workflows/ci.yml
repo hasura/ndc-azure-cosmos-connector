@@ -38,15 +38,17 @@ jobs:
           repository: hasura/ndc-spec
           path: ndc-spec
       - name: test
+        working-directory: ndc-spec
         run: |
           ls
+          echo "hello"
           cd ..
           ls
           tree
-      # - name: Run ndc-test
-      #   working-directory: ndc-spec
-      #   run: cargo run --bin ndc-test -- test --endpoint http://0.0.0.0:8080
-        # cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir cosmos/ndc-test-snapshots
+      - name: Run ndc-test
+        working-directory: ndc-spec
+        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir cosmos/ndc-test-snapshots
+        # run: cargo run --bin ndc-test -- test --endpoint http://0.0.0.0:8080
       # - name: Install test runner
       #   run: npm install --global mocha
       # - name: Run Node.js tests
