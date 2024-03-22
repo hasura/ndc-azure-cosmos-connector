@@ -2,8 +2,7 @@
   {
     "rows": [
       {
-        "id": "11",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1012",
             "firstname": "Alain",
@@ -25,14 +24,10 @@
             "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
             "share": "3"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 11,
-        "year": 2022
+        ]
       },
       {
-        "id": "12",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1011",
             "firstname": "Svante",
@@ -40,14 +35,10 @@
             "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
             "share": "1"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 12,
-        "year": 2022
+        ]
       },
       {
-        "id": "21",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "993",
             "firstname": "Louise",
@@ -55,14 +46,10 @@
             "motivation": "\"for her unmistakable poetic voice that with austere beauty makes individual existence universal\"",
             "share": "1"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 21,
-        "year": 2020
+        ]
       },
       {
-        "id": "4",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1033",
             "firstname": "Narges",
@@ -70,14 +57,10 @@
             "motivation": "\"for her fight against the oppression of women in Iran and her fight to promote human rights and freedom for all\"",
             "share": "1"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 4,
-        "year": 2023
+        ]
       },
       {
-        "id": "9",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1017",
             "firstname": "Annie",
@@ -85,14 +68,10 @@
             "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
             "share": "1"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 9,
-        "year": 2022
+        ]
       },
       {
-        "id": "26",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "982",
             "firstname": "Abhijit",
@@ -114,14 +93,10 @@
             "motivation": "\"for their experimental approach to alleviating global poverty\"",
             "share": "3"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 26,
-        "year": 2019
+        ]
       },
       {
-        "id": "6",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1024",
             "firstname": "Katalin",
@@ -136,14 +111,10 @@
             "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
             "share": "2"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 6,
-        "year": 2023
+        ]
       },
       {
-        "id": "14",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1007",
             "firstname": "David",
@@ -165,14 +136,10 @@
             "motivation": "\"for their methodological contributions to the analysis of causal relationships\"",
             "share": "4"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 14,
-        "year": 2021
+        ]
       },
       {
-        "id": "8",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1021",
             "firstname": "Ben",
@@ -194,14 +161,10 @@
             "motivation": "\"for research on banks and financial crises\"",
             "share": "3"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 8,
-        "year": 2022
+        ]
       },
       {
-        "id": "5",
-        "laureates": [
+        "laureates_2230": [
           {
             "id": "1026",
             "firstname": "Pierre",
@@ -223,10 +186,7 @@
             "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
             "share": "3"
           }
-        ],
-        "overallMotivation": null,
-        "prize_id": 5,
-        "year": 2023
+        ]
       }
     ]
   }

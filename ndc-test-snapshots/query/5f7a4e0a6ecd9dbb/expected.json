@@ -1,0 +1,66 @@
+[
+  {
+    "rows": [
+      {
+        "id_6520": "11",
+        "year_6273": 2022,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 11
+      },
+      {
+        "id_6520": "12",
+        "year_6273": 2022,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 12
+      },
+      {
+        "id_6520": "21",
+        "year_6273": 2020,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 21
+      },
+      {
+        "id_6520": "4",
+        "year_6273": 2023,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 4
+      },
+      {
+        "id_6520": "9",
+        "year_6273": 2022,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 9
+      },
+      {
+        "id_6520": "26",
+        "year_6273": 2019,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 26
+      },
+      {
+        "id_6520": "6",
+        "year_6273": 2023,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 6
+      },
+      {
+        "id_6520": "14",
+        "year_6273": 2021,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 14
+      },
+      {
+        "id_6520": "8",
+        "year_6273": 2022,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 8
+      },
+      {
+        "id_6520": "5",
+        "year_6273": 2023,
+        "overallMotivation_4809": null,
+        "prize_id_6355": 5
+      }
+    ]
+  }
+]

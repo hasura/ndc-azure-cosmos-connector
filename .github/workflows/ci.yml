@@ -37,14 +37,14 @@ jobs:
         with:
           repository: hasura/ndc-spec
           path: ndc-spec
-      - name: test
-        working-directory: ndc-spec
-        run: |
-          ls
-          echo "hello"
-          cd ..
-          ls
-          tree
+      # - name: test
+      #   working-directory: ndc-spec
+      #   run: |
+      #     ls
+      #     echo "hello"
+      #     cd ..
+      #     ls
+      #     tree
       - name: Run ndc-test
         working-directory: ndc-spec
         run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots
