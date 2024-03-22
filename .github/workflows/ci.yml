@@ -6,7 +6,7 @@ on:
 jobs:
   unit_tests:
     name: Run Node.js unit tests
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout (GitHub)
         uses: actions/checkout@v3
@@ -21,10 +21,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Start Azure Cosmos DB emulator
-        run: >-
-          Write-Host "Launching Cosmos DB Emulator"
-          Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
-          Start-CosmosDbEmulator
+        run: docker run --publish 8081:8081 --publish 10250-10255:10250-10255 --interactive --tty mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
       - name: Setup database
         # working-directory: script
         run: tree && cd D:\cosmos\script && npm i && npm install --save @azure/cosmos && node app.js
