@@ -2,7 +2,7 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - main
+      - py/ndc-test
 jobs:
   unit_tests:
     name: Run Node.js unit tests
@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout (GitHub)
         uses: actions/checkout@v3
+        with:
+          path: cosmos
 
       - name: Log in to GitHub Container Registry 📦
         uses: docker/login-action@v2
@@ -38,7 +40,7 @@ jobs:
           token: ${{ secrets.CI_PERSONAL_ACCESS_TOKEN }}
       - name: Run ndc-test
         working-directory: ndc-spec
-        run: cargo run --bin ndc-test -- replay --endpoint http://localhost:8080 --snapshots-dir ${{ github.workspace }}/ndc-test-snapshots
+        run: cargo run --bin ndc-test -- replay --endpoint http://127.0.0.1:8080 --snapshots-dir cosmos/ndc-test-snapshots
       # - name: Install test runner
       #   run: npm install --global mocha
       # - name: Run Node.js tests
