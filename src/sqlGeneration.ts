@@ -110,16 +110,9 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
             ? null
             : `${sqlQueryParts.from.source} ${sqlQueryParts.from.sourceAlias}${sqlQueryParts.from.in ? ' IN' + sqlQueryParts.from.in : ''}`;
 
-    let joinClause = null;
-
-    if (sqlQueryParts.join !== null && sqlQueryParts.join !== undefined) {
-        joinClause = "JOIN " + sqlQueryParts.join?.map(joinClause => formatJoinClause(joinClause)).join("\nJOIN ")
-    }
-
     let whereClause = null;
     let predicateParameters: SqlParameters = {};
     let utilisedVariables: VariablesMappings = {}; // This will be used to add the join mappings to the where expression.
-
 
 
     if (sqlQueryParts.predicate != null && sqlQueryParts.predicate != undefined) {
@@ -128,6 +121,15 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
         // TODO: incorporate the `predicateParameters` obtained above.
         whereClause = `WHERE ${whereExp}`;
     }
+
+
+    let joinClause = null;
+
+    if (sqlQueryParts.join !== null && sqlQueryParts.join !== undefined) {
+        joinClause = "JOIN " + sqlQueryParts.join?.map(joinClause => formatJoinClause(joinClause)).join("\nJOIN ")
+    }
+
+
 
 
     let orderByClause = null;
@@ -166,7 +168,9 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
 
 export function generateSqlQuerySpec(sqlGenCtx: SqlQueryContext, containerName: string, queryVariables: QueryVariables): SqlQuerySpec {
 
-    const querySpec = constructSqlQuery(sqlGenCtx, `${containerName[0]}`);
+    const querySpec = constructSqlQuery(sqlGenCtx, `root_${containerName}`);
+
+    console.log(JSON.stringify(querySpec, null, 2));
 
     return querySpec
 

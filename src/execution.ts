@@ -32,7 +32,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
 
     const collectionDefinition: schema.CollectionDefinition = collectionsSchema.collections[collection];
 
-    const rootContainerAlias = `${collection[0]}`;
+    const rootContainerAlias = `root_${collection}`;
 
     let requestedFields: sql.SelectColumns = {};
 
@@ -143,7 +143,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
 
     let fromClause: sql.FromClause = {
         source: collection,
-        sourceAlias: `${collection[0]}`,
+        sourceAlias: rootContainerAlias,
     };
 
     let sqlGenCtx: sql.SqlQueryContext = {
