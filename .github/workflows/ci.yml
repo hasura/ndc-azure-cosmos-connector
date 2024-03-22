@@ -35,9 +35,9 @@ jobs:
       - name: Check out ndc-spec
         uses: actions/checkout@v3
         with:
+          token: test-token
           repository: hasura/ndc-spec
           path: ndc-spec
-          token: ${{ secrets.CI_PERSONAL_ACCESS_TOKEN }}
       - name: Run ndc-test
         working-directory: ndc-spec
         run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir cosmos/ndc-test-snapshots
