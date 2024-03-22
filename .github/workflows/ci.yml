@@ -26,9 +26,9 @@ jobs:
         # working-directory: script
         run: sleep 100 && cd cosmos/script && npm install --save @azure/cosmos && node app.js
       - name: Build connector
-        run: npm run build
+        run: cd cosmos && npm run build
       - name: Start connector
-        run: npm run start serve --configuration connector_config_emulator.json
+        run: cd cosmos && npm run start serve --configuration connector_config_emulator.json
       - name: Check out ndc-spec
         uses: actions/checkout@v3
         with:
