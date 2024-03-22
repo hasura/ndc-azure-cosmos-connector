@@ -75,7 +75,9 @@ export type ArrayJoinClause = {
 export type JoinClause = ArrayJoinClause; // TODO: Handle the case of `JOIN ((SELECT VALUE t FROM t IN p.tags WHERE t.name IN ("winter", "fall")))`, if needed.
 
 export type SqlQueryContext = {
-    select: SelectColumns, // TODO: Handle `SELECT VALUE` and `SELECT DISTINCT` here itself? If there is a need for it.
+    select: SelectColumns,
+    /* Set to `true` to prevent the wrapping of the results into another JSON object. */
+    selectAsValue: boolean,
     from?: FromClause | null,
     join?: JoinClause[] | null,
     predicate?: sdk.Expression | null,
@@ -97,12 +99,12 @@ function formatJoinClause(joinClause: JoinClause): string {
     let joinTarget =
         joinClause.arrayJoinTarget.kind === 'containerExpression'
             ? joinClause.arrayJoinTarget.containerExpression
-            : constructSqlQuery(joinClause.arrayJoinTarget.sqlExpression, joinClause.joinIdentifier);
+            : constructSqlQuery(joinClause.arrayJoinTarget.sqlExpression, joinClause.joinIdentifier, null);
 
-    return `${joinClause.arrayJoinTarget} in ${joinTarget}`
+    return `${joinClause.joinIdentifier} in (${joinTarget})`
 }
 
-function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: string): cosmos.SqlQuerySpec {
+function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: string, queryVariables: QueryVariables): cosmos.SqlQuerySpec {
     let selectColumns = formatSelectColumns(sqlQueryParts.select);
 
     let fromClause =
@@ -114,23 +116,52 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
     let predicateParameters: SqlParameters = {};
     let utilisedVariables: VariablesMappings = {}; // This will be used to add the join mappings to the where expression.
 
+    let parameters: cosmos.SqlParameter[] = [];
+
+
+
 
     if (sqlQueryParts.predicate != null && sqlQueryParts.predicate != undefined) {
 
         const whereExp = visitExpression(predicateParameters, utilisedVariables, sqlQueryParts.predicate, fromContainerAlias);
-        // TODO: incorporate the `predicateParameters` obtained above.
-        whereClause = `WHERE ${whereExp}`;
+
+        whereClause = `WHERE ${whereExp}`
+
+        parameters = serializeSqlParameters(predicateParameters);
+
+        console.log("utilised vairables are ", JSON.stringify(utilisedVariables, null, 2));
+
+
+        if (Object.keys(utilisedVariables).length > 0) {
+            if (queryVariables === null || queryVariables === undefined) {
+                throw new sdk.BadRequest(`The variables (${JSON.stringify(Object.values(utilisedVariables))}) were referenced in the variable, but their values were not provided`)
+            } else {
+
+                console.log("query variables as JSON value", JSON.stringify(queryVariables as cosmos.JSONValue, null, 2));
+                parameters.push({
+                    name: '@vars',
+                    value: queryVariables as cosmos.JSONValue
+                });
+            }
+
+        }
     }
 
 
     let joinClause = null;
 
-    if (sqlQueryParts.join !== null && sqlQueryParts.join !== undefined) {
-        joinClause = "JOIN " + sqlQueryParts.join?.map(joinClause => formatJoinClause(joinClause)).join("\nJOIN ")
+
+    if (Object.keys(utilisedVariables).length > 0) {
+        let variablesJoinTarget: ArrayJoinTarget = {
+            kind: 'containerExpression',
+            containerExpression: 'SELECT VALUE @vars'
+        };
+        let joinExp: JoinClause = {
+            joinIdentifier: "vars",
+            arrayJoinTarget: variablesJoinTarget,
+        };
+        joinClause = `JOIN ${formatJoinClause(joinExp)}`
     }
-
-
-
 
     let orderByClause = null;
 
@@ -152,7 +183,7 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
     }
 
     const query =
-        `SELECT ${selectColumns}
+        `SELECT ${sqlQueryParts.selectAsValue ? 'VALUE' : ''} ${selectColumns}
         ${fromClause ? 'FROM ' + fromClause : ''}
         ${joinClause ?? ''}
         ${whereClause ?? ''}
@@ -160,17 +191,18 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
         ${offsetClause ? 'OFFSET ' + offsetClause : ''}
         ${limitClause ? 'LIMIT ' + limitClause : ''}`;
 
+
     return {
         query,
-        parameters: serializeSqlParameters(predicateParameters)
+        parameters
     }
 }
 
 export function generateSqlQuerySpec(sqlGenCtx: SqlQueryContext, containerName: string, queryVariables: QueryVariables): SqlQuerySpec {
 
-    const querySpec = constructSqlQuery(sqlGenCtx, `root_${containerName}`);
+    const querySpec = constructSqlQuery(sqlGenCtx, `root_${containerName}`, queryVariables);
 
-    console.log(JSON.stringify(querySpec, null, 2));
+    console.log(querySpec.query, JSON.stringify(querySpec.parameters, null, 2));
 
     return querySpec
 
@@ -315,8 +347,8 @@ export function visitComparisonValue(parameters: SqlParameters, variables: Varia
         case 'column':
             throw new sdk.NotSupported("Column comparisons are not supported in field predicates yet");
         case 'variable':
-            variables[comparisonTarget] = `vars.${target.name} `
-            return `vars.${target.name} `
+            variables[comparisonTarget] = `vars["${target.name}"]`
+            return `vars["${target.name}"]`
 
     }
 }

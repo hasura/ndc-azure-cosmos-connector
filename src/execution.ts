@@ -1,7 +1,7 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as schema from "./schema";
 import * as sql from "./sqlGeneration";
-import { Database } from "@azure/cosmos";
+import { Database, SqlQuerySpec } from "@azure/cosmos";
 import { runSQLQuery } from "./cosmosDb";
 
 
@@ -149,7 +149,8 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
     let sqlGenCtx: sql.SqlQueryContext = {
         select: requestedFields,
         from: fromClause,
-        isAggregateQuery
+        isAggregateQuery,
+        selectAsValue: false,
     };
 
     if (queryRequest.query.limit != null) {
