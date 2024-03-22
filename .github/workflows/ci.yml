@@ -29,7 +29,6 @@ jobs:
         run: |
           cd cosmos
           npm i -g rimraf
-          npm install --save @azure/cosmos
           npm run build
       - name: Start connector
         run: cd cosmos && npm run start serve --configuration connector_config_emulator.json
