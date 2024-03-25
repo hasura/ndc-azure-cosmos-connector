@@ -1,0 +1,27 @@
+{
+  "collection": "NobelLaureates",
+  "query": {
+    "fields": {
+      "year_9918": {
+        "type": "column",
+        "column": "year",
+        "fields": null
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "year",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

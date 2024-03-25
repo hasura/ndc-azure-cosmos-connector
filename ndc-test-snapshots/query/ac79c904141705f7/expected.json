@@ -2,89 +2,34 @@
   {
     "rows": [
       {
-        "id": "71d96af0-bdc6-4dc7-8c11-9c86ddfeb494",
+        "id": "637b6440-bdb3-4bfb-9c74-b3174e56c329",
         "laureates": [
           {
-            "id": "1004",
-            "firstname": "Abdulrazak",
-            "surname": "Gurnah",
-            "motivation": "\"for his uncompromising and compassionate penetration of the effects of colonialism and the fate of the refugee in the gulf between cultures and continents\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation": null,
-        "prize_id": 15,
-        "year": 2021
-      },
-      {
-        "id": "353bc8f5-138b-4f6d-b4e7-59db5e68e910",
-        "laureates": [
-          {
-            "id": "980",
-            "firstname": "Peter",
-            "surname": "Handke",
-            "motivation": "\"for an influential work that with linguistic ingenuity has explored the periphery and the specificity of human experience\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation": null,
-        "prize_id": 27,
-        "year": 2019
-      },
-      {
-        "id": "1a4503d1-6636-49c7-907f-619fd994b0fc",
-        "laureates": [
-          {
-            "id": "1005",
-            "firstname": "Maria",
-            "surname": "Ressa",
-            "motivation": "\"for their efforts to safeguard freedom of expression, which is a precondition for democracy and lasting peace\"",
-            "share": "2"
+            "id": "1018",
+            "firstname": "Ales",
+            "surname": "Bialiatski ",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3"
           },
           {
-            "id": "1006",
-            "firstname": "Dmitry",
-            "surname": "Muratov",
-            "motivation": "\"for their efforts to safeguard freedom of expression, which is a precondition for democracy and lasting peace\"",
-            "share": "2"
-          }
-        ],
-        "overallMotivation": null,
-        "prize_id": 16,
-        "year": 2021
-      },
-      {
-        "id": "b977f094-d4ed-44a7-9aab-711bb1e9b69f",
-        "laureates": [
+            "id": "1019",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Memorial"
+          },
           {
-            "id": "1032",
-            "firstname": "Jon",
-            "surname": "Fosse",
-            "motivation": "\"for his innovative plays and prose which give voice to the unsayable\"",
-            "share": "1"
+            "id": "1020",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Center for Civil Liberties"
           }
         ],
         "overallMotivation": null,
-        "prize_id": 3,
-        "year": 2023
-      },
-      {
-        "id": "df9d941a-c0d2-4fec-97c8-add8a407d2ec",
-        "laureates": [
-          {
-            "id": "1017",
-            "firstname": "Annie",
-            "surname": "Ernaux",
-            "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation": null,
-        "prize_id": 9,
+        "prize_id": 10,
         "year": 2022
       },
       {
-        "id": "499ed077-4568-405b-83ee-4659c1c3991b",
+        "id": "f9fb47d9-aaaa-4f68-8c17-df74951c34e6",
         "laureates": [
           {
             "id": "1033",
@@ -99,29 +44,66 @@
         "year": 2023
       },
       {
-        "id": "ee126950-acde-4ba7-8b8f-20e4e1bd7762",
+        "id": "7575a4b9-e447-486e-957b-b0832de283f1",
         "laureates": [
           {
-            "id": "1024",
-            "firstname": "Katalin",
-            "surname": "Karikó",
-            "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
-            "share": "2"
-          },
-          {
-            "id": "1025",
-            "firstname": "Drew",
-            "surname": "Weissman",
-            "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
-            "share": "2"
+            "id": "1017",
+            "firstname": "Annie",
+            "surname": "Ernaux",
+            "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
+            "share": "1"
           }
         ],
         "overallMotivation": null,
-        "prize_id": 6,
-        "year": 2023
+        "prize_id": 9,
+        "year": 2022
       },
       {
-        "id": "c46c3d4d-4dab-4961-8e7f-d50880e68960",
+        "id": "03d5e8b7-5700-4434-8201-ef1f4102b558",
+        "laureates": [
+          {
+            "id": "1011",
+            "firstname": "Svante",
+            "surname": "Pääbo",
+            "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 12,
+        "year": 2022
+      },
+      {
+        "id": "d60e9302-77b2-449e-9eb8-0e73a4d216f8",
+        "laureates": [
+          {
+            "id": "963",
+            "firstname": "Frances H.",
+            "surname": "Arnold",
+            "motivation": "\"for the directed evolution of enzymes\"",
+            "share": "2"
+          },
+          {
+            "id": "964",
+            "firstname": "George P.",
+            "surname": "Smith",
+            "motivation": "\"for the phage display of peptides and antibodies\"",
+            "share": "4"
+          },
+          {
+            "id": "965",
+            "firstname": "Sir Gregory P.",
+            "surname": "Winter",
+            "motivation": "\"for the phage display of peptides and antibodies\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 31,
+        "year": 2018
+      },
+      {
+        "id": "0ad9efd0-204b-413b-8844-f2334e81851a",
         "laureates": [
           {
             "id": "1026",
@@ -150,61 +132,98 @@
         "year": 2023
       },
       {
-        "id": "81444d44-d20b-4e9f-917f-cb0cd1a7e0eb",
+        "id": "c8b51c4f-1374-423f-b1ce-c791239390db",
         "laureates": [
           {
-            "id": "1015",
-            "firstname": "Carolyn",
-            "surname": "Bertozzi",
-            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "id": "1004",
+            "firstname": "Abdulrazak",
+            "surname": "Gurnah",
+            "motivation": "\"for his uncompromising and compassionate penetration of the effects of colonialism and the fate of the refugee in the gulf between cultures and continents\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 15,
+        "year": 2021
+      },
+      {
+        "id": "bf6479fc-b30c-4fed-a879-92f406638599",
+        "laureates": [
+          {
+            "id": "909",
+            "firstname": "Eric",
+            "surname": "Betzig",
+            "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
             "share": "3"
           },
           {
-            "id": "1016",
-            "firstname": "Morten",
-            "surname": "Meldal",
-            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "id": "910",
+            "firstname": "Stefan W.",
+            "surname": "Hell",
+            "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
             "share": "3"
           },
           {
-            "id": "743",
-            "firstname": "Barry",
-            "surname": "Sharpless",
-            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "id": "911",
+            "firstname": "William E.",
+            "surname": "Moerner",
+            "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
             "share": "3"
           }
         ],
         "overallMotivation": null,
-        "prize_id": 7,
-        "year": 2022
+        "prize_id": 55,
+        "year": 2014
       },
       {
-        "id": "2e5ca647-1329-4d38-bea9-35345881c53e",
+        "id": "74e490a0-a757-43eb-810b-057410e4f0ca",
         "laureates": [
           {
-            "id": "999",
-            "firstname": "Syukuro",
-            "surname": "Manabe",
-            "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
-            "share": "4"
+            "id": "1002",
+            "firstname": "Benjamin",
+            "surname": "List",
+            "motivation": "\"for the development of asymmetric organocatalysis\"",
+            "share": "2"
           },
           {
-            "id": "1000",
-            "firstname": "Klaus",
-            "surname": "Hasselmann",
-            "motivation": "\"for the physical modelling of Earth’s climate, quantifying variability and reliably predicting global warming\"",
-            "share": "4"
-          },
-          {
-            "id": "1001",
-            "firstname": "Giorgio",
-            "surname": "Parisi",
-            "motivation": "\"for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales\"",
+            "id": "1003",
+            "firstname": "David",
+            "surname": "MacMillan",
+            "motivation": "\"for the development of asymmetric organocatalysis\"",
             "share": "2"
           }
         ],
-        "overallMotivation": "\"for groundbreaking contributions to our understanding of complex physical systems\"",
-        "prize_id": 17,
+        "overallMotivation": null,
+        "prize_id": 13,
+        "year": 2021
+      },
+      {
+        "id": "4cff1fb7-ee0a-4e40-891c-ede30cee0b60",
+        "laureates": [
+          {
+            "id": "1007",
+            "firstname": "David",
+            "surname": "Card",
+            "motivation": "\"for his empirical contributions to labour economics\"",
+            "share": "2"
+          },
+          {
+            "id": "1008",
+            "firstname": "Joshua",
+            "surname": "Angrist",
+            "motivation": "\"for their methodological contributions to the analysis of causal relationships\"",
+            "share": "4"
+          },
+          {
+            "id": "1009",
+            "firstname": "Guido",
+            "surname": "Imbens",
+            "motivation": "\"for their methodological contributions to the analysis of causal relationships\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 14,
         "year": 2021
       }
     ]
