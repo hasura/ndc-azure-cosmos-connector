@@ -18,6 +18,62 @@ const { database } = await cosmosClient.databases.createIfNotExists({
       paths: [
         '/year'
       ]
+    },
+    indexingPolicy: { 
+      automatic: true,
+      indexingMode: "consistent",
+      includedPaths: [
+        {
+          path: "/*"
+        }
+      ],
+      excludedPaths: [
+        {
+          path: "/\"_etag\"/?"
+        }
+      ],
+      compositeIndexes: [
+        [
+            {
+                "path": "/overallMotivation",
+                "order": "descending"
+            },
+            {
+                "path": "/prize_id",
+                "order": "descending"
+            }
+        ],
+        [
+            {
+                "path": "/overallMotivation",
+                "order": "ascending"
+            },
+            {
+                "path": "/prize_id",
+                "order": "descending"
+            }
+        ],
+        [
+            {
+                "path": "/year",
+                "order": "ascending"
+            },
+            {
+                "path": "/prize_id",
+                "order": "ascending"
+            }
+        ],
+        [
+            {
+                "path": "/year",
+                "order": "ascending"
+            },
+            {
+                "path": "/prize_id",
+                "order": "descending"
+            }
+        ]
+    ]
     }
   })
 
