@@ -33,6 +33,14 @@
             "name": "overallMotivation",
             "path": []
           }
+        },
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "prize_id",
+            "path": []
+          }
         }
       ]
     }

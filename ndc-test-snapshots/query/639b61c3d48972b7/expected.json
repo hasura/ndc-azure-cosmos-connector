@@ -2,7 +2,6 @@
   {
     "rows": [
       {
-        "id": "acd29db6-8ed5-4554-9f4a-fa48fb7bb4f4",
         "laureates": [
           {
             "id": "944",
@@ -31,7 +30,6 @@
         "year": 2017
       },
       {
-        "id": "d143b5ee-38c4-4ef3-aad2-1967b2d5b664",
         "laureates": [
           {
             "id": "949",
@@ -46,7 +44,20 @@
         "year": 2017
       },
       {
-        "id": "6c6b124a-ab4f-4e8f-a32b-4b48604bd036",
+        "laureates": [
+          {
+            "id": "947",
+            "firstname": "Kazuo",
+            "surname": "Ishiguro",
+            "motivation": "\"who, in novels of great emotional force, has uncovered the abyss beneath our illusory sense of connection with the world\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 39,
+        "year": 2017
+      },
+      {
         "laureates": [
           {
             "id": "948",
@@ -60,36 +71,6 @@
         "year": 2017
       },
       {
-        "id": "6d2064c9-4564-4b55-8045-db23535221bc",
-        "laureates": [
-          {
-            "id": "938",
-            "firstname": "Jeffrey C.",
-            "surname": "Hall",
-            "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
-            "share": "3"
-          },
-          {
-            "id": "939",
-            "firstname": "Michael",
-            "surname": "Rosbash",
-            "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
-            "share": "3"
-          },
-          {
-            "id": "940",
-            "firstname": "Michael W.",
-            "surname": "Young",
-            "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
-            "share": "3"
-          }
-        ],
-        "overallMotivation": null,
-        "prize_id": 42,
-        "year": 2017
-      },
-      {
-        "id": "b81fe09d-3d0d-4ba3-980a-a9c77be7b865",
         "laureates": [
           {
             "id": "941",
@@ -118,18 +99,31 @@
         "year": 2017
       },
       {
-        "id": "034703ae-073f-4c26-a06a-3702a2421497",
         "laureates": [
           {
-            "id": "947",
-            "firstname": "Kazuo",
-            "surname": "Ishiguro",
-            "motivation": "\"who, in novels of great emotional force, has uncovered the abyss beneath our illusory sense of connection with the world\"",
-            "share": "1"
+            "id": "938",
+            "firstname": "Jeffrey C.",
+            "surname": "Hall",
+            "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
+            "share": "3"
+          },
+          {
+            "id": "939",
+            "firstname": "Michael",
+            "surname": "Rosbash",
+            "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
+            "share": "3"
+          },
+          {
+            "id": "940",
+            "firstname": "Michael W.",
+            "surname": "Young",
+            "motivation": "\"for their discoveries of molecular mechanisms controlling the circadian rhythm\"",
+            "share": "3"
           }
         ],
         "overallMotivation": null,
-        "prize_id": 39,
+        "prize_id": 42,
         "year": 2017
       }
     ]

@@ -1,226 +1,208 @@
 [
   {
-    "rows": [
-      {
-        "id_6776": "080cb108-dee7-4482-83bd-648a66d7cf0f",
-        "laureates_7252": [
+      "rows": [
           {
-            "id": "1011",
-            "firstname": "Svante",
-            "surname": "Pääbo",
-            "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 12,
-        "year_2602": 2022
-      },
-      {
-        "id_6776": "4fbd898e-52d1-4e8a-8dd1-2522b6ac51df",
-        "laureates_7252": [
-          {
-            "id": "963",
-            "firstname": "Frances H.",
-            "surname": "Arnold",
-            "motivation": "\"for the directed evolution of enzymes\"",
-            "share": "2"
+              "laureates_7252": [
+                  {
+                      "id": "818",
+                      "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+                      "share": "2",
+                      "firstname": "Intergovernmental Panel on Climate Change"
+                  },
+                  {
+                      "id": "819",
+                      "firstname": "Al",
+                      "surname": "Gore",
+                      "motivation": "\"for their efforts to build up and disseminate greater knowledge about man-made climate change, and to lay the foundations for the measures that are needed to counteract such change\"",
+                      "share": "2"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 100,
+              "year_2602": 2007
           },
           {
-            "id": "964",
-            "firstname": "George P.",
-            "surname": "Smith",
-            "motivation": "\"for the phage display of peptides and antibodies\"",
-            "share": "4"
+              "laureates_7252": [
+                  {
+                      "id": "817",
+                      "firstname": "Doris",
+                      "surname": "Lessing",
+                      "motivation": "\"that epicist of the female experience, who with scepticism, fire and visionary power has subjected a divided civilisation to scrutiny\"",
+                      "share": "1"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 99,
+              "year_2602": 2007
           },
           {
-            "id": "965",
-            "firstname": "Sir Gregory P.",
-            "surname": "Winter",
-            "motivation": "\"for the phage display of peptides and antibodies\"",
-            "share": "4"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 31,
-        "year_2602": 2018
-      },
-      {
-        "id_6776": "d330db91-c145-4ac6-8ff9-10918e6ef211",
-        "laureates_7252": [
-          {
-            "id": "1017",
-            "firstname": "Annie",
-            "surname": "Ernaux",
-            "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 9,
-        "year_2602": 2022
-      },
-      {
-        "id_6776": "453fe8ae-f47d-4f47-ad04-17cd5b367711",
-        "laureates_7252": [
-          {
-            "id": "1029",
-            "firstname": "Moungi",
-            "surname": "Bawendi",
-            "motivation": "\"for the discovery and synthesis of quantum dots\"",
-            "share": "3"
+              "laureates_7252": [
+                  {
+                      "id": "820",
+                      "firstname": "Leonid",
+                      "surname": "Hurwicz",
+                      "motivation": "\"for having laid the foundations of mechanism design theory\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "821",
+                      "firstname": "Eric S.",
+                      "surname": "Maskin",
+                      "motivation": "\"for having laid the foundations of mechanism design theory\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "822",
+                      "firstname": "Roger B.",
+                      "surname": "Myerson",
+                      "motivation": "\"for having laid the foundations of mechanism design theory\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 98,
+              "year_2602": 2007
           },
           {
-            "id": "1030",
-            "firstname": "Louis",
-            "surname": "Brus",
-            "motivation": "\"for the discovery and synthesis of quantum dots\"",
-            "share": "3"
+              "laureates_7252": [
+                  {
+                      "id": "816",
+                      "firstname": "Gerhard",
+                      "surname": "Ertl",
+                      "motivation": "\"for his studies of chemical processes on solid surfaces\"",
+                      "share": "1"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 97,
+              "year_2602": 2007
           },
           {
-            "id": "1031",
-            "firstname": "Aleksey",
-            "surname": "Yekimov",
-            "motivation": "\"for the discovery and synthesis of quantum dots\"",
-            "share": "3"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 1,
-        "year_2602": 2023
-      },
-      {
-        "id_6776": "3f723c05-fe2c-46f1-a21a-463833a394dd",
-        "laureates_7252": [
-          {
-            "id": "958",
-            "firstname": "James P.",
-            "surname": "Allison",
-            "motivation": "\"for their discovery of cancer therapy by inhibition of negative immune regulation\"",
-            "share": "2"
+              "laureates_7252": [
+                  {
+                      "id": "823",
+                      "firstname": "Harald",
+                      "surname": "zur Hausen",
+                      "motivation": "\"for his discovery of human papilloma viruses causing cervical cancer\"",
+                      "share": "2"
+                  },
+                  {
+                      "id": "824",
+                      "firstname": "Françoise",
+                      "surname": "Barré-Sinoussi",
+                      "motivation": "\"for their discovery of human immunodeficiency virus\"",
+                      "share": "4"
+                  },
+                  {
+                      "id": "825",
+                      "firstname": "Luc",
+                      "surname": "Montagnier",
+                      "motivation": "\"for their discovery of human immunodeficiency virus\"",
+                      "share": "4"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 96,
+              "year_2602": 2008
           },
           {
-            "id": "959",
-            "firstname": "Tasuku",
-            "surname": "Honjo",
-            "motivation": "\"for their discovery of cancer therapy by inhibition of negative immune regulation\"",
-            "share": "2"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 36,
-        "year_2602": 2018
-      },
-      {
-        "id_6776": "4c5486df-5578-4d7b-ba3f-7c4d4a6662a0",
-        "laureates_7252": [
-          {
-            "id": "979",
-            "firstname": "Olga",
-            "surname": "Tokarczuk",
-            "motivation": "\"for a narrative imagination that with encyclopedic passion represents the crossing of boundaries as a form of life\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 33,
-        "year_2602": 2018
-      },
-      {
-        "id_6776": "acd29db6-8ed5-4554-9f4a-fa48fb7bb4f4",
-        "laureates_7252": [
-          {
-            "id": "944",
-            "firstname": "Jacques",
-            "surname": "Dubochet",
-            "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
-            "share": "3"
+              "laureates_7252": [
+                  {
+                      "id": "826",
+                      "firstname": "Yoichiro",
+                      "surname": "Nambu",
+                      "motivation": "\"for the discovery of the mechanism of spontaneous broken symmetry in subatomic physics\"",
+                      "share": "2"
+                  },
+                  {
+                      "id": "827",
+                      "firstname": "Makoto",
+                      "surname": "Kobayashi",
+                      "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+                      "share": "4"
+                  },
+                  {
+                      "id": "828",
+                      "firstname": "Toshihide",
+                      "surname": "Maskawa",
+                      "motivation": "\"for the discovery of the origin of the broken symmetry which predicts the existence of at least three families of quarks in nature\"",
+                      "share": "4"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 95,
+              "year_2602": 2008
           },
           {
-            "id": "945",
-            "firstname": "Joachim",
-            "surname": "Frank",
-            "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
-            "share": "3"
+              "laureates_7252": [
+                  {
+                      "id": "833",
+                      "firstname": "Martti",
+                      "surname": "Ahtisaari",
+                      "motivation": "\"for his important efforts, on several continents and over more than three decades, to resolve international conflicts\"",
+                      "share": "1"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 94,
+              "year_2602": 2008
           },
           {
-            "id": "946",
-            "firstname": "Richard",
-            "surname": "Henderson",
-            "motivation": "\"for developing cryo-electron microscopy for the high-resolution structure determination of biomolecules in solution\"",
-            "share": "3"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 37,
-        "year_2602": 2017
-      },
-      {
-        "id_6776": "ec070a4f-3a9d-476a-9620-a9568086b3a7",
-        "laureates_7252": [
-          {
-            "id": "968",
-            "firstname": "William D.",
-            "surname": "Nordhaus",
-            "motivation": "\"for integrating climate change into long-run macroeconomic analysis\"",
-            "share": "2"
+              "laureates_7252": [
+                  {
+                      "id": "832",
+                      "firstname": "Jean-Marie Gustave",
+                      "surname": "Le Clézio",
+                      "motivation": "\"author of new departures, poetic adventure and sensual ecstasy, explorer of a humanity beyond and below the reigning civilization\"",
+                      "share": "1"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 93,
+              "year_2602": 2008
           },
           {
-            "id": "969",
-            "firstname": "Paul M.",
-            "surname": "Romer",
-            "motivation": "\"for integrating technological innovations into long-run macroeconomic analysis\"",
-            "share": "2"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 32,
-        "year_2602": 2018
-      },
-      {
-        "id_6776": "d143b5ee-38c4-4ef3-aad2-1967b2d5b664",
-        "laureates_7252": [
-          {
-            "id": "949",
-            "firstname": "Richard H.",
-            "surname": "Thaler",
-            "motivation": "\"for his contributions to behavioural economics\"",
-            "share": "1"
-          }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 38,
-        "year_2602": 2017
-      },
-      {
-        "id_6776": "e0bad29a-4d01-4ccd-85bd-1a882c62e279",
-        "laureates_7252": [
-          {
-            "id": "970",
-            "firstname": "William",
-            "surname": "Kaelin",
-            "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
-            "share": "3"
+              "laureates_7252": [
+                  {
+                      "id": "834",
+                      "firstname": "Paul",
+                      "surname": "Krugman",
+                      "motivation": "\"for his analysis of trade patterns and location of economic activity\"",
+                      "share": "1"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 92,
+              "year_2602": 2008
           },
           {
-            "id": "971",
-            "firstname": "Peter",
-            "surname": "Ratcliffe",
-            "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
-            "share": "3"
-          },
-          {
-            "id": "972",
-            "firstname": "Gregg",
-            "surname": "Semenza",
-            "motivation": "\"for their discoveries of how cells sense and adapt to oxygen availability\"",
-            "share": "3"
+              "laureates_7252": [
+                  {
+                      "id": "829",
+                      "firstname": "Osamu",
+                      "surname": "Shimomura",
+                      "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "830",
+                      "firstname": "Martin",
+                      "surname": "Chalfie",
+                      "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "831",
+                      "firstname": "Roger Y.",
+                      "surname": "Tsien",
+                      "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation_6623": null,
+              "prize_id_2142": 91,
+              "year_2602": 2008
           }
-        ],
-        "overallMotivation_6623": null,
-        "prize_id_2142": 30,
-        "year_2602": 2019
-      }
-    ]
+      ]
   }
 ]

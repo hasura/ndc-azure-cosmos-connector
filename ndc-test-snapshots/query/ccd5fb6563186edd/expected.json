@@ -1,35 +1,251 @@
 [
   {
-    "rows": [
-      {
-        "id": "f73061c5-a2b1-4083-96c9-9cbffd12fb60",
-        "laureates": [
+      "rows": [
           {
-            "id": "960",
-            "firstname": "Arthur",
-            "surname": "Ashkin",
-            "motivation": "\"for the optical tweezers and their application to biological systems\"",
-            "share": "2"
+              "laureates": [
+                  {
+                      "id": "816",
+                      "firstname": "Gerhard",
+                      "surname": "Ertl",
+                      "motivation": "\"for his studies of chemical processes on solid surfaces\"",
+                      "share": "1"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 97,
+              "year": 2007
           },
           {
-            "id": "961",
-            "firstname": "Gérard",
-            "surname": "Mourou",
-            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
-            "share": "4"
+              "laureates": [
+                  {
+                      "id": "829",
+                      "firstname": "Osamu",
+                      "surname": "Shimomura",
+                      "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "830",
+                      "firstname": "Martin",
+                      "surname": "Chalfie",
+                      "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "831",
+                      "firstname": "Roger Y.",
+                      "surname": "Tsien",
+                      "motivation": "\"for the discovery and development of the green fluorescent protein, GFP\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 91,
+              "year": 2008
           },
           {
-            "id": "962",
-            "firstname": "Donna",
-            "surname": "Strickland",
-            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
-            "share": "4"
+              "laureates": [
+                  {
+                      "id": "841",
+                      "firstname": "Venkatraman",
+                      "surname": "Ramakrishnan",
+                      "motivation": "\"for studies of the structure and function of the ribosome\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "842",
+                      "firstname": "Thomas A.",
+                      "surname": "Steitz",
+                      "motivation": "\"for studies of the structure and function of the ribosome\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "843",
+                      "firstname": "Ada E.",
+                      "surname": "Yonath",
+                      "motivation": "\"for studies of the structure and function of the ribosome\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 85,
+              "year": 2009
+          },
+          {
+              "laureates": [
+                  {
+                      "id": "851",
+                      "firstname": "Richard F.",
+                      "surname": "Heck",
+                      "motivation": "\"for palladium-catalyzed cross couplings in organic synthesis\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "852",
+                      "firstname": "Ei-ichi",
+                      "surname": "Negishi",
+                      "motivation": "\"for palladium-catalyzed cross couplings in organic synthesis\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "853",
+                      "firstname": "Akira",
+                      "surname": "Suzuki",
+                      "motivation": "\"for palladium-catalyzed cross couplings in organic synthesis\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 79,
+              "year": 2010
+          },
+          {
+              "laureates": [
+                  {
+                      "id": "867",
+                      "firstname": "Dan",
+                      "surname": "Shechtman",
+                      "motivation": "\"for the discovery of quasicrystals\"",
+                      "share": "1"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 73,
+              "year": 2011
+          },
+          {
+              "laureates": [
+                  {
+                      "id": "878",
+                      "firstname": "Robert J.",
+                      "surname": "Lefkowitz",
+                      "motivation": "\"for studies of G-protein-coupled receptors\"",
+                      "share": "2"
+                  },
+                  {
+                      "id": "879",
+                      "firstname": "Brian",
+                      "surname": "Kobilka",
+                      "motivation": "\"for studies of G-protein-coupled receptors\"",
+                      "share": "2"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 67,
+              "year": 2012
+          },
+          {
+              "laureates": [
+                  {
+                      "id": "889",
+                      "firstname": "Martin",
+                      "surname": "Karplus",
+                      "motivation": "\"for the development of multiscale models for complex chemical systems\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "890",
+                      "firstname": "Michael",
+                      "surname": "Levitt",
+                      "motivation": "\"for the development of multiscale models for complex chemical systems\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "891",
+                      "firstname": "Arieh",
+                      "surname": "Warshel",
+                      "motivation": "\"for the development of multiscale models for complex chemical systems\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 61,
+              "year": 2013
+          },
+          {
+              "laureates": [
+                  {
+                      "id": "909",
+                      "firstname": "Eric",
+                      "surname": "Betzig",
+                      "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "910",
+                      "firstname": "Stefan W.",
+                      "surname": "Hell",
+                      "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "911",
+                      "firstname": "William E.",
+                      "surname": "Moerner",
+                      "motivation": "\"for the development of super-resolved fluorescence microscopy\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 55,
+              "year": 2014
+          },
+          {
+              "laureates": [
+                  {
+                      "id": "921",
+                      "firstname": "Tomas",
+                      "surname": "Lindahl",
+                      "motivation": "\"for mechanistic studies of DNA repair\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "922",
+                      "firstname": "Paul",
+                      "surname": "Modrich",
+                      "motivation": "\"for mechanistic studies of DNA repair\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "923",
+                      "firstname": "Aziz",
+                      "surname": "Sancar",
+                      "motivation": "\"for mechanistic studies of DNA repair\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 49,
+              "year": 2015
+          },
+          {
+              "laureates": [
+                  {
+                      "id": "931",
+                      "firstname": "Jean-Pierre",
+                      "surname": "Sauvage",
+                      "motivation": "\"for the design and synthesis of molecular machines\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "932",
+                      "firstname": "Sir J. Fraser",
+                      "surname": "Stoddart",
+                      "motivation": "\"for the design and synthesis of molecular machines\"",
+                      "share": "3"
+                  },
+                  {
+                      "id": "933",
+                      "firstname": "Bernard L.",
+                      "surname": "Feringa",
+                      "motivation": "\"for the design and synthesis of molecular machines\"",
+                      "share": "3"
+                  }
+              ],
+              "overallMotivation": null,
+              "prize_id": 43,
+              "year": 2016
           }
-        ],
-        "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
-        "prize_id": 35,
-        "year": 2018
-      }
-    ]
+      ]
   }
 ]

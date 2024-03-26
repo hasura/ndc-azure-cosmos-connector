@@ -2,11 +2,6 @@
   "collection": "NobelLaureates",
   "query": {
     "fields": {
-      "id_7205": {
-        "type": "column",
-        "column": "id",
-        "fields": null
-      },
       "year_5695": {
         "type": "column",
         "column": "year",

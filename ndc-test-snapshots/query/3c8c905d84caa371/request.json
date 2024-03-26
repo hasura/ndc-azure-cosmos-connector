@@ -2,11 +2,6 @@
   "collection": "NobelLaureates",
   "query": {
     "fields": {
-      "id_4378": {
-        "type": "column",
-        "column": "id",
-        "fields": null
-      },
       "laureates_8485": {
         "type": "column",
         "column": "laureates",

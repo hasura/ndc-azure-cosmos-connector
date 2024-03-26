@@ -25,7 +25,7 @@
           "order_direction": "desc",
           "target": {
             "type": "column",
-            "name": "id",
+            "name": "prize_id",
             "path": []
           }
         }

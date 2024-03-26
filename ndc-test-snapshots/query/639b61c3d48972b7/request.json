@@ -2,11 +2,6 @@
   "collection": "NobelLaureates",
   "query": {
     "fields": {
-      "id": {
-        "type": "column",
-        "column": "id",
-        "fields": null
-      },
       "laureates": {
         "type": "column",
         "column": "laureates",
@@ -41,6 +36,18 @@
         "type": "scalar",
         "value": 2017
       }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "prize_id",
+            "path": []
+          }
+        }
+      ]
     }
   },
   "arguments": {},

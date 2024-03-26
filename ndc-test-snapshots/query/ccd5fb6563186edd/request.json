@@ -2,11 +2,6 @@
   "collection": "NobelLaureates",
   "query": {
     "fields": {
-      "id": {
-        "type": "column",
-        "column": "id",
-        "fields": null
-      },
       "laureates": {
         "type": "column",
         "column": "laureates",
@@ -33,14 +28,26 @@
       "type": "binary_comparison_operator",
       "column": {
         "type": "column",
-        "name": "id",
+        "name": "category",
         "path": []
       },
       "operator": "eq",
       "value": {
         "type": "scalar",
-        "value": "f73061c5-a2b1-4083-96c9-9cbffd12fb60"
+        "value": "chemistry"
       }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "prize_id",
+            "path": []
+          }
+        }
+      ]
     }
   },
   "arguments": {},
