@@ -21,11 +21,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Start Azure Cosmos DB emulator
-        run: docker run --detach --publish 8082:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+        run: docker run --detach --publish 8081:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
 
       - name: Setup database
         run: |
-          sleep 100
+          sleep 120
           cd cosmos/script
           npm install --save @azure/cosmos
           node app.js
@@ -51,4 +51,3 @@ jobs:
       - name: Run ndc-test
         working-directory: ndc-spec
         run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots
-        # run: cargo run --bin ndc-test -- test --endpoint http://0.0.0.0:8080
