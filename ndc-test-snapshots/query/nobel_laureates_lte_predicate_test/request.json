@@ -2,23 +2,41 @@
   "collection": "NobelLaureates",
   "query": {
     "fields": {
-      "prize_id_3854": {
-        "type": "column",
-        "column": "prize_id",
-        "fields": null
-      },
-      "laureates_0135": {
+      "laureates": {
         "type": "column",
         "column": "laureates",
         "fields": null
       },
-      "year_4781": {
+      "overallMotivation": {
+        "type": "column",
+        "column": "overallMotivation",
+        "fields": null
+      },
+      "prize_id": {
+        "type": "column",
+        "column": "prize_id",
+        "fields": null
+      },
+      "year": {
         "type": "column",
         "column": "year",
         "fields": null
       }
     },
     "limit": 10,
+    "predicate": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "prize_id",
+        "path": []
+      },
+      "operator": "lte",
+      "value": {
+        "type": "scalar",
+        "value": 14
+      }
+    },
     "order_by": {
       "elements": [
         {
