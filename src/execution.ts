@@ -1,8 +1,27 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as schema from "./schema";
 import * as sql from "./sqlGeneration";
-import { Database, SqlQuerySpec } from "@azure/cosmos";
+import { Database } from "@azure/cosmos";
 import { runSQLQuery } from "./cosmosDb";
+
+
+export enum RequestedFieldCtx {
+    Select,
+    Predicate,
+
+}
+
+export type RequestedField = {
+    isSelect: boolean,
+    isPredicate: boolean,
+    name: string,
+    fields?: RequestedFields | null
+}
+
+export type RequestedFields = {
+    [fieldAlias: string]: RequestedField
+}
+
 
 
 function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.ObjectTypeDefinition) {
@@ -25,8 +44,104 @@ function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.Obje
     }
 }
 
+/**
+   * Parses a `nestedField` on a `column` and returns a `sql.sqlQueryContext`.
+
+   * The `sql.sqlQueryContext` will be translated to a SQL subquery with the nested fields
+   * requested from the `column`
+
+   @param {sdk.NestedField} nestedField - Nested field selection.
+   @param {string} column - Name of the column from where nested fields are to be selected.
+   @param {string} columnPrefix - Prefix of the `column`.
+   @returns {sql.SqlQueryContext} Returns the `SqlQueryContext` which will return a SQL query context which
+   will contain the selection of the nested fields, which is intended to be used a subquery.
+
+**/
+
+
+// TODO: Please write unit tests for this function.
+function parseNestedFieldLegacy(nestedField: sdk.NestedField, column: string, columnPrefix: string): sql.SqlQueryContext {
+    if (nestedField.type === "object") {
+        let selectFields: sql.SelectColumns = {};
+        Object.entries(nestedField.fields).forEach(([fieldAlias, field]) => {
+            selectFields[fieldAlias] = parseFieldLegacy(field, column);
+        });
+        const fromClause: sql.FromClause = {
+            source: `${columnPrefix}.${column}`,
+            sourceAlias: column,
+
+        };
+        return {
+            kind: 'sqlQueryContext',
+            select: selectFields,
+            selectAsValue: false,
+            from: fromClause,
+            isAggregateQuery: false,
+
+        }
+    } else {
+        throw new sdk.NotSupported("Querying nested array fields is not supported yet.")
+    }
+}
+
+function parseNestedField(nestedField: sdk.NestedField, requestedFieldCtx: RequestedFieldCtx): RequestedFields {
+    if (nestedField.type === "object") {
+        let requestedFields: RequestedFields = {};
+        Object.entries(nestedField.fields).forEach(([fieldAlias, field]) => {
+            requestedFields[fieldAlias] = parseField(field, requestedFieldCtx);
+        });
+        return requestedFields
+    } else {
+        throw new sdk.NotSupported("Querying nested array fields is not supported yet.")
+    }
+}
+
+
+function parseFieldLegacy(field: sdk.Field, columnPrefix: string): sql.SelectColumn {
+    switch (field.type) {
+        case 'column':
+            if (field.fields !== null && field.fields !== undefined) {
+                return parseNestedFieldLegacy(field.fields, field.column, columnPrefix)
+            } else {
+                return {
+                    kind: 'column',
+                    column: {
+                        name: field.column,
+                        prefix: [columnPrefix]
+                    }
+                }
+            }
+        case 'relationship':
+            throw new sdk.BadRequest("Relationships are not supported in Azure Cosmos")
+
+    }
+}
+
+function parseField(field: sdk.Field, requestedFieldCtx: RequestedFieldCtx): RequestedField {
+    switch (field.type) {
+        case 'column':
+            let nestedFields = null;
+            if (field.fields !== null && field.fields !== undefined) {
+                nestedFields = parseNestedField(field.fields, requestedFieldCtx)
+            }
+            return {
+                isSelect: requestedFieldCtx === RequestedFieldCtx["Select"],
+                isPredicate: requestedFieldCtx === RequestedFieldCtx["Predicate"],
+                name: field.column,
+                fields: nestedFields
+            }
+        case 'relationship':
+            throw new sdk.BadRequest("Relationships are not supported in Azure Cosmos")
+
+    }
+}
+
+
+
 function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryContext {
     let isAggregateQuery = false;
+
+    let requestedSqlFields: RequestedFields = {};
 
     const collection: string = queryRequest.collection;
 
@@ -63,20 +178,14 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                     if (!(queryField.column in collectionObjectType.properties)) {
                         throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectBaseType}'`)
                     } else {
-                        requestedFields[fieldName] = {
-                            kind: 'column',
-                            column: {
-                                name: queryField.column,
-                                prefix: [rootContainerAlias]
-                            }
-                        }
+                        requestedFields[fieldName] = parseFieldLegacy(queryField, rootContainerAlias);
+                        requestedSqlFields[fieldName] = parseField(queryField, RequestedFieldCtx["Select"]);
                     };
 
                     break;
                 case "relationship":
                     throw new sdk.NotSupported('Querying relationship fields are not supported.');
             }
-
         })
     }
 
@@ -147,10 +256,12 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
     };
 
     let sqlGenCtx: sql.SqlQueryContext = {
+        kind: 'sqlQueryContext',
         select: requestedFields,
         from: fromClause,
         isAggregateQuery,
         selectAsValue: false,
+
     };
 
     if (queryRequest.query.limit != null) {
@@ -171,6 +282,8 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
         sqlGenCtx.orderBy = queryRequest.query.order_by;
     }
     sqlGenCtx.predicate = queryRequest.query.predicate;
+
+    console.log("Requested fields are ", JSON.stringify(requestedSqlFields, null, 2));
 
 
     return sqlGenCtx

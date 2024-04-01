@@ -48,7 +48,7 @@ export type JSONDefinitionValueType
     | JSONDefinitionValueObjectType
     | JSONDefinitionValueNullType
 
-export type JSONDefinitionValueObjectTypeProperty = JSONDefinitionValueType | JSONDefinitionValueObjectTypePropertyRef
+export type JSONDefinitionValueObjectTypeProperty = JSONDefinitionValueType | any
 
 export type JSONSchemaDefinitionValues = {
     [typeName: string]: JSONDefinitionValueType

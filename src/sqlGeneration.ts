@@ -9,7 +9,7 @@ export type Column = {
 
 export type SelectContainerColumn = {
     kind: 'column',
-    column: Column,
+    column: Column
 }
 
 export type SelectAggregate = {
@@ -18,12 +18,14 @@ export type SelectAggregate = {
     aggregateFunction: string
 }
 
+export type SelectColumn = SelectContainerColumn | SelectAggregate | SqlQueryContext
+
 /*
   The key represents the alias of the request field and the
   value represents the value to be selected from the container.
 */
 export type SelectColumns = {
-    [alias: string]: (SelectContainerColumn | SelectAggregate)
+    [alias: string]: SelectColumn
 }
 
 export type QueryVariable = {
@@ -31,16 +33,6 @@ export type QueryVariable = {
 }
 
 export type QueryVariables = QueryVariable[] | null | undefined
-
-export type SqlQueryGenerationContext = {
-    selectFields: SelectColumns,
-    limit?: number | null,
-    offset?: number | null,
-    orderBy?: sdk.OrderBy | null,
-    predicate?: sdk.Expression | null,
-    isAggregateQuery: boolean,
-    variables?: QueryVariables
-}
 
 /*
   Type to track the parameters used in the SQL query.
@@ -68,13 +60,23 @@ export type SqlExpression = {
 export type ArrayJoinTarget = ContainerExpression | SqlExpression
 
 export type ArrayJoinClause = {
+    type: 'array',
     joinIdentifier: string,
     arrayJoinTarget: ArrayJoinTarget,
 }
 
-export type JoinClause = ArrayJoinClause; // TODO: Handle the case of `JOIN ((SELECT VALUE t FROM t IN p.tags WHERE t.name IN ("winter", "fall")))`, if needed.
+export type SubqueryJoinClause = {
+    type: 'subquery',
+    from: string,
+    subQuery: SqlQueryContext,
+    subQueryAs: string,
+}
+
+export type JoinClause = ArrayJoinClause | SubqueryJoinClause;
+
 
 export type SqlQueryContext = {
+    kind: 'sqlQueryContext',
     select: SelectColumns,
     /* Set to `true` to prevent the wrapping of the results into another JSON object. */
     selectAsValue: boolean,
@@ -96,12 +98,17 @@ type VariablesMappings = {
 }
 
 function formatJoinClause(joinClause: JoinClause): string {
-    let joinTarget =
-        joinClause.arrayJoinTarget.kind === 'containerExpression'
-            ? joinClause.arrayJoinTarget.containerExpression
-            : constructSqlQuery(joinClause.arrayJoinTarget.sqlExpression, joinClause.joinIdentifier, null);
+    if (joinClause.type === "array") {
+        let joinTarget =
+            joinClause.arrayJoinTarget.kind === 'containerExpression'
+                ? joinClause.arrayJoinTarget.containerExpression
+                : constructSqlQuery(joinClause.arrayJoinTarget.sqlExpression, joinClause.joinIdentifier, null);
 
-    return `${joinClause.joinIdentifier} in (${joinTarget})`
+        return `${joinClause.joinIdentifier} in (${joinTarget})`
+    } else {
+        return `(${constructSqlQuery(joinClause.subQuery, joinClause.from, null).query}) ${joinClause.subQueryAs}`;
+    }
+
 }
 
 function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: string, queryVariables: QueryVariables): cosmos.SqlQuerySpec {
@@ -150,13 +157,13 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
 
     let joinClause = null;
 
-
     if (Object.keys(utilisedVariables).length > 0) {
         let variablesJoinTarget: ArrayJoinTarget = {
             kind: 'containerExpression',
             containerExpression: 'SELECT VALUE @vars'
         };
         let joinExp: JoinClause = {
+            type: 'array',
             joinIdentifier: "vars",
             arrayJoinTarget: variablesJoinTarget,
         };
@@ -212,11 +219,14 @@ function formatColumn(column: Column) {
     return `${column.prefix.join(".")}.${column.name}`
 }
 
+
 function formatSelectColumns(fieldsToSelect: SelectColumns): string {
     return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
         switch (selectColumn.kind) {
             case 'column':
                 return `${formatColumn(selectColumn.column)} as ${alias}`
+            case 'sqlQueryContext':
+                return `(${constructSqlQuery(selectColumn, alias, null).query.trim()}) as ${alias}`;
             case 'aggregate':
                 return `${selectColumn.aggregateFunction} (${formatColumn(selectColumn.column)}) as ${alias} `
         }
@@ -291,18 +301,18 @@ function visitExpression(parameters: SqlParameters, variables: VariablesMappings
         case "binary_comparison_operator":
             const comparisonTarget = visitComparisonTarget(expression.column, containerAlias);
             switch (expression.operator) {
-                case "eq":
+                case "_eq":
                     return `${comparisonTarget} = ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "neq":
+                case "_neq":
                     return `${comparisonTarget} != ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "gte":
+                case "_gte":
                     return `${comparisonTarget} >= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "gt":
+                case "_gt":
                     return `${comparisonTarget} > ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "lte":
+                case "_lte":
                     return `${comparisonTarget} <= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "lt":
-                    return `${comparisonTarget} <${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)}`
+                case "_lt":
+                    return `${comparisonTarget} < ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)}`
                 default:
                     throw new sdk.BadRequest(`Unknown binary comparison operator ${expression.operator} found`)
             }

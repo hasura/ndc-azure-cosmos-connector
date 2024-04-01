@@ -1,4 +1,5 @@
 import { Container } from "@azure/cosmos"
+import * as sdk from "@hasura/ndc-sdk-typescript";
 import { BuiltInScalarTypeName, ObjectTypeDefinitions, TypeDefinition, ObjectTypePropertiesMap } from "./schema";
 import { InputData, jsonInputForTargetLanguage, quicktype } from "quicktype-core";
 import { JSONSchema, JSONDefinitionValueObjectTypeProperty } from "./jsonSchema";
@@ -21,8 +22,9 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
     return await runSQLQuery<string>(querySpec, container)
 }
 
-export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
+export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<[string, JSONSchema]> {
     const jsonInput = jsonInputForTargetLanguage("schema");
+
 
     await jsonInput.addSource({
         name: containerTypeName,
@@ -37,21 +39,21 @@ export async function inferJSONSchemaFromContainerRows(rows: string[], container
         lang: "schema"
     });
 
-    return JSON.parse(jsonSchema.lines.join(""))
+    console.log(jsonSchema.lines.join("\n"));
+
+    let jsonSchemaOutput = JSON.parse(jsonSchema.lines.join(""));
+
+    if (jsonSchemaOutput["$ref"] !== null) {
+        // We need to do this because if the container name is in lowercase, quicktype
+        // still capitalizes the types that it infers from the schema.
+        return [((jsonSchemaOutput['$ref'] as string).split('/')[2]), jsonSchemaOutput]
+    } else {
+        throw new sdk.InternalServerError("Could not find the object type of the collection ${containerTypeName} while inferring the schema")
+    }
 }
 
 function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypeProperty): TypeDefinition | null {
-    if (jsonValueTypeDefn.type == "ref" || jsonValueTypeDefn.type === null) {
-        // Case of a reference to an object
-        if (jsonValueTypeDefn['$ref'] !== null) {
-            return {
-                type: "named",
-                name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
-                kind: "object"
-            }
-        }
-
-    } else if (jsonValueTypeDefn.type == "null") {
+    if (jsonValueTypeDefn.type == "null") {
         // We don't have enough information to predict anything about the property. So, just
         // return null.
         return null
@@ -101,6 +103,16 @@ function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypePro
             name: BuiltInScalarTypeName.Boolean,
             kind: "scalar"
         }
+    } else if (typeof jsonValueTypeDefn === "object") {
+        // Case of a reference to an object
+        if (jsonValueTypeDefn['$ref'] !== null && jsonValueTypeDefn['$ref'] !== undefined) {
+            return {
+                type: "named",
+                name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
+                kind: "object"
+            }
+        }
+
     }
 
     return null
