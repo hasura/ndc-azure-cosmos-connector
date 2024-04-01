@@ -1,5 +1,7 @@
 import { CosmosClient, Database, Container, SqlQuerySpec } from "@azure/cosmos"
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 export type RawCosmosDbConfig = {
     databaseName: string,
     endpoint: string,

@@ -22,7 +22,6 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
 }
 
 export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
-    console.log("Container rows are ", JSON.stringify(rows, null, 2));
     const jsonInput = jsonInputForTargetLanguage("schema");
 
     await jsonInput.addSource({
@@ -117,7 +116,8 @@ export function getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema: JSON
 
                 let propertyTypeDefn = getPropertyTypeDefn(propertyDefn);
 
-                if (propertyTypeDefn !== null) {
+                let legacyProperty = ['_rid', '_self', '_etag', '_attachments', '_ts']
+                if (propertyTypeDefn !== null && !legacyProperty.includes(propertyName)) {
                     objectTypeProperties[propertyName] = {
                         propertyName: propertyName,
                         description: null,

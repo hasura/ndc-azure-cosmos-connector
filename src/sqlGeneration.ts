@@ -73,7 +73,10 @@ export function generateSqlQuery(sqlGenCtx: SqlQueryGenerationContext, container
 }
 
 function formatSelectColumns(fieldsToSelect: SelectColumns, containerAlias: string): string {
-    return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
+    if (Object.keys(fieldsToSelect).length === 0) {
+        return "VALUE {}"
+    }
+    else return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
         switch (selectColumn.kind) {
             case 'column':
                 // `??` is the coalesce operator, we want the query to expicitly return

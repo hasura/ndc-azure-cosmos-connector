@@ -1,0 +1,53 @@
+name: Continuous Integration
+on:
+  push:
+    branches:
+      - py/ndc-test
+jobs:
+  unit_tests:
+    name: Run Node.js unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (GitHub)
+        uses: actions/checkout@v3
+        with:
+          path: cosmos
+
+      - name: Log in to GitHub Container Registry 📦
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Start Azure Cosmos DB emulator
+        run: docker run --detach --publish 8081:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+
+      - name: Setup database
+        run: |
+          sleep 120
+          cd cosmos/script
+          npm install --save @azure/cosmos
+          node app.js
+
+      - name: Build connector
+        run: |
+          cd cosmos
+          npm install --save @azure/cosmos
+          npm i -g rimraf && npm run build
+
+      - name: Start connector
+        run: |
+          cd cosmos
+          export HASURA_CONFIGURATION_DIRECTORY="./connector_config_emulator.json"
+          npm run start serve --configuration connector_config_emulator.json &
+
+      - name: Checkout ndc-spec
+        uses: actions/checkout@v3
+        with:
+          repository: hasura/ndc-spec
+          path: ndc-spec
+
+      - name: Run ndc-test
+        working-directory: ndc-spec
+        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots

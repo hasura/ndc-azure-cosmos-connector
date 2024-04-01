@@ -1,0 +1,341 @@
+{
+  "scalar_types": {
+    "Boolean": {
+      "aggregate_functions": {
+        "bool_and": {
+          "result_type": {
+            "type": "named",
+            "name": "Boolean"
+          }
+        },
+        "bool_not": {
+          "result_type": {
+            "type": "named",
+            "name": "Boolean"
+          }
+        },
+        "bool_or": {
+          "result_type": {
+            "type": "named",
+            "name": "Boolean"
+          }
+        }
+      },
+      "comparison_operators": {
+        "eq": {
+          "type": "equal"
+        },
+        "neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Boolean"
+          }
+        }
+      }
+    },
+    "Integer": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "count": {
+          "result_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        }
+      },
+      "comparison_operators": {
+        "eq": {
+          "type": "equal"
+        },
+        "gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        },
+        "neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Integer"
+          }
+        }
+      }
+    },
+    "Number": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "count": {
+          "result_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        }
+      },
+      "comparison_operators": {
+        "eq": {
+          "type": "equal"
+        },
+        "gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Number"
+          }
+        }
+      }
+    },
+    "String": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "contains": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "endswith": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "eq": {
+          "type": "equal"
+        },
+        "gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "regexmatch": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "startswith": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "String"
+          }
+        }
+      }
+    }
+  },
+  "object_types": {
+    "Laureate": {
+      "fields": {
+        "firstname": {
+          "type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "motivation": {
+          "type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "share": {
+          "type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "surname": {
+          "type": {
+            "type": "named",
+            "name": "String"
+          }
+        }
+      }
+    },
+    "NobelLaureates": {
+      "fields": {
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "laureates": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Laureate"
+            }
+          }
+        },
+        "overallMotivation": {
+          "type": {
+            "type": "named",
+            "name": "String"
+          }
+        },
+        "prize_id": {
+          "type": {
+            "type": "named",
+            "name": "Number"
+          }
+        },
+        "year": {
+          "type": {
+            "type": "named",
+            "name": "Number"
+          }
+        }
+      }
+    }
+  },
+  "collections": [
+    {
+      "name": "NobelLaureates",
+      "arguments": {},
+      "type": "NobelLaureates",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    }
+  ],
+  "functions": [],
+  "procedures": []
+}

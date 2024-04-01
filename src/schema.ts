@@ -184,7 +184,7 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
         [k: string]: ScalarType;
     };
     const scalarTypes : ScalarTypes = {
-        "integer": {
+        "Integer": {
             aggregate_functions: {
                 "count": {
                     result_type: {
@@ -218,47 +218,47 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
                 }
             },
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "integer"
+                        name: "Integer"
                     }
                 },
-                _gt: {
+                gt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "integer"
+                        name: "Integer"
                     }
                 },
-                _lt: {
+                lt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "integer"
+                        name: "Integer"
                     }
                 },
-                _gte: {
+                gte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "integer"
+                        name: "Integer"
                     }
                 },
-                _lte: {
+                lte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "integer"
+                        name: "Integer"
                     }
                 }
             },
         },
-        "number": {
+        "Number": {
             aggregate_functions: {
                 "count": {
                     result_type: {
@@ -292,47 +292,47 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
                 }
             },
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "number"
+                        name: "Number"
                     }
                 },
-                _gt: {
+                gt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "number"
+                        name: "Number"
                     }
                 },
-                _lt: {
+                lt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "number"
+                        name: "Number"
                     }
                 },
-                _gte: {
+                gte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "number"
+                        name: "Number"
                     }
                 },
-                _lte: {
+                lte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "number"
+                        name: "Number"
                     }
                 }
             },
         },
-        "boolean": {
+        "Boolean": {
             aggregate_functions: {
                 "bool_and": {
                     result_type: {
@@ -354,85 +354,85 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
                 }
             },
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "boolean"
+                        name: "Boolean"
                     }
                 }
             },
         },
-        "string": {
+        "String": {
             aggregate_functions: {},
             comparison_operators: {
-                _eq: {
+                eq: {
                     type: "equal"
                 },
-                _neq: {
+                neq: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _gt: {
+                gt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _lt: {
+                lt: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _gte: {
+                gte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _lte: {
+                lte: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _contains: {
+                contains: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _endswith: {
+                endswith: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _regexmatch: {
+                regexmatch: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 },
-                _startswith: {
+                startswith: {
                     type: "custom",
                     argument_type: {
                         type: "named",
-                        name: "string"
+                        name: "String"
                     }
                 }
             },
