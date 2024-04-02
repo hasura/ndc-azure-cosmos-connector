@@ -1,6 +1,5 @@
 packagingDefinition:
-  type: PrebuiltDockerImage
-  dockerImage: ghcr.io/hasura/ndc-azure-cosmos:v0.1.0
+  type: ManagedDockerBuild
 supportedEnvironmentVariables:
   - name: AZURE_COSMOS_KEY
     description: The Azure Cosmos DB key
