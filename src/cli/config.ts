@@ -9,6 +9,8 @@ import { runSQLQuery, constructCosmosDbClient } from "../cosmosDb"
 import { exit } from "process";
 import fs from "fs";
 import { promisify } from "util";
+import { $RefParser } from "@apidevtools/json-schema-ref-parser";
+
 
 export type RawConfiguration = {
     azure_cosmos_key: string,
@@ -17,63 +19,22 @@ export type RawConfiguration = {
     azure_cosmos_no_of_rows_to_fetch: number | null
 }
 
-export interface JSONDefinitionValueStringType {
-    type: "string"
+type JSONSchemaProperty = {
+    type: string,
+    $ref: string,
+    items?: JSONSchemaProperty
 }
 
-export interface JSONDefinitionValueNumberType {
-    type: "number"
-}
-
-export interface JSONDefinitionValueIntegerType {
-    type: "integer"
-}
-
-
-export interface JSONDefinitionValueBooleanType {
-    type: "boolean"
-}
-
-export interface JSONDefinitionValueObjectTypeProperties {
-    [propertyName: string]: JSONDefinitionValueType
-}
-
-export interface JSONDefinitionValueObjectType {
-    type: "object",
-    properties: JSONDefinitionValueObjectTypeProperties
-}
-
-export interface JSONDefinitionValueArrayType {
-    type: "array",
-    items: JSONDefinitionValueObjectTypeProperty
-}
-
-export interface JSONDefinitionValueNullType {
-    type: "null"
-}
-
-export interface JSONDefinitionValueObjectTypePropertyRef {
-    type?: "ref"
-    '$ref': string
-}
-
-export type JSONDefinitionValueType
-    = JSONDefinitionValueStringType
-    | JSONDefinitionValueArrayType
-    | JSONDefinitionValueBooleanType
-    | JSONDefinitionValueNumberType
-    | JSONDefinitionValueIntegerType
-    | JSONDefinitionValueObjectType
-    | JSONDefinitionValueNullType
-
-export type JSONDefinitionValueObjectTypeProperty = JSONDefinitionValueType | JSONDefinitionValueObjectTypePropertyRef
-
-export type JSONSchemaDefinitionValues = {
-    [typeName: string]: JSONDefinitionValueType
+type JSONSchemaDefinition = {
+    type: string,
+    additionalProperties: boolean,
+    properties?: Record<string, JSONSchemaProperty>,
+    title: string,
 }
 
 export type JSONSchema = {
-    definitions: JSONSchemaDefinitionValues
+    definitions: Record<string, JSONSchemaDefinition>,
+    $ref: string,
 }
 
 
@@ -94,6 +55,7 @@ export async function fetchLatestNRowsFromContainer(n: number, container: Contai
     return await runSQLQuery<string>(querySpec, container)
 }
 
+
 export async function inferJSONSchemaFromContainerRows(rows: string[], containerTypeName: string): Promise<JSONSchema> {
     const jsonInput = jsonInputForTargetLanguage("schema");
 
@@ -110,65 +72,72 @@ export async function inferJSONSchemaFromContainerRows(rows: string[], container
         lang: "schema"
     });
 
-    return JSON.parse(jsonSchema.lines.join(""))
+    let rawJSONSchemaOutput: any = jsonSchema.lines.join("\n");
+
+    return JSON.parse(rawJSONSchemaOutput)
+
 }
 
-function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypeProperty): TypeDefinition | null {
-    if (jsonValueTypeDefn.type == "ref" || jsonValueTypeDefn.type === null) {
-        // Case of a reference to an object
-        if (jsonValueTypeDefn['$ref'] !== null) {
+function getPropertyTypeDefn(property: JSONSchemaProperty, $refs: $RefParser): TypeDefinition | null {
+    if (property.$ref !== undefined && property.$ref !== null) {
+
+        const referencedPropertyDefn = $refs.$refs.get(property.$ref) as JSONSchemaDefinition;
+
+        if (referencedPropertyDefn.type === "object") {
             return {
                 type: "named",
-                name: (jsonValueTypeDefn['$ref'] as string).split('/')[2],
+                name: referencedPropertyDefn.title,
                 kind: "object"
             }
+        } else if (referencedPropertyDefn.type === "string") {
+            return {
+                type: "named",
+                name: BuiltInScalarTypeName.String,
+                kind: "scalar"
+            }
+        } else {
+            console.log("Warning: Could not infer the type for referenced property", property);
+
         }
 
-    } else if (jsonValueTypeDefn.type == "null") {
+
+    } else if (property.type == "null") {
         // We don't have enough information to predict anything about the property. So, just
         // return null.
         return null
-    } else if (jsonValueTypeDefn.type == "array") {
-        if ('$ref' in jsonValueTypeDefn.items) {
-            return {
-                "type": "array",
-                "elementType": {
-                    "type": "named",
-                    "name": (jsonValueTypeDefn.items['$ref'] as string).split('/')[2],
-                    "kind": "object"
-                }
-            }
-        } else {
-            let propertyTypeDefn = getPropertyTypeDefn(jsonValueTypeDefn.items);
-            if (propertyTypeDefn != null) {
+    } else if (property.type == "array") {
+        if (property.items !== undefined) {
+            const elementType = getPropertyTypeDefn(property.items, $refs);
+
+            if (elementType !== null) {
                 return {
                     "type": "array",
-                    "elementType": propertyTypeDefn
+                    "elementType": elementType
                 }
-            } else {
-                return null
             }
+
         }
-    } else if (jsonValueTypeDefn.type == "string") {
+        return null
+    } else if (property.type == "string") {
         return {
             "type": "named",
             name: BuiltInScalarTypeName.String,
             kind: "scalar"
         }
-    } else if (jsonValueTypeDefn.type == "number") {
+    } else if (property.type == "number") {
         return {
             "type": "named",
             name: BuiltInScalarTypeName.Number,
             kind: "scalar"
         }
     }
-    else if (jsonValueTypeDefn.type == "integer") {
+    else if (property.type == "integer") {
         return {
             "type": "named",
             name: BuiltInScalarTypeName.Number,
             kind: "scalar"
         }
-    } else if (jsonValueTypeDefn.type == "boolean") {
+    } else if (property.type == "boolean") {
         return {
             "type": "named",
             name: BuiltInScalarTypeName.Boolean,
@@ -179,31 +148,38 @@ function getPropertyTypeDefn(jsonValueTypeDefn: JSONDefinitionValueObjectTypePro
     return null
 }
 
-export function getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema: JSONSchema): ObjectTypeDefinitions {
+export async function getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema: JSONSchema): Promise<ObjectTypeDefinitions> {
     var objectTypeDefinitions: ObjectTypeDefinitions = {};
+    let parser = new $RefParser();
+
+    const $refs = await parser.resolve(JSON.parse(JSON.stringify(containerJSONSchema)));
     Object.entries(containerJSONSchema.definitions).forEach(([objectTypeName, objectTypeDefinition]) => {
         if (objectTypeDefinition.type == "object") {
             var objectTypeProperties: ObjectTypePropertiesMap = {};
 
-            Object.entries(objectTypeDefinition.properties).map(([propertyName, propertyDefn]) => {
+            if (objectTypeDefinition.properties !== undefined) {
 
-                let propertyTypeDefn = getPropertyTypeDefn(propertyDefn);
+                Object.entries(objectTypeDefinition.properties).map(([propertyName, propertyDefn]) => {
 
-                let legacyProperty = ['_rid', '_self', '_etag', '_attachments', '_ts']
-                if (propertyTypeDefn !== null && !legacyProperty.includes(propertyName)) {
-                    objectTypeProperties[propertyName] = {
-                        propertyName: propertyName,
-                        description: null,
-                        type: propertyTypeDefn
-                    };
+                    let propertyTypeDefn = getPropertyTypeDefn(propertyDefn, parser);
+
+                    let legacyProperty = ['_rid', '_self', '_etag', '_attachments', '_ts']
+                    if (propertyTypeDefn !== null && !legacyProperty.includes(propertyName)) {
+                        objectTypeProperties[propertyName] = {
+                            propertyName: propertyName,
+                            description: null,
+                            type: propertyTypeDefn
+                        };
+                    }
+
+                })
+
+                objectTypeDefinitions[objectTypeName] = {
+                    description: null,
+                    properties: objectTypeProperties
                 }
-
-            })
-
-            objectTypeDefinitions[objectTypeName] = {
-                description: null,
-                properties: objectTypeProperties
             }
+
         }
     }
     )
@@ -237,11 +213,11 @@ async function getCollectionsSchema(database: Database, nRows: number): Promise<
         nContainerRows.reverse();
         const containerJsonSchema = await inferJSONSchemaFromContainerRows(nContainerRows, container.id);
 
-        const containerObjectTypeDefinitions = getObjectTypeDefinitionsFromJSONSchema(containerJsonSchema);
+        const containerObjectTypeDefinitions = await getObjectTypeDefinitionsFromJSONSchema(containerJsonSchema);
 
         const collectionObjectType: NamedObjectTypeDefinition = {
             type: "named",
-            name: container.id,
+            name: containerJsonSchema.$ref.split('/').pop() as string,
             kind: "object"
         };
 
@@ -261,20 +237,9 @@ async function getCollectionsSchema(database: Database, nRows: number): Promise<
         scalarTypes: scalarTypeDefinitions,
     };
 
-    console.log("Scheam is ", JSON.stringify(schema, null, 2));
-
     return schema
 
 }
-
-function getEnvVariable(envVarName: string): string {
-    const envVariable = process.env[envVarName];
-    if (!envVariable) {
-        throw new Error(`${envVarName} environment variable is not defined.`);
-    }
-    return envVariable;
-}
-
 
 export async function generateConnectorConfig(outputConfigDir: string) {
     const rowsToFetch = process.env["AZURE_COSMOS_NO_OF_ROWS_TO_FETCH"] ?? "100";
@@ -282,8 +247,6 @@ export async function generateConnectorConfig(outputConfigDir: string) {
     try {
         const dbClient = constructCosmosDbClient();
         const schema = await getCollectionsSchema(dbClient, parseInt(rowsToFetch));
-
-        console.log("schema is ", JSON.stringify(schema, null, 2));
 
         const response: any = {
             schema

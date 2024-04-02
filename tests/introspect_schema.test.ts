@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "../src/introspectContainerSchema"
+import { getObjectTypeDefinitionsFromJSONSchema, inferJSONSchemaFromContainerRows } from "../src/cli/config"
 
 describe("Infer schema of JSON value", function() {
     it("infers the schema of a simple object", async function() {
@@ -7,7 +7,9 @@ describe("Infer schema of JSON value", function() {
             a: "b"
         }`;
         let inferredJSONSchema = await inferJSONSchemaFromContainerRows([simpleObject], "simple");
-        let objectTypeDefns = getObjectTypeDefinitionsFromJSONSchema(inferredJSONSchema);
+        let objectTypeDefns = await getObjectTypeDefinitionsFromJSONSchema(inferredJSONSchema);
+
+        // TODO: Fix this test
 
         expect("1", "1")
 
