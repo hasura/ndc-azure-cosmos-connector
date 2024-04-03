@@ -25,7 +25,7 @@ jobs:
 
       - name: Setup database
         run: |
-          sleep 60
+          sleep 120
           cd cosmos/script
           npm install --save @azure/cosmos
           node app.js
@@ -45,8 +45,8 @@ jobs:
       - name: Start connector
         run: |
           cd cosmos
-          export HASURA_CONFIGURATION_DIRECTORY="./connector_config_emulator.json"
-          npm run start serve --configuration connector_config_emulator.json &
+          export HASURA_CONFIGURATION_DIRECTORY="."
+          npm run start serve --configuration .
 
       - name: Checkout ndc-spec
         uses: actions/checkout@v3
