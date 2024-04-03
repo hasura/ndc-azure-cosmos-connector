@@ -38,6 +38,7 @@ jobs:
 
       - name: Generate the connector configuration
         run: |
+          cd cosmos
           ./dist/cli/index.js update
 
       - name: Start connector
