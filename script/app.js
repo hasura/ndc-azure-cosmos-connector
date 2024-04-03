@@ -13,70 +13,70 @@ const { database } = await cosmosClient.databases.createIfNotExists({
     throughput: 400
   })
 
-  const { container } = await database.containers.createIfNotExists({
-    id: 'NobelLaureates',
-    partitionKey: {
-      paths: [
-        '/year'
-      ]
-    },
-    indexingPolicy: {
-      automatic: true,
-      indexingMode: "consistent",
-      includedPaths: [
-        {
-          path: "/*"
-        }
-      ],
-      excludedPaths: [
-        {
-          path: "/\"_etag\"/?"
-        }
-      ],
-      compositeIndexes: [
-        [
-            {
-                "path": "/overallMotivation",
-                "order": "descending"
-            },
-            {
-                "path": "/prize_id",
-                "order": "descending"
-            }
-        ],
-        [
-            {
-                "path": "/overallMotivation",
-                "order": "ascending"
-            },
-            {
-                "path": "/prize_id",
-                "order": "descending"
-            }
-        ],
-        [
-            {
-                "path": "/year",
-                "order": "ascending"
-            },
-            {
-                "path": "/prize_id",
-                "order": "ascending"
-            }
-        ],
-        [
-            {
-                "path": "/year",
-                "order": "ascending"
-            },
-            {
-                "path": "/prize_id",
-                "order": "descending"
-            }
-        ]
+const { container } = await database.containers.createIfNotExists({
+  id: 'NobelLaureates',
+  partitionKey: {
+    paths: [
+      '/year'
     ]
-    }
-  })
+  },
+  indexingPolicy: {
+    automatic: true,
+    indexingMode: "consistent",
+    includedPaths: [
+      {
+        path: "/*"
+      }
+    ],
+    excludedPaths: [
+      {
+        path: "/\"_etag\"/?"
+      }
+    ],
+    compositeIndexes: [
+      [
+          {
+              "path": "/overallMotivation",
+              "order": "descending"
+          },
+          {
+              "path": "/prize_id",
+              "order": "descending"
+          }
+      ],
+      [
+          {
+              "path": "/overallMotivation",
+              "order": "ascending"
+          },
+          {
+              "path": "/prize_id",
+              "order": "descending"
+          }
+      ],
+      [
+          {
+              "path": "/year",
+              "order": "ascending"
+          },
+          {
+              "path": "/prize_id",
+              "order": "ascending"
+          }
+      ],
+      [
+          {
+              "path": "/year",
+              "order": "ascending"
+          },
+          {
+              "path": "/prize_id",
+              "order": "descending"
+          }
+      ]
+  ]
+  }
+})
 
 import prizes_data from './data/data.json' assert { type: 'json' };
 

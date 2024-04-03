@@ -21,11 +21,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Start Azure Cosmos DB emulator
-        run: docker run --detach --publish 8081:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+        run:
+          docker run --detach --publish 8081:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
 
       - name: Setup database
         run: |
           sleep 120
+          echo "$(docker ps)"
           cd cosmos/script
           npm install --save @azure/cosmos
           node app.js
