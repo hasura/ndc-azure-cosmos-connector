@@ -2,6 +2,9 @@
   "name": "ndc-nodejs-azure-cosmos-connector",
   "version": "1.0.0",
   "description": "NDC connector for the Azure Cosmos database",
+  "bin": {
+    "ndc-azure-cosmos-config": "./dist/cli/index.js"
+  },
   "scripts": {
     "test": "mocha",
     "build": "rimraf ./build && tsc",
