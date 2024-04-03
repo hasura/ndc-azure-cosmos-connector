@@ -34,7 +34,11 @@ jobs:
         run: |
           cd cosmos
           npm install --save @azure/cosmos
-          npm i -g rimraf && npm run build
+          npm run build
+
+      - name: Generate the connector configuration
+        run: |
+          ./dist/cli/index.js update
 
       - name: Start connector
         run: |
