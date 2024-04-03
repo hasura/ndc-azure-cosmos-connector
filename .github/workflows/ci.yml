@@ -2,7 +2,7 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - py/ndc-test
+      - main
 jobs:
   unit_tests:
     name: Run Node.js unit tests
