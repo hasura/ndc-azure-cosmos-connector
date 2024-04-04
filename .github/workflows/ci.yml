@@ -43,7 +43,6 @@ jobs:
 
           if check_port; then
             echo "Port 8081 is now open!"
-            sleep 30
             sudo curl -k --retry 10 --retry-connrefused https://localhost:8081/_explorer/emulator.pem > ~/emulatorcert.crt
             sudo cp ~/emulatorcert.crt /usr/local/share/ca-certificates/
             sudo update-ca-certificates
