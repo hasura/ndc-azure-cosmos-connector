@@ -2,10 +2,10 @@ import { CosmosClient } from '@azure/cosmos';
 import * as fs from 'fs';
 
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
 
 async function main() {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
     const cosmosClient = new CosmosClient({
         endpoint: 'https://localhost:8081/',
@@ -91,18 +91,20 @@ async function main() {
             console.error('Error reading file:', err);
             exit (1)
         }
+
+        const prizesData = JSON.parse(data);
+
+        var i = 0;
+
+        for (const prize of prizesData) {
+            container.items.upsert(prize)
+            i++;
+        }
+
+        console.log("Successfully inserted {} rows", i);
+
     })
 
-    const prizesData = JSON.parse(data);
-
-    var i = 0;
-
-    for (const prize of prizes_data) {
-        container.items.upsert(prize)
-        i++;
-    }
-
-    console.log("Successfully inserted {} rows", i)
 
 }
 
