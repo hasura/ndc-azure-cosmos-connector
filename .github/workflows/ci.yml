@@ -23,6 +23,7 @@ jobs:
       - name: Build connector
         run: |
           cd cosmos
+          npm install
           npm run build
 
       - name: Generate the connector configuration
