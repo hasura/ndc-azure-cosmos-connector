@@ -3,7 +3,7 @@
   "query": {
     "fields": {
       "laureates": {
-        "type": "column",
+        "type": "column11",
         "column": "laureates",
         "fields": null
       },
