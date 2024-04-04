@@ -46,6 +46,7 @@ jobs:
             echo "$(docker ps)"
             cd cosmos/script
             npm install --save @azure/cosmos
+            npm install --save @azure/identity
             node app.js
           else
             echo "Timeout: Port 8081 is still not available after $timeout_duration seconds."
