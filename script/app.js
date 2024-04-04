@@ -24,7 +24,7 @@ async function main() {
     console.log("Database created successfully");
 
     const { container } = await database.containers.createIfNotExists({
-        id: 'NobelLaureates',
+        id: 'TestTestNobelLaureates',
         partitionKey: {
             paths: [
                 '/year'
