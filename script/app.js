@@ -7,83 +7,98 @@ const cosmosClient = new CosmosClient({
     key: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
 })
 
+async function main() {
 
-const { database } = await cosmosClient.databases.createIfNotExists({
-    id: 'ConnectorTest',
-    throughput: 400
-  })
+    const { database } = await cosmosClient.databases.createIfNotExists({
+        id: 'ConnectorTest',
+        throughput: 400
+    });
 
-const { container } = await database.containers.createIfNotExists({
-  id: 'NobelLaureates',
-  partitionKey: {
-    paths: [
-      '/year'
-    ]
-  },
-  indexingPolicy: {
-    automatic: true,
-    indexingMode: "consistent",
-    includedPaths: [
-      {
-        path: "/*"
-      }
-    ],
-    excludedPaths: [
-      {
-        path: "/\"_etag\"/?"
-      }
-    ],
-    compositeIndexes: [
-      [
-          {
-              "path": "/overallMotivation",
-              "order": "descending"
-          },
-          {
-              "path": "/prize_id",
-              "order": "descending"
-          }
-      ],
-      [
-          {
-              "path": "/overallMotivation",
-              "order": "ascending"
-          },
-          {
-              "path": "/prize_id",
-              "order": "descending"
-          }
-      ],
-      [
-          {
-              "path": "/year",
-              "order": "ascending"
-          },
-          {
-              "path": "/prize_id",
-              "order": "ascending"
-          }
-      ],
-      [
-          {
-              "path": "/year",
-              "order": "ascending"
-          },
-          {
-              "path": "/prize_id",
-              "order": "descending"
-          }
-      ]
-  ]
-  }
-})
+    const { container } = await database.containers.createIfNotExists({
+        id: 'NobelLaureates',
+        partitionKey: {
+            paths: [
+                '/year'
+            ]
+        },
+        indexingPolicy: {
+            automatic: true,
+            indexingMode: "consistent",
+            includedPaths: [
+                {
+                    path: "/*"
+                }
+            ],
+            excludedPaths: [
+                {
+                    path: "/\"_etag\"/?"
+                }
+            ],
+            compositeIndexes: [
+                [
+                    {
+                        "path": "/overallMotivation",
+                        "order": "descending"
+                    },
+                    {
+                        "path": "/prize_id",
+                        "order": "descending"
+                    }
+                ],
+                [
+                    {
+                        "path": "/overallMotivation",
+                        "order": "ascending"
+                    },
+                    {
+                        "path": "/prize_id",
+                        "order": "descending"
+                    }
+                ],
+                [
+                    {
+                        "path": "/year",
+                        "order": "ascending"
+                    },
+                    {
+                        "path": "/prize_id",
+                        "order": "ascending"
+                    }
+                ],
+                [
+                    {
+                        "path": "/year",
+                        "order": "ascending"
+                    },
+                    {
+                        "path": "/prize_id",
+                        "order": "descending"
+                    }
+                ]
+            ]
+        }
+    })
 
-import prizes_data from './data/data.json' assert { type: 'json' };
+    const fs = require('fs');
 
-var i = 0;
+    fs.readFile('./data/data.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading file:', err);
+            exit (1)
+        }
+    })
 
-for (const prize of prizes_data) {
-    container.items.upsert(prize)
-    i++;
+    const prizesData = JSON.parse(data);
+
+    var i = 0;
+
+    for (const prize of prizes_data) {
+        container.items.upsert(prize)
+        i++;
+    }
+
+    console.log("Successfully inserted {} rows", i)
+
 }
-console.log(i)
+
+main();
