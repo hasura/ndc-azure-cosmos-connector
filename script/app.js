@@ -1,5 +1,6 @@
 import { CosmosClient } from '@azure/cosmos';
 import * as fs from 'fs';
+import * as https from 'https';
 
 
 
