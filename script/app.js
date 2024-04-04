@@ -101,7 +101,7 @@ async function main() {
             i++;
         }
 
-        console.log("Successfully inserted {} rows", i);
+        console.log("Successfully inserted ${i} rows");
 
     })
 

@@ -5,8 +5,8 @@ on:
       - main
 jobs:
   unit_tests:
-    name: Run Node.js unit tests
-    runs-on: ubuntu-latest
+    name: Run NDC tests
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout (GitHub)
         uses: actions/checkout@v3
