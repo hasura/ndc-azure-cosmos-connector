@@ -1,13 +1,16 @@
-import { CosmosClient } from '@azure/cosmos'
+import { CosmosClient } from '@azure/cosmos';
+import * as fs from 'fs';
+
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
-const cosmosClient = new CosmosClient({
-    endpoint: 'https://localhost:8081/',
-    key: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-})
 
 async function main() {
+
+    const cosmosClient = new CosmosClient({
+        endpoint: 'https://localhost:8081/',
+        key: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+    });
 
     const { database } = await cosmosClient.databases.createIfNotExists({
         id: 'ConnectorTest',
@@ -82,8 +85,6 @@ async function main() {
     });
 
     console.log("Container created successfully");
-
-    const fs = require('fs');
 
     fs.readFile('./data/data.json', 'utf8', (err, data) => {
         if (err) {

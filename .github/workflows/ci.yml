@@ -26,11 +26,31 @@ jobs:
 
       - name: Setup database
         run: |
-          sleep 120
-          echo "$(docker ps)"
-          cd cosmos/script
-          npm install --save @azure/cosmos
-          node app.js
+          check_port() {
+            nc -z localhost 8081
+            return $?
+          }
+
+          timeout_duration=$((2 * 60))  # 2 minutes
+
+          # Start time
+          start_time=$(date +%s)
+
+          until check_port || [ $(( $(date +%s) - start_time )) -ge $timeout_duration ]; do
+            echo "The emulator is not yet available, waiting..."
+            sleep 1
+          done
+
+          if check_port; then
+            echo "Port 8081 is now open!"
+            echo "$(docker ps)"
+            cd cosmos/script
+            npm install --save @azure/cosmos
+            node app.js
+          else
+            echo "Timeout: Port 8081 is still not available after $timeout_duration seconds."
+            exit 1
+          fi
 
       - name: Build connector
         run: |
