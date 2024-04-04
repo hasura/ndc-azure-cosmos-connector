@@ -1,5 +1,4 @@
 import { CosmosClient, Database, Container, SqlQuerySpec } from "@azure/cosmos"
-import * as https from 'https';
 
 export type RawCosmosDbConfig = {
     databaseName: string,
@@ -8,19 +7,10 @@ export type RawCosmosDbConfig = {
 }
 
 /* Creates a new cosmos DB client with which the specified database can be queried. */
-function getCosmosDbClient(rawDbConfig: RawCosmosDbConfig, allowSelfSignedCertificate?: boolean | undefined): Database {
-    let httpsAgent: https.Agent | undefined;
-    if (allowSelfSignedCertificate) {
-        httpsAgent = new https.Agent({
-            rejectUnauthorized: false
-        })
-    } else {
-        httpsAgent = undefined
-    };
+function getCosmosDbClient(rawDbConfig: RawCosmosDbConfig): Database {
     const dbClient = new CosmosClient({
         key: rawDbConfig.key,
         endpoint: rawDbConfig.endpoint,
-        agent: httpsAgent
     });
 
     return dbClient.database(rawDbConfig.databaseName);
@@ -35,14 +25,14 @@ function getEnvVariable(envVarName: string): string {
     return envVariable;
 }
 
-export function constructCosmosDbClient(allowSelfSignedCertificate?: boolean | undefined) {
+export function constructCosmosDbClient() {
     const key = getEnvVariable("AZURE_COSMOS_KEY");
     const endpoint = getEnvVariable("AZURE_COSMOS_ENDPOINT");
     const databaseName = getEnvVariable("AZURE_COSMOS_DB_NAME");
 
     const dbClient = getCosmosDbClient({
         databaseName, endpoint, key
-    }, allowSelfSignedCertificate);
+    });
 
     return dbClient
 

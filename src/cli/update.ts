@@ -11,21 +11,12 @@ export const cmd = new Command("update")
             .default("./")
             .env("HASURA_CONFIGURATION_DIRECTORY")
     )
-    .addOption(
-        new Option(
-            "--allow-self-signed-certificate <boolean>",
-            "Allow the config script to use a self-signed certificate. *NOT RECOMMENDED* to set this option for Production"
-        )
-            .default("false")
-            .choices(["true", "false", "0", "1"])
-            .preset("true")
-    )
     .action((args) => {
-        cliUpdateAction(resolve(args.outputDirectory), args.allowSelfSignedCertificate === 'true' || args.allowSelfSignedCertificate === '1');
+        cliUpdateAction(resolve(args.outputDirectory));
     });
 
 
 
-async function cliUpdateAction(outputDirectory: string, allowSelfSignedCertificate: boolean) {
-    generateConnectorConfig(outputDirectory, allowSelfSignedCertificate)
+async function cliUpdateAction(outputDirectory: string) {
+    generateConnectorConfig(outputDirectory)
 }
