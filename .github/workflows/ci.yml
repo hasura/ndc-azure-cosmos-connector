@@ -43,6 +43,8 @@ jobs:
 
           if check_port; then
             echo "Port 8081 is now open!"
+            # Sleep for 120 seconds, because there is no deterministic way
+            # the emulator provides to check if it is up and running :(
             sleep 120
             sudo curl -k --retry 10 https://localhost:8081/_explorer/emulator.pem > ~/emulatorcert.crt
             sudo cp ~/emulatorcert.crt /usr/local/share/ca-certificates/
@@ -70,7 +72,7 @@ jobs:
           export AZURE_COSMOS_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
           export AZURE_COSMOS_ENDPOINT=https://127.0.0.1:8081/
           export AZURE_COSMOS_DB_NAME=ConnectorTest
-          ./dist/cli/index.js update
+          ./dist/cli/index.js update --allow-self-signed-certificate true
 
       - name: Start connector
         run: |

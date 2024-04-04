@@ -241,11 +241,11 @@ async function getCollectionsSchema(database: Database, nRows: number): Promise<
 
 }
 
-export async function generateConnectorConfig(outputConfigDir: string) {
+export async function generateConnectorConfig(outputConfigDir: string, allowSelfSignedCertificate: boolean) {
     const rowsToFetch = process.env["AZURE_COSMOS_NO_OF_ROWS_TO_FETCH"] ?? "100";
 
     try {
-        const dbClient = constructCosmosDbClient();
+        const dbClient = constructCosmosDbClient(allowSelfSignedCertificate);
         const schema = await getCollectionsSchema(dbClient, parseInt(rowsToFetch));
 
         const response: any = {
