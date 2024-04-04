@@ -28,6 +28,7 @@
     "test": ""
   },
   "dependencies": {
-    "@azure/cosmos": "^4.0.0"
+    "@azure/cosmos": "^4.0.0",
+    "@azure/identity": "^4.0.1"
   }
 }

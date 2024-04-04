@@ -1,29 +1,20 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import { CollectionsSchema, getNdcSchemaResponse } from "./schema"
-import { getCosmosDbClient } from "./cosmosDb";
+import { constructCosmosDbClient } from "./cosmosDb";
 import { Database } from "@azure/cosmos";
-import { getCollectionsSchema } from "./config";
 import { executeQuery } from "./execution";
 import { readFileSync } from "fs";
 
 
-type RawConfiguration = {
-    azure_cosmos_key: string,
-    azure_cosmos_db_endpoint: string,
-    azure_cosmos_db_name: string,
-    azure_cosmos_no_of_rows_to_fetch: number | null
-}
+export type Configuration = ConnectorConfig;
 
-export type Configuration = {
-    /* Database client that will make requests to the Database */
-    databaseClient: Database,
-    /* Number of rows to fetch per container to infer the schema */
-    rowsToFetch: number
+export type ConnectorConfig = {
+    schema: CollectionsSchema
 }
 
 export type State = {
-    collectionsSchema: CollectionsSchema
-}
+    databaseClient: Database
+};
 
 export function createConnector(): sdk.Connector<Configuration, State> {
 
@@ -31,20 +22,10 @@ export function createConnector(): sdk.Connector<Configuration, State> {
         parseConfiguration: async function(configurationDir: string): Promise<Configuration> {
 
             try {
-                const fileContent = readFileSync(configurationDir, 'utf8');
-                const configObject: RawConfiguration = JSON.parse(fileContent);
-                const databaseClient = getCosmosDbClient({
-                    endpoint: configObject.azure_cosmos_db_endpoint,
-                    key: configObject.azure_cosmos_key,
-                    databaseName: configObject.azure_cosmos_db_name
-                });
-                const rowsToFetch =
-                    configObject.azure_cosmos_no_of_rows_to_fetch ?? 100;
-
-
-                return {
-                    databaseClient, rowsToFetch
-                }
+                const configLocation = `${configurationDir}/config.json`;
+                const fileContent = readFileSync(configLocation, 'utf8');
+                const configObject: ConnectorConfig = JSON.parse(fileContent);
+                return Promise.resolve(configObject)
 
             } catch (error) {
                 console.error("Failed to parse configuration:", error);
@@ -57,12 +38,12 @@ export function createConnector(): sdk.Connector<Configuration, State> {
 
         },
 
-        tryInitState: async function(configuration: Configuration, metrics: unknown): Promise<State> {
+        tryInitState: async function(_: Configuration, __: unknown): Promise<State> {
             try {
-                const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, configuration.rowsToFetch);
-                return {
-                    collectionsSchema
-                }
+                const databaseClient = constructCosmosDbClient();
+                return Promise.resolve({
+                    databaseClient
+                })
             } catch (error) {
                 console.error("Failed to initialize the state of the connector", error);
                 throw new sdk.InternalServerError(
@@ -73,19 +54,14 @@ export function createConnector(): sdk.Connector<Configuration, State> {
         },
 
         getSchema: async function(configuration: Configuration): Promise<sdk.SchemaResponse> {
-            try {
-                const collectionsSchema = await getCollectionsSchema(configuration.databaseClient, configuration.rowsToFetch);
-                return getNdcSchemaResponse(collectionsSchema)
-            } catch (error) {
-                console.error("Failed to get the schema ", error);
-                throw new sdk.InternalServerError(
-                    `Internal server error, failed to get the schema - ${error}`, {}
-                )
+            if (!configuration.schema) {
+                throw new sdk.Forbidden("Internal server error, server configuration not found")
             }
+            return Promise.resolve(getNdcSchemaResponse(configuration.schema))
 
         },
 
-        getCapabilities(configuration: Configuration): sdk.CapabilitiesResponse {
+        getCapabilities(_: Configuration): sdk.CapabilitiesResponse {
             return {
                 version: "0.1.0",
                 capabilities: {
@@ -95,8 +71,8 @@ export function createConnector(): sdk.Connector<Configuration, State> {
             }
         },
 
-        query: async function (configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.QueryResponse> {
-            return executeQuery(request, state.collectionsSchema, configuration.databaseClient)
+        query: async function(configuration: Configuration, state: State, request: sdk.QueryRequest): Promise<sdk.QueryResponse> {
+            return executeQuery(request, configuration.schema, state.databaseClient)
         },
 
         mutation: async function(configuration: Configuration, state: State, request: sdk.MutationRequest): Promise<sdk.MutationResponse> {

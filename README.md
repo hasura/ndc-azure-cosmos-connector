@@ -10,7 +10,7 @@ for use in your Hasura DDN subgraphs.
 2. Run the following command to install all the required dependencies:
 
 ```sh
-npm i
+npm install -g
 ```
 
 3. To build the connector,
@@ -19,14 +19,30 @@ npm i
 npm run build
 ```
 
+4. Set the following environment variables:
+
+```sh
+export AZURE_COSMOS_ENDPOINT=<YOUR_AZURE_COSMOS_ENDPOINT>
+export AZURE_COSMOS_KEY=<YOUR_AZURE_COSMOS_KEY>
+export AZURE_COSMOS_DB_NAME=<YOUR_AZURE_DB_NAME>
+```
+
+5. Generate the configuration required to run the connector:
+
+```sh
+ndc-azure-cosmos-config update
+```
+
+This will generate a `config.json` file in the root directory, by default. The
+location of this file can be configured by providing the `--output-directory` command.
+
 4. To start the connector,
 
 ```sh
-npm run start serve --configuration connector_config.json
+npm run start serve --configuration .
 ```
 
-The `connector_config.json` connects to a default Azure Cosmos DB that is already being provisioned and can
-be used directly, if you choose to use another DB, you will have to change the configuration accordingly.
+The `--configuration` directory should contain the configuration file generated in the previous step.
 
 Alternatively, to use a local Azure Cosmos emulator, start the connector with the following command,
 
@@ -61,7 +77,7 @@ npm run start serve --configuration connector_config_emulator.json
 cargo run --bin ndc-test -- replay --endpoint http://localhost:8080 --snapshots-dir ../ndc-azure-cosmos-connector/ndc-test-snapshots
 ```
 
-Note: 
+Note:
 
 1. The `snapshot-dir` is the relative path from the ndc-spec repository to the `ndc-test-snapshots` folder in the `ndc-azure-cosmos-connector` repository.
 
