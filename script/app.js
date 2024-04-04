@@ -14,6 +14,8 @@ async function main() {
         throughput: 400
     });
 
+    console.log("Database created successfully");
+
     const { container } = await database.containers.createIfNotExists({
         id: 'NobelLaureates',
         partitionKey: {
@@ -77,7 +79,9 @@ async function main() {
                 ]
             ]
         }
-    })
+    });
+
+    console.log("Container created successfully");
 
     const fs = require('fs');
 
