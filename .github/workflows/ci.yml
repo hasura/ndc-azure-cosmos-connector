@@ -20,57 +20,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Start Azure Cosmos DB emulator
-        run:
-          docker run --detach --publish 8081:8081 --publish 10250-10255:10250-10255 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
-
-      - name: Setup database
-        run: |
-          check_port() {
-            nc -z localhost 8081
-            return $?
-          }
-
-          timeout_duration=$((2 * 60))  # 2 minutes
-
-          # Start time
-          start_time=$(date +%s)
-
-          until check_port || [ $(( $(date +%s) - start_time )) -ge $timeout_duration ]; do
-            echo "The emulator is not yet available, waiting..."
-            sleep 1
-          done
-
-          if check_port; then
-            echo "Port 8081 is now open!"
-            sleep 60
-            sudo curl -k --retry 10 --retry-connrefused https://localhost:8081/_explorer/emulator.pem > ~/emulatorcert.crt
-            sudo cp ~/emulatorcert.crt /usr/local/share/ca-certificates/
-            sudo update-ca-certificates
-
-            cd cosmos/script
-            npm install --save @azure/cosmos
-            npm install --save @azure/identity
-            node app.js
-          else
-            echo "Timeout: Port 8081 is still not available after $timeout_duration seconds."
-            exit 1
-          fi
-
       - name: Build connector
         run: |
           cd cosmos
-          npm install --save @azure/cosmos
           npm run build
 
       - name: Generate the connector configuration
         run: |
           cd cosmos
           chmod +x ./dist/cli/index.js
-          export AZURE_COSMOS_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
-          export AZURE_COSMOS_ENDPOINT=https://127.0.0.1:8081/
-          export AZURE_COSMOS_DB_NAME=ConnectorTest
-          ./dist/cli/index.js update --allow-self-signed-certificate true
+          export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
+          export AZURE_COSMOS_ENDPOINT=https://test-azure-cosmos-one.documents.azure.com:443/
+          export AZURE_COSMOS_DB_NAME=azure-cosmos-one
+          ./dist/cli/index.js update
 
       - name: Start connector
         run: |

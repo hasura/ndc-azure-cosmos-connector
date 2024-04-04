@@ -1,5 +1,5 @@
 {
-  "collection": "NobelLaureates",
+  "collection": "TestNobelLaureates",
   "query": {
     "fields": {
       "year_0389": {

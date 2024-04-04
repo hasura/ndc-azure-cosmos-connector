@@ -289,7 +289,7 @@
         }
       }
     },
-    "NobelLaureates": {
+    "TestNobelLaureates": {
       "fields": {
         "id": {
           "type": {
@@ -329,9 +329,9 @@
   },
   "collections": [
     {
-      "name": "NobelLaureates",
+      "name": "TestNobelLaureates",
       "arguments": {},
-      "type": "NobelLaureates",
+      "type": "TestNobelLaureates",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     }
