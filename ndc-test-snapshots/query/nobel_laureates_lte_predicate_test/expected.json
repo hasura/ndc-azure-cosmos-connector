@@ -1,0 +1,242 @@
+[
+  {
+    "rows": [
+      {
+        "laureates": [
+          {
+            "id": "1007",
+            "firstname": "David",
+            "surname": "Card",
+            "motivation": "\"for his empirical contributions to labour economics\"",
+            "share": "2"
+          },
+          {
+            "id": "1008",
+            "firstname": "Joshua",
+            "surname": "Angrist",
+            "motivation": "\"for their methodological contributions to the analysis of causal relationships\"",
+            "share": "4"
+          },
+          {
+            "id": "1009",
+            "firstname": "Guido",
+            "surname": "Imbens",
+            "motivation": "\"for their methodological contributions to the analysis of causal relationships\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 14,
+        "year": 2021
+      },
+      {
+        "laureates": [
+          {
+            "id": "1002",
+            "firstname": "Benjamin",
+            "surname": "List",
+            "motivation": "\"for the development of asymmetric organocatalysis\"",
+            "share": "2"
+          },
+          {
+            "id": "1003",
+            "firstname": "David",
+            "surname": "MacMillan",
+            "motivation": "\"for the development of asymmetric organocatalysis\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 13,
+        "year": 2021
+      },
+      {
+        "laureates": [
+          {
+            "id": "1011",
+            "firstname": "Svante",
+            "surname": "Pääbo",
+            "motivation": "\"for his discoveries concerning the genomes of extinct hominins and human evolution\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 12,
+        "year": 2022
+      },
+      {
+        "laureates": [
+          {
+            "id": "1012",
+            "firstname": "Alain",
+            "surname": "Aspect",
+            "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+            "share": "3"
+          },
+          {
+            "id": "1013",
+            "firstname": "John ",
+            "surname": "Clauser",
+            "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+            "share": "3"
+          },
+          {
+            "id": "1014",
+            "firstname": "Anton",
+            "surname": "Zeilinger",
+            "motivation": "\"for experiments with entangled photons, establishing the violation of Bell inequalities and  pioneering quantum information science\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 11,
+        "year": 2022
+      },
+      {
+        "laureates": [
+          {
+            "id": "1018",
+            "firstname": "Ales",
+            "surname": "Bialiatski ",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3"
+          },
+          {
+            "id": "1019",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Memorial"
+          },
+          {
+            "id": "1020",
+            "motivation": "\"The Peace Prize laureates represent civil society in their home countries. They have for many years promoted the right to criticise power and protect the fundamental rights of citizens. They have made an outstanding effort to document war crimes, human right abuses and the abuse of power. Together they demonstrate the significance of civil society for peace and democracy.\"",
+            "share": "3",
+            "firstname": "Center for Civil Liberties"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 10,
+        "year": 2022
+      },
+      {
+        "laureates": [
+          {
+            "id": "1017",
+            "firstname": "Annie",
+            "surname": "Ernaux",
+            "motivation": "\"for the courage and clinical acuity with which she uncovers the roots, estrangements and  collective restraints of personal memory\"",
+            "share": "1"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 9,
+        "year": 2022
+      },
+      {
+        "laureates": [
+          {
+            "id": "1021",
+            "firstname": "Ben",
+            "surname": "Bernanke",
+            "motivation": "\"for research on banks and financial crises\"",
+            "share": "3"
+          },
+          {
+            "id": "1022",
+            "firstname": "Douglas",
+            "surname": "Diamond",
+            "motivation": "\"for research on banks and financial crises\"",
+            "share": "3"
+          },
+          {
+            "id": "1023",
+            "firstname": "Philip",
+            "surname": "Dybvig",
+            "motivation": "\"for research on banks and financial crises\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 8,
+        "year": 2022
+      },
+      {
+        "laureates": [
+          {
+            "id": "1015",
+            "firstname": "Carolyn",
+            "surname": "Bertozzi",
+            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "share": "3"
+          },
+          {
+            "id": "1016",
+            "firstname": "Morten",
+            "surname": "Meldal",
+            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "share": "3"
+          },
+          {
+            "id": "743",
+            "firstname": "Barry",
+            "surname": "Sharpless",
+            "motivation": "\"for the development of click chemistry and bioorthogonal chemistry\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 7,
+        "year": 2022
+      },
+      {
+        "laureates": [
+          {
+            "id": "1024",
+            "firstname": "Katalin",
+            "surname": "Karikó",
+            "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
+            "share": "2"
+          },
+          {
+            "id": "1025",
+            "firstname": "Drew",
+            "surname": "Weissman",
+            "motivation": "\"for their discoveries concerning nucleoside base modifications that enabled the development of effective mRNA vaccines against COVID-19\"",
+            "share": "2"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 6,
+        "year": 2023
+      },
+      {
+        "laureates": [
+          {
+            "id": "1026",
+            "firstname": "Pierre",
+            "surname": "Agostini",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          },
+          {
+            "id": "1027",
+            "firstname": "Ferenc",
+            "surname": "Krausz",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          },
+          {
+            "id": "1028",
+            "firstname": "Anne",
+            "surname": "L’Huillier",
+            "motivation": "\"for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter\"",
+            "share": "3"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 5,
+        "year": 2023
+      }
+    ]
+  }
+]

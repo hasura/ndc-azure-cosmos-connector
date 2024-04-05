@@ -1,0 +1,50 @@
+{
+  "collection": "TestNobelLaureates",
+  "query": {
+    "fields": {
+      "year_0389": {
+        "type": "column",
+        "column": "year",
+        "fields": null
+      },
+      "laureates_0566": {
+        "type": "column",
+        "column": "laureates",
+        "fields": null
+      },
+      "overallMotivation_6702": {
+        "type": "column",
+        "column": "overallMotivation",
+        "fields": null
+      },
+      "prize_id_6319": {
+        "type": "column",
+        "column": "prize_id",
+        "fields": null
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "overallMotivation",
+            "path": []
+          }
+        },
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "prize_id",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

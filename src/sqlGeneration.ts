@@ -154,7 +154,6 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
         }
     }
 
-
     let joinClause = null;
 
     if (Object.keys(utilisedVariables).length > 0) {
@@ -221,10 +220,13 @@ function formatColumn(column: Column) {
 
 
 function formatSelectColumns(fieldsToSelect: SelectColumns): string {
+    if (Object.keys(fieldsToSelect).length === 0) {
+        return "VALUE {}"
+    }
     return Object.entries(fieldsToSelect).map(([alias, selectColumn]) => {
         switch (selectColumn.kind) {
             case 'column':
-                return `${formatColumn(selectColumn.column)} as ${alias}`
+                return `${formatColumn(selectColumn.column)} ?? null as ${alias}`
             case 'sqlQueryContext':
                 return `(${constructSqlQuery(selectColumn, alias, null).query.trim()}) as ${alias}`;
             case 'aggregate':
@@ -300,19 +302,20 @@ function visitExpression(parameters: SqlParameters, variables: VariablesMappings
             }
         case "binary_comparison_operator":
             const comparisonTarget = visitComparisonTarget(expression.column, containerAlias);
-            switch (expression.operator) {
-                case "_eq":
+            switch (expression.operator) { // TODO: This is not correct. Depending upon the type of the column, different operators will be available.
+                case "eq":
                     return `${comparisonTarget} = ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "_neq":
+                case "neq":
                     return `${comparisonTarget} != ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "_gte":
+                case "gte":
                     return `${comparisonTarget} >= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "_gt":
+                case "gt":
                     return `${comparisonTarget} > ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "_lte":
+                case "lte":
                     return `${comparisonTarget} <= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "_lt":
+                case "lt":
                     return `${comparisonTarget} < ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)}`
+
                 default:
                     throw new sdk.BadRequest(`Unknown binary comparison operator ${expression.operator} found`)
             }
@@ -320,7 +323,6 @@ function visitExpression(parameters: SqlParameters, variables: VariablesMappings
 
         case "exists":
             throw new sdk.NotSupported('EXISTS operator is not supported.')
-
     }
 }
 
@@ -332,7 +334,7 @@ export function visitComparisonTarget(target: sdk.ComparisonTarget, containerAli
             }
             return `${containerAlias}.${target.name}`;
         case 'root_collection_column':
-            throw new sdk.NotSupported("Relationships are not supported");
+            throw new sdk.NotSupported("Root collection column comparison is not supported");
     }
 }
 
@@ -355,7 +357,7 @@ export function visitComparisonValue(parameters: SqlParameters, variables: Varia
             }
 
         case 'column':
-            throw new sdk.NotSupported("Column comparisons are not supported in field predicates yet");
+            return visitComparisonTarget(target.column, containerAlias)
         case 'variable':
             variables[comparisonTarget] = `vars["${target.name}"]`
             return `vars["${target.name}"]`

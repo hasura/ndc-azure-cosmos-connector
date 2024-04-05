@@ -1,0 +1,55 @@
+name: Continuous Integration
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  unit_tests:
+    name: Run NDC tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout (GitHub)
+        uses: actions/checkout@v3
+        with:
+          path: cosmos
+
+      - name: Log in to GitHub Container Registry 📦
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build connector
+        run: |
+          cd cosmos
+          npm install
+          npm run build
+
+      - name: Generate the connector configuration
+        run: |
+          cd cosmos
+          chmod +x ./dist/cli/index.js
+          export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
+          export AZURE_COSMOS_ENDPOINT=https://test-azure-cosmos-one.documents.azure.com:443/
+          export AZURE_COSMOS_DB_NAME=azure-cosmos-one
+          ./dist/cli/index.js update
+
+      - name: Start connector
+        run: |
+          cd cosmos
+          export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
+          export AZURE_COSMOS_ENDPOINT=https://test-azure-cosmos-one.documents.azure.com:443/
+          export AZURE_COSMOS_DB_NAME=azure-cosmos-one
+          export HASURA_CONFIGURATION_DIRECTORY="."
+          npm run start serve -- --configuration . &
+
+      - name: Checkout ndc-spec
+        uses: actions/checkout@v3
+        with:
+          repository: hasura/ndc-spec
+          path: ndc-spec
+
+      - name: Run ndc-test
+        working-directory: ndc-spec
+        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots
