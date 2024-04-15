@@ -1,0 +1,134 @@
+[
+    {
+        "rows": [
+            {
+                "laureates": [
+                    {
+                        "firstName": "James P.",
+                        "id": "958"
+                    },
+                    {
+                        "firstName": "Tasuku",
+                        "id": "959"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Oliver",
+                        "id": "935"
+                    },
+                    {
+                        "firstName": "Bengt",
+                        "id": "936"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "David J.",
+                        "id": "928"
+                    },
+                    {
+                        "firstName": "F. Duncan M.",
+                        "id": "929"
+                    },
+                    {
+                        "firstName": "J. Michael",
+                        "id": "930"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Arthur",
+                        "id": "960"
+                    },
+                    {
+                        "firstName": "Gérard",
+                        "id": "961"
+                    },
+                    {
+                        "firstName": "Donna",
+                        "id": "962"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Katalin",
+                        "id": "1024"
+                    },
+                    {
+                        "firstName": "Drew",
+                        "id": "1025"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Abiy",
+                        "id": "981"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Serge",
+                        "id": "876"
+                    },
+                    {
+                        "firstName": "David J.",
+                        "id": "877"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Intergovernmental Panel on Climate Change",
+                        "id": "818"
+                    },
+                    {
+                        "firstName": "Al",
+                        "id": "819"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "François",
+                        "id": "887"
+                    },
+                    {
+                        "firstName": "Peter",
+                        "id": "888"
+                    }
+                ]
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Bruce A.",
+                        "id": "861"
+                    },
+                    {
+                        "firstName": "Jules A.",
+                        "id": "862"
+                    },
+                    {
+                        "firstName": "Ralph M.",
+                        "id": "863"
+                    }
+                ]
+            }
+        ]
+    }
+]
