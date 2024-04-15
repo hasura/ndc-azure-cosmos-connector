@@ -4,26 +4,6 @@ import * as sql from "./sqlGeneration";
 import { Database } from "@azure/cosmos";
 import { runSQLQuery } from "./cosmosDb";
 
-
-export enum RequestedFieldCtx {
-    Select,
-    Predicate,
-
-}
-
-export type RequestedField = {
-    isSelect: boolean,
-    isPredicate: boolean,
-    name: string,
-    fields?: RequestedFields | null
-}
-
-export type RequestedFields = {
-    [fieldAlias: string]: RequestedField
-}
-
-
-
 function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.ObjectTypeDefinition) {
 
     for (const orderByElement of orderBy.elements) {
@@ -44,25 +24,22 @@ function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.Obje
     }
 }
 
+function generateAliasToSelectFromParentColumn(parentColumn: sql.Column): string {
+    return `_subquery_parent_${parentColumn.name}`
+}
+
+
 /**
    * Parses a `nestedField` on a `column` and returns a `sql.sqlQueryContext`.
 
    * The `sql.sqlQueryContext` will be translated to a SQL subquery with the nested fields
    * requested from the `column`
 
-   @param {sdk.NestedField} nestedField - Nested field selection.
    @param {string} parentColumn - Name of the column from where nested fields are to be selected.
-   @param {string} columnPrefix - Prefix of the `column`.
    @returns {sql.SqlQueryContext} Returns the `SqlQueryContext` which will return a SQL query context which
    will contain the selection of the nested fields, which is intended to be used a subquery.
 
 **/
-
-function generateAliasToSelectFromParentColumn(parentColumn: sql.Column): string {
-    return `_subquery_parent_${parentColumn.name}`
-}
-
-
 // TODO: Please write unit tests for this function.
 function selectNestedField(nestedField: sdk.NestedField, parentColumn: sql.Column): sql.SqlQueryContext {
     if (nestedField.type === "object") {
@@ -112,8 +89,6 @@ function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
 
 function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryContext {
     let isAggregateQuery = false;
-
-    let requestedSqlFields: RequestedFields = {};
 
     const collection: string = queryRequest.collection;
 
@@ -253,9 +228,6 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
         sqlGenCtx.orderBy = queryRequest.query.order_by;
     }
     sqlGenCtx.predicate = queryRequest.query.predicate;
-
-    console.log("Requested fields are ", JSON.stringify(requestedSqlFields, null, 2));
-
 
     return sqlGenCtx
 
