@@ -4,7 +4,7 @@ import { SqlQuerySpec } from "@azure/cosmos";
 
 export type Column = {
     name: string,
-    prefix: string[],
+    prefix: string,
 }
 
 export type SelectContainerColumn = {
@@ -214,8 +214,8 @@ export function generateSqlQuerySpec(sqlGenCtx: SqlQueryContext, containerName: 
 
 }
 
-function formatColumn(column: Column) {
-    return `${column.prefix.join(".")}.${column.name}`
+export function formatColumn(column: Column) {
+    return `${column.prefix}.${column.name}`
 }
 
 

@@ -51,25 +51,30 @@ function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.Obje
    * requested from the `column`
 
    @param {sdk.NestedField} nestedField - Nested field selection.
-   @param {string} column - Name of the column from where nested fields are to be selected.
+   @param {string} parentColumn - Name of the column from where nested fields are to be selected.
    @param {string} columnPrefix - Prefix of the `column`.
    @returns {sql.SqlQueryContext} Returns the `SqlQueryContext` which will return a SQL query context which
    will contain the selection of the nested fields, which is intended to be used a subquery.
 
 **/
 
+function generateAliasToSelectFromParentColumn(parentColumn: sql.Column): string {
+    return `_subquery_parent_${parentColumn.name}`
+}
+
 
 // TODO: Please write unit tests for this function.
-function parseNestedFieldLegacy(nestedField: sdk.NestedField, column: string, columnPrefix: string): sql.SqlQueryContext {
+function selectNestedField(nestedField: sdk.NestedField, parentColumn: sql.Column): sql.SqlQueryContext {
     if (nestedField.type === "object") {
         let selectFields: sql.SelectColumns = {};
+        const currentAlias = generateAliasToSelectFromParentColumn(parentColumn);
+
         Object.entries(nestedField.fields).forEach(([fieldAlias, field]) => {
-            selectFields[fieldAlias] = parseFieldLegacy(field, column);
+            selectFields[fieldAlias] = selectField(field, currentAlias);
         });
         const fromClause: sql.FromClause = {
-            source: `${columnPrefix}.${column}`,
-            sourceAlias: column,
-
+            source: sql.formatColumn(parentColumn),
+            sourceAlias: currentAlias,
         };
         return {
             kind: 'sqlQueryContext',
@@ -84,31 +89,19 @@ function parseNestedFieldLegacy(nestedField: sdk.NestedField, column: string, co
     }
 }
 
-function parseNestedField(nestedField: sdk.NestedField, requestedFieldCtx: RequestedFieldCtx): RequestedFields {
-    if (nestedField.type === "object") {
-        let requestedFields: RequestedFields = {};
-        Object.entries(nestedField.fields).forEach(([fieldAlias, field]) => {
-            requestedFields[fieldAlias] = parseField(field, requestedFieldCtx);
-        });
-        return requestedFields
-    } else {
-        throw new sdk.NotSupported("Querying nested array fields is not supported yet.")
-    }
-}
-
-
-function parseFieldLegacy(field: sdk.Field, columnPrefix: string): sql.SelectColumn {
+function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
     switch (field.type) {
         case 'column':
+            const column = {
+                name: field.column,
+                prefix: fieldPrefix
+            };
             if (field.fields !== null && field.fields !== undefined) {
-                return parseNestedFieldLegacy(field.fields, field.column, columnPrefix)
+                return selectNestedField(field.fields, column)
             } else {
                 return {
                     kind: 'column',
-                    column: {
-                        name: field.column,
-                        prefix: [columnPrefix]
-                    }
+                    column
                 }
             }
         case 'relationship':
@@ -116,27 +109,6 @@ function parseFieldLegacy(field: sdk.Field, columnPrefix: string): sql.SelectCol
 
     }
 }
-
-function parseField(field: sdk.Field, requestedFieldCtx: RequestedFieldCtx): RequestedField {
-    switch (field.type) {
-        case 'column':
-            let nestedFields = null;
-            if (field.fields !== null && field.fields !== undefined) {
-                nestedFields = parseNestedField(field.fields, requestedFieldCtx)
-            }
-            return {
-                isSelect: requestedFieldCtx === RequestedFieldCtx["Select"],
-                isPredicate: requestedFieldCtx === RequestedFieldCtx["Predicate"],
-                name: field.column,
-                fields: nestedFields
-            }
-        case 'relationship':
-            throw new sdk.BadRequest("Relationships are not supported in Azure Cosmos")
-
-    }
-}
-
-
 
 function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryContext {
     let isAggregateQuery = false;
@@ -178,8 +150,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                     if (!(queryField.column in collectionObjectType.properties)) {
                         throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectBaseType}'`)
                     } else {
-                        requestedFields[fieldName] = parseFieldLegacy(queryField, rootContainerAlias);
-                        requestedSqlFields[fieldName] = parseField(queryField, RequestedFieldCtx["Select"]);
+                        requestedFields[fieldName] = selectField(queryField, rootContainerAlias);
                     };
 
                     break;
@@ -202,7 +173,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                                 kind: 'aggregate',
                                 column: {
                                     name: aggregateField.column,
-                                    prefix: [rootContainerAlias],
+                                    prefix: rootContainerAlias,
                                 },
                                 aggregateFunction: 'DISTINCT COUNT'
                             };
@@ -212,7 +183,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                                 kind: 'aggregate',
                                 column: {
                                     name: aggregateField.column,
-                                    prefix: [rootContainerAlias],
+                                    prefix: rootContainerAlias,
                                 },
                                 aggregateFunction: 'COUNT'
                             }
@@ -228,7 +199,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                             kind: 'aggregate',
                             column: {
                                 name: aggregateField.column,
-                                prefix: [rootContainerAlias]
+                                prefix: rootContainerAlias
                             },
 
                             aggregateFunction: aggregateField.function
@@ -241,7 +212,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                         kind: 'aggregate',
                         column: {
                             name: "*",
-                            prefix: [rootContainerAlias],
+                            prefix: rootContainerAlias,
                         },
                         aggregateFunction: 'COUNT'
                     };
