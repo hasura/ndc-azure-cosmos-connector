@@ -145,7 +145,6 @@ export function getJSONScalarTypes(): ScalarTypeDefinitions {
         kind: "scalar"
     };
 
-
     return scalarTypeDefinitions
 }
 
@@ -183,7 +182,7 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
     type ScalarTypes = {
         [k: string]: ScalarType;
     };
-    const scalarTypes : ScalarTypes = {
+    const scalarTypes: ScalarTypes = {
         "Integer": {
             aggregate_functions: {
                 "count": {
@@ -342,7 +341,7 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
                 },
                 "bool_or": {
                     result_type: {
-                        type: "named",	
+                        type: "named",
                         name: BuiltInScalarTypeName.Boolean,
                     }
                 },

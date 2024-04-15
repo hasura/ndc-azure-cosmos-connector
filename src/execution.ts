@@ -4,7 +4,6 @@ import * as sql from "./sqlGeneration";
 import { Database } from "@azure/cosmos";
 import { runSQLQuery } from "./cosmosDb";
 
-
 function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.ObjectTypeDefinition) {
 
     for (const orderByElement of orderBy.elements) {
@@ -25,13 +24,85 @@ function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.Obje
     }
 }
 
+function generateAliasToSelectFromParentColumn(parentColumn: sql.Column): string {
+    return `_subquery_parent_${parentColumn.name}`
+}
 
-function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryGenerationContext {
+
+/**
+   * Parses a `nestedField` on a `column` and returns a `sql.sqlQueryContext`.
+
+   * The `sql.sqlQueryContext` will be translated to a SQL subquery with the nested fields
+   * requested from the `column`
+
+   @param {string} parentColumn - Name of the column from where nested fields are to be selected.
+   @returns {sql.SqlQueryContext} Returns the `SqlQueryContext` which will return a SQL query context which
+   will contain the selection of the nested fields, which is intended to be used a subquery.
+
+**/
+// TODO: Please write unit tests for this function.
+function selectNestedField(nestedField: sdk.NestedField, parentColumn: sql.Column): [sql.SqlQueryContext, string] {
+    if (nestedField.type === "object") {
+        let selectFields: sql.SelectColumns = {};
+        const currentAlias = generateAliasToSelectFromParentColumn(parentColumn);
+        Object.entries(nestedField.fields).forEach(([fieldAlias, field]) => {
+            selectFields[fieldAlias] = selectField(field, currentAlias);
+        });
+        const fromClause: sql.FromClause = {
+            source: sql.formatColumn(parentColumn),
+            sourceAlias: currentAlias,
+        };
+        return [{
+            kind: 'sqlQueryContext',
+            select: selectFields,
+            selectAsValue: false,
+            from: fromClause,
+            isAggregateQuery: false,
+
+        }, currentAlias]
+    } else {
+        let [nestedFieldCtx, sourceAlias] = selectNestedField(nestedField.fields, parentColumn);
+        const fromClause: sql.FromClause = {
+            source: sql.formatColumn(parentColumn),
+            in: sourceAlias,
+            sourceAlias
+        };
+        nestedFieldCtx.from = fromClause;
+        nestedFieldCtx.selectAsArray = true;
+        return [nestedFieldCtx, sourceAlias];
+    }
+}
+
+function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
+    switch (field.type) {
+        case 'column':
+            const column = {
+                name: field.column,
+                prefix: fieldPrefix
+            };
+            if (field.fields !== null && field.fields !== undefined) {
+                const [nestedFieldSelectCol, _] = selectNestedField(field.fields, column);
+                return nestedFieldSelectCol
+            } else {
+                return {
+                    kind: 'column',
+                    column
+                }
+            }
+        case 'relationship':
+            throw new sdk.BadRequest("Relationships are not supported in Azure Cosmos")
+
+    }
+}
+
+function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryContext {
     let isAggregateQuery = false;
 
     const collection: string = queryRequest.collection;
 
     const collectionDefinition: schema.CollectionDefinition = collectionsSchema.collections[collection];
+
+    const rootContainerAlias = `root_${collection}`;
 
     let requestedFields: sql.SelectColumns = {};
 
@@ -62,17 +133,13 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                     if (!(queryField.column in collectionObjectType.properties)) {
                         throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectBaseType}'`)
                     } else {
-                        requestedFields[fieldName] = {
-                            kind: 'column',
-                            columnName: queryField.column
-                        }
+                        requestedFields[fieldName] = selectField(queryField, rootContainerAlias);
                     };
 
                     break;
                 case "relationship":
                     throw new sdk.NotSupported('Querying relationship fields are not supported.');
             }
-
         })
     }
 
@@ -87,14 +154,20 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                         if (aggregateField.distinct) {
                             requestedFields[fieldName] = {
                                 kind: 'aggregate',
-                                columnName: aggregateField.column,
+                                column: {
+                                    name: aggregateField.column,
+                                    prefix: rootContainerAlias,
+                                },
                                 aggregateFunction: 'DISTINCT COUNT'
                             };
 
                         } else {
                             requestedFields[fieldName] = {
                                 kind: 'aggregate',
-                                columnName: aggregateField.column,
+                                column: {
+                                    name: aggregateField.column,
+                                    prefix: rootContainerAlias,
+                                },
                                 aggregateFunction: 'COUNT'
                             }
                         }
@@ -107,7 +180,11 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                     } else {
                         requestedFields[fieldName] = {
                             kind: 'aggregate',
-                            columnName: aggregateField.column,
+                            column: {
+                                name: aggregateField.column,
+                                prefix: rootContainerAlias
+                            },
+
                             aggregateFunction: aggregateField.function
                         }
 
@@ -116,7 +193,10 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
                 case "star_count":
                     requestedFields[fieldName] = {
                         kind: 'aggregate',
-                        columnName: '*',
+                        column: {
+                            name: "*",
+                            prefix: rootContainerAlias,
+                        },
                         aggregateFunction: 'COUNT'
                     };
                     break;
@@ -124,10 +204,19 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
         })
     }
 
-    let sqlGenCtx: sql.SqlQueryGenerationContext = {
-        selectFields: requestedFields,
-        isAggregateQuery
-    }
+    let fromClause: sql.FromClause = {
+        source: collection,
+        sourceAlias: rootContainerAlias,
+    };
+
+    let sqlGenCtx: sql.SqlQueryContext = {
+        kind: 'sqlQueryContext',
+        select: requestedFields,
+        from: fromClause,
+        isAggregateQuery,
+        selectAsValue: false,
+
+    };
 
     if (queryRequest.query.limit != null) {
         if (queryRequest.query.offset != null) {
@@ -166,9 +255,9 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
     if (dbContainer === undefined || dbContainer == null)
         throw new sdk.InternalServerError(`Couldn't find the container '${collection}' in the schema.`)
 
-    const sqlGenCtx: sql.SqlQueryGenerationContext = parseQueryRequest(collectionsSchema, queryRequest);
+    const sqlGenCtx: sql.SqlQueryContext = parseQueryRequest(collectionsSchema, queryRequest);
 
-    const sqlQuery = sql.generateSqlQuery(sqlGenCtx, collection, collection[0]);
+    const sqlQuery = sql.generateSqlQuerySpec(sqlGenCtx, collection, queryRequest.variables);
 
     const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(sqlQuery, dbContainer);
 

@@ -1,4 +1,5 @@
 import { CosmosClient, Database, Container, SqlQuerySpec } from "@azure/cosmos"
+import * as sdk from '@hasura/ndc-sdk-typescript'
 
 export type RawCosmosDbConfig = {
     databaseName: string,
