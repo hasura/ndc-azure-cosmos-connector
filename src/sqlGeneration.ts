@@ -206,9 +206,6 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
         ${offsetClause ? 'OFFSET ' + offsetClause : ''}
         ${limitClause ? 'LIMIT ' + limitClause : ''}`;
 
-    if (sqlQueryParts.selectAsArray) {
-        query = `ARRAY(${query})`
-    }
 
     return {
         query,
@@ -240,7 +237,12 @@ function formatSelectColumns(fieldsToSelect: SelectColumns): string {
             case 'column':
                 return `${formatColumn(selectColumn.column)} ?? null as ${alias}`
             case 'sqlQueryContext':
-                return `(${constructSqlQuery(selectColumn, alias, null).query.trim()}) as ${alias}`;
+                let query = constructSqlQuery(selectColumn, alias, null).query.trim();
+                if (selectColumn.selectAsArray) {
+                    return `(ARRAY(${query})) as ${alias}`
+                } else {
+                    return `(${query}) as ${alias}`
+                }
             case 'aggregate':
                 return `${selectColumn.aggregateFunction} (${formatColumn(selectColumn.column)}) as ${alias} `
         }
