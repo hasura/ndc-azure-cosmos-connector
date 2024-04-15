@@ -87,6 +87,7 @@ export type SqlQueryContext = {
     limit?: number | null,
     orderBy?: sdk.OrderBy | null,
     isAggregateQuery: boolean,
+    selectAsArray?: boolean | undefined
 }
 
 type VariablesMappings = {
@@ -111,13 +112,21 @@ function formatJoinClause(joinClause: JoinClause): string {
 
 }
 
+function formatFromClause(fromClause: FromClause): string {
+    if (fromClause.in !== undefined) {
+        return `${fromClause.in} IN ${fromClause.source}`
+    } else {
+        return `${fromClause.source} ${fromClause.sourceAlias}`
+    }
+}
+
 function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: string, queryVariables: QueryVariables): cosmos.SqlQuerySpec {
     let selectColumns = formatSelectColumns(sqlQueryParts.select);
 
     let fromClause =
         sqlQueryParts.from === null || sqlQueryParts.from === undefined
-            ? null
-            : `${sqlQueryParts.from.source} ${sqlQueryParts.from.sourceAlias}${sqlQueryParts.from.in ? ' IN' + sqlQueryParts.from.in : ''}`;
+            ? null :
+            formatFromClause(sqlQueryParts.from);
 
     let whereClause = null;
     let predicateParameters: SqlParameters = {};
@@ -188,7 +197,7 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
 
     }
 
-    const query =
+    let query =
         `SELECT ${sqlQueryParts.selectAsValue ? 'VALUE' : ''} ${selectColumns}
         ${fromClause ? 'FROM ' + fromClause : ''}
         ${joinClause ?? ''}
@@ -197,6 +206,9 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
         ${offsetClause ? 'OFFSET ' + offsetClause : ''}
         ${limitClause ? 'LIMIT ' + limitClause : ''}`;
 
+    if (sqlQueryParts.selectAsArray) {
+        query = `ARRAY(${query})`
+    }
 
     return {
         query,

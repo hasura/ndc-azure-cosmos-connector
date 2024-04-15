@@ -41,11 +41,10 @@ function generateAliasToSelectFromParentColumn(parentColumn: sql.Column): string
 
 **/
 // TODO: Please write unit tests for this function.
-function selectNestedField(nestedField: sdk.NestedField, parentColumn: sql.Column): sql.SqlQueryContext {
+function selectNestedField(nestedField: sdk.NestedField, parentColumn: sql.Column): [sql.SqlQueryContext, string] {
     if (nestedField.type === "object") {
         let selectFields: sql.SelectColumns = {};
         const currentAlias = generateAliasToSelectFromParentColumn(parentColumn);
-
         Object.entries(nestedField.fields).forEach(([fieldAlias, field]) => {
             selectFields[fieldAlias] = selectField(field, currentAlias);
         });
@@ -53,16 +52,24 @@ function selectNestedField(nestedField: sdk.NestedField, parentColumn: sql.Colum
             source: sql.formatColumn(parentColumn),
             sourceAlias: currentAlias,
         };
-        return {
+        return [{
             kind: 'sqlQueryContext',
             select: selectFields,
             selectAsValue: false,
             from: fromClause,
             isAggregateQuery: false,
 
-        }
+        }, currentAlias]
     } else {
-        throw new sdk.NotSupported("Querying nested array fields is not supported yet.")
+        let [nestedFieldCtx, sourceAlias] = selectNestedField(nestedField.fields, parentColumn);
+        const fromClause: sql.FromClause = {
+            source: sql.formatColumn(parentColumn),
+            in: sourceAlias,
+            sourceAlias
+        };
+        nestedFieldCtx.from = fromClause;
+        nestedFieldCtx.selectAsArray = true;
+        return [nestedFieldCtx, sourceAlias];
     }
 }
 
@@ -74,7 +81,8 @@ function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
                 prefix: fieldPrefix
             };
             if (field.fields !== null && field.fields !== undefined) {
-                return selectNestedField(field.fields, column)
+                const [nestedFieldSelectCol, _] = selectNestedField(field.fields, column);
+                return nestedFieldSelectCol
             } else {
                 return {
                     kind: 'column',
