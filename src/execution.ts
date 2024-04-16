@@ -95,6 +95,28 @@ function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
     }
 }
 
+function getRequestedFieldsFromObject(objectName: string, objectType: schema.ObjectTypeDefinition, fromSource: string, fields: { [k: string]: sdk.Field }): sql.SelectColumns {
+
+    var requestedFields: sql.SelectColumns = {};
+
+    Object.entries(fields).forEach(([fieldName, queryField]) => {
+        switch (queryField.type) {
+            case "column":
+                if (!(queryField.column in objectType.properties)) {
+                    throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${objectName}'`);
+                } else {
+                    requestedFields[fieldName] = selectField(queryField, fromSource);
+                };
+
+                break;
+            case "relationship":
+                throw new sdk.NotSupported('Querying relationship fields are not supported.');
+        }
+    })
+
+    return requestedFields
+}
+
 function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryContext {
     let isAggregateQuery = false;
 
@@ -122,28 +144,15 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
     if (collectionObjectType === undefined)
         throw new sdk.InternalServerError(`Couldn't find the schema of the object type: '${collectionObjectBaseType}'`)
 
-    if (queryRequest.query.fields != null && queryRequest.query.aggregates != null) {
+    if ((queryRequest.query.fields !== null && queryRequest.query.fields !== undefined) && (queryRequest.query.aggregates !== null && queryRequest.query.aggregates !== undefined)) {
         throw new sdk.NotSupported("Aggregates and fields cannot be requested together.")
     }
 
-    if (queryRequest.query.fields != null) {
-        Object.entries(queryRequest.query.fields).forEach(([fieldName, queryField]) => {
-            switch (queryField.type) {
-                case "column":
-                    if (!(queryField.column in collectionObjectType.properties)) {
-                        throw new sdk.BadRequest(`Couldn't find field '${queryField.column}' in object type '${collectionObjectBaseType}'`)
-                    } else {
-                        requestedFields[fieldName] = selectField(queryField, rootContainerAlias);
-                    };
-
-                    break;
-                case "relationship":
-                    throw new sdk.NotSupported('Querying relationship fields are not supported.');
-            }
-        })
+    if ((queryRequest.query.fields !== null) && queryRequest.query.fields !== undefined) {
+        requestedFields = getRequestedFieldsFromObject(collectionObjectBaseType, collectionObjectType, rootContainerAlias, queryRequest.query.fields)
     }
 
-    if (queryRequest.query.aggregates != null) {
+    if (queryRequest.query.aggregates !== null && queryRequest.query.aggregates !== undefined) {
         isAggregateQuery = true;
         Object.entries(queryRequest.query.aggregates).forEach(([fieldName, aggregateField]) => {
             switch (aggregateField.type) {
@@ -218,6 +227,8 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
 
     };
 
+
+
     if (queryRequest.query.limit != null) {
         if (queryRequest.query.offset != null) {
             sqlGenCtx.offset = queryRequest.query.offset
@@ -253,7 +264,7 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
     const dbContainer = dbClient.container(collection);
 
     if (dbContainer === undefined || dbContainer == null)
-        throw new sdk.InternalServerError(`Couldn't find the container '${collection}' in the schema.`)
+        throw new sdk.InternalServerError(`Couldn't find the container '${collection}' in the database.`)
 
     const sqlGenCtx: sql.SqlQueryContext = parseQueryRequest(collectionsSchema, queryRequest);
 
