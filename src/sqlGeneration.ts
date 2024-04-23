@@ -120,13 +120,19 @@ function formatFromClause(fromClause: FromClause): string {
     }
 }
 
-function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: string, queryVariables: QueryVariables): cosmos.SqlQuerySpec {
-    let selectColumns = formatSelectColumns(sqlQueryParts.select);
+/** Constructs a SQL query from the given `sqlQueryContext`
+   * @param sqlQueryCtx - `SqlQueryContext` which contains the data required to generate the SQL query.
+   * @param source - `source` to run the query on. Note that, the source can be a container or a nested field of a document of a container.
+   * @param queryVariables - values of the variables provided with the request.
+
+ */
+function constructSqlQuery(sqlQueryCtx: SqlQueryContext, source: string, queryVariables: QueryVariables): cosmos.SqlQuerySpec {
+    let selectColumns = formatSelectColumns(sqlQueryCtx.select);
 
     let fromClause =
-        sqlQueryParts.from === null || sqlQueryParts.from === undefined
+        sqlQueryCtx.from === null || sqlQueryCtx.from === undefined
             ? null :
-            formatFromClause(sqlQueryParts.from);
+            formatFromClause(sqlQueryCtx.from);
 
     let whereClause = null;
     let predicateParameters: SqlParameters = {};
@@ -134,26 +140,18 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
 
     let parameters: cosmos.SqlParameter[] = [];
 
+    if (sqlQueryCtx.predicate != null && sqlQueryCtx.predicate != undefined) {
 
-
-
-    if (sqlQueryParts.predicate != null && sqlQueryParts.predicate != undefined) {
-
-        const whereExp = visitExpression(predicateParameters, utilisedVariables, sqlQueryParts.predicate, fromContainerAlias);
+        const whereExp = visitExpression(predicateParameters, utilisedVariables, sqlQueryCtx.predicate, source);
 
         whereClause = `WHERE ${whereExp}`
 
         parameters = serializeSqlParameters(predicateParameters);
 
-        console.log("utilised vairables are ", JSON.stringify(utilisedVariables, null, 2));
-
-
         if (Object.keys(utilisedVariables).length > 0) {
             if (queryVariables === null || queryVariables === undefined) {
                 throw new sdk.BadRequest(`The variables (${JSON.stringify(Object.values(utilisedVariables))}) were referenced in the variable, but their values were not provided`)
             } else {
-
-                console.log("query variables as JSON value", JSON.stringify(queryVariables as cosmos.JSONValue, null, 2));
                 parameters.push({
                     name: '@vars',
                     value: queryVariables as cosmos.JSONValue
@@ -180,25 +178,25 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
 
     let orderByClause = null;
 
-    if (sqlQueryParts.orderBy != null && sqlQueryParts.orderBy != null && sqlQueryParts.orderBy.elements.length > 0) {
-        orderByClause = visitOrderByElements(sqlQueryParts.orderBy.elements, fromContainerAlias);
+    if (sqlQueryCtx.orderBy != null && sqlQueryCtx.orderBy != null && sqlQueryCtx.orderBy.elements.length > 0) {
+        orderByClause = visitOrderByElements(sqlQueryCtx.orderBy.elements, source);
     }
 
     let offsetClause = null;
 
-    if (sqlQueryParts.offset != undefined && sqlQueryParts.offset != null) {
-        offsetClause = `${sqlQueryParts.offset}`;
+    if (sqlQueryCtx.offset != undefined && sqlQueryCtx.offset != null) {
+        offsetClause = `${sqlQueryCtx.offset}`;
     }
 
     let limitClause = null;
 
-    if (sqlQueryParts.limit != undefined && sqlQueryParts.limit != null) {
-        limitClause = `${sqlQueryParts.limit}`
+    if (sqlQueryCtx.limit != undefined && sqlQueryCtx.limit != null) {
+        limitClause = `${sqlQueryCtx.limit}`
 
     }
 
     let query =
-        `SELECT ${sqlQueryParts.selectAsValue ? 'VALUE' : ''} ${selectColumns}
+        `SELECT ${sqlQueryCtx.selectAsValue ? 'VALUE' : ''} ${selectColumns}
         ${fromClause ? 'FROM ' + fromClause : ''}
         ${joinClause ?? ''}
         ${whereClause ?? ''}
@@ -215,11 +213,7 @@ function constructSqlQuery(sqlQueryParts: SqlQueryContext, fromContainerAlias: s
 
 export function generateSqlQuerySpec(sqlGenCtx: SqlQueryContext, containerName: string, queryVariables: QueryVariables): SqlQuerySpec {
 
-    const querySpec = constructSqlQuery(sqlGenCtx, `root_${containerName}`, queryVariables);
-
-    console.log(querySpec.query, JSON.stringify(querySpec.parameters, null, 2));
-
-    return querySpec
+    return constructSqlQuery(sqlGenCtx, `root_${containerName}`, queryVariables);
 
 }
 
@@ -344,7 +338,7 @@ export function visitComparisonTarget(target: sdk.ComparisonTarget, containerAli
     switch (target.type) {
         case 'column':
             if (target.path.length > 0) {
-                throw new sdk.NotSupported("Nested fields are not supported yet");
+                throw new sdk.NotSupported("Relationship fields are not supported in predicates.");
             }
             return `${containerAlias}.${target.name}`;
         case 'root_collection_column':
