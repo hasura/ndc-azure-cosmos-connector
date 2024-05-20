@@ -30,7 +30,7 @@ export AZURE_COSMOS_DB_NAME=<YOUR_AZURE_DB_NAME>
 5. Generate the configuration required to run the connector:
 
 ```sh
-ndc-azure-cosmos-config update
+ndc-azure-cosmos update
 ```
 
 This will generate a `config.json` file in the root directory, by default. The
