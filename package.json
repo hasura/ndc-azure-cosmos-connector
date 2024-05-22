@@ -9,7 +9,7 @@
     "test": "mocha",
     "build": "rimraf ./build && tsc",
     "start": "npm run build && ts-node ./src/index.ts",
-    "install-bin": "tsc && npm install -g"
+    "install-bin": "tsc && npm install -g typescript"
   },
   "author": "Karthikeyan Chinnakonda",
   "license": "ISC",

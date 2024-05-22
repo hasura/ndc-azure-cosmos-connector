@@ -1,5 +1,5 @@
 # Use Node.js 20 as the base image
-FROM node:20 as build-stage
+FROM ghcr.io/hasura/ndc-azure-cosmos:v0.1.0 as build-stage
 
 WORKDIR /usr/src/app
 
@@ -14,7 +14,7 @@ COPY . .
 
 RUN tsc
 
-FROM node:20 as production
+FROM ghcr.io/hasura/ndc-azure-cosmos:v0.1.0 as production
 
 WORKDIR /usr/src/app
 
