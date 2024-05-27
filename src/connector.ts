@@ -10,6 +10,11 @@ export type Configuration = ConnectorConfig;
 
 export type ConnectorConfig = {
     schema: CollectionsSchema
+    connection: {
+        endpoint: string,
+        key: string,
+        databaseName: string
+    }
 }
 
 export type State = {
@@ -40,7 +45,7 @@ export function createConnector(): sdk.Connector<Configuration, State> {
 
         tryInitState: async function(_: Configuration, __: unknown): Promise<State> {
             try {
-                const databaseClient = constructCosmosDbClient();
+                const databaseClient = constructCosmosDbClient().dbClient;
                 return Promise.resolve({
                     databaseClient
                 })

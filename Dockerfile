@@ -1,7 +1,7 @@
 FROM node:20
 
-COPY ./ /usr/src/app
-WORKDIR /usr/src/app
+COPY ./ /app
+WORKDIR /app
 
 RUN npm install
 RUN npm run install-bin
