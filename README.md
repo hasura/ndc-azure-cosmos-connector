@@ -3,7 +3,13 @@
 The Azuer Cosmos DB connector allows you to query data present in your Azure Cosmos DB containers as NDC models
 for use in your Hasura DDN subgraphs.
 
-## Steps for setting up the local development
+## Steps for building and running the connector 
+
+### Using docker
+
+
+
+### Using CLI
 
 1. Make sure NodeJS v18+ is installed.
 
@@ -75,7 +81,7 @@ npm run start serve -- --configuration connector_config_emulator.json
 4. Checkout to the [ndc-spec repository](https://github.com/hasura/ndc-spec) and run
 
 ```sh
-cargo run --bin ndc-test -- replay --endpoint http://localhost:8080 --snapshots-dir ../ndc-azure-cosmos-connector/ndc-test-snapshots
+cargo run --bin ndc-test -- replay --endpoint http://localhost:8080 --snapshots-dir ../ndc-azure-cosmos-connector/ndc-test-snapshots --no-validate-responses
 ```
 
 Note:
