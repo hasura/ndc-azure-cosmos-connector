@@ -27,7 +27,7 @@
     "mocha": "^10.3.0",
     "nodemon": "^3.1.0",
     "nyc": "^15.1.0",
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.7"
   },
   "dependencies": {
     "@azure/cosmos": "^4.0.0",
@@ -35,6 +35,6 @@
     "dotenv": "^16.4.5",
     "quicktype-core": "^23.0.104",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   }
 }
