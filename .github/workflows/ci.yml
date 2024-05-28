@@ -28,6 +28,7 @@ jobs:
           npm run build
 
       - name: Generate the connector configuration
+        # temporary-solution: the ./dist/cli/index.js update command is flaky and fails sometimes, so we retry it 3 times
         run: |
           cd cosmos
           chmod +x ./dist/cli/index.js
