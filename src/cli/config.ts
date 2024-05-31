@@ -245,10 +245,18 @@ export async function generateConnectorConfig(outputConfigDir: string) {
     const rowsToFetch = process.env["AZURE_COSMOS_NO_OF_ROWS_TO_FETCH"] ?? "100";
 
     try {
-        const dbClient = constructCosmosDbClient();
-        const schema = await getCollectionsSchema(dbClient, parseInt(rowsToFetch));
+        const client = constructCosmosDbClient();
+        const schema = await getCollectionsSchema(client.dbClient, parseInt(rowsToFetch));
+        const cosmosKey = client.connectionDetails.key;
+        const cosmosEndpoint = client.connectionDetails.endpoint;
+        const cosmosDbName = client.connectionDetails.databaseName;
 
         const response: any = {
+            connection: {
+                endpoint: cosmosEndpoint,
+                key: cosmosKey,
+                databaseName: cosmosDbName
+            },
             schema
         };
 

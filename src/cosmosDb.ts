@@ -35,7 +35,16 @@ export function constructCosmosDbClient() {
         databaseName, endpoint, key
     });
 
-    return dbClient
+    const connectionDetails = {
+        endpoint,
+        key,
+        databaseName
+    }
+
+    return {
+        connectionDetails,
+        dbClient
+    }
 
 }
 

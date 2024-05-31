@@ -11,12 +11,21 @@ export const cmd = new Command("update")
             .default("./")
             .env("HASURA_CONFIGURATION_DIRECTORY")
     )
-    .action((args) => {
-        cliUpdateAction(resolve(args.outputDirectory));
+    .action(async (args) => {
+        try {
+            await cliUpdateAction(resolve(args.outputDirectory));
+            // This is a hack currently, because somehow after this
+            // there is a call to Jaeger (not sure who is making this call).
+            // Once we figure that out, we can remove the below line.
+            process.exit(0);
+        } catch (error) {
+            console.error("An error occured while updating: ", error);
+        }
     });
 
 
 
 async function cliUpdateAction(outputDirectory: string) {
-    generateConnectorConfig(outputDirectory)
+    await generateConnectorConfig(outputDirectory)
+    console.log("Configuration updated successfully");
 }

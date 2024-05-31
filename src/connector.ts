@@ -9,6 +9,11 @@ import { readFileSync } from "fs";
 export type Configuration = ConnectorConfig;
 
 export type ConnectorConfig = {
+    connection: {
+        endpoint: string,
+        key: string,
+        databaseName: string
+    }
     schema: CollectionsSchema
 }
 
@@ -40,7 +45,7 @@ export function createConnector(): sdk.Connector<Configuration, State> {
 
         tryInitState: async function(_: Configuration, __: unknown): Promise<State> {
             try {
-                const databaseClient = constructCosmosDbClient();
+                const databaseClient = constructCosmosDbClient().dbClient;
                 return Promise.resolve({
                     databaseClient
                 })

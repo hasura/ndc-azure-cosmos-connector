@@ -1,12 +1,20 @@
 #! /usr/bin/env node
 
-import { Command } from "commander";
+import { Command, Option } from "commander";
 import * as updateCmd from "./update";
+import * as startCmd from "./start";
+import { createConnector } from "../connector";
+import { version } from "../../package.json"
+import * as sdk from "@hasura/ndc-sdk-typescript";
 
-export const program = new Command()
-    .version("0.0.1")
-    .description("Azure Cosmos Connector CLI")
-    // .addCommand(initCmd.cmd) TODO: Enable when required by the CLI spec
-    .addCommand(updateCmd.cmd);
+function main() {
+    const program = new Command().name("ndc-azure-cosmos").version(version);
 
-program.parse(process.argv);
+    program.addCommand(updateCmd.cmd);
+
+    program.addCommand(startCmd.cmd);
+
+    program.parse(process.argv);
+}
+
+main()
