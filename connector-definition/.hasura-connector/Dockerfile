@@ -3,8 +3,6 @@ FROM ghcr.io/hasura/ndc-azure-cosmos:v0.1.0
 
 WORKDIR /app
 
-COPY package*.json ./
-
 # Define the environment variable for configuration directory with a default value, which can be overridden
 ENV HASURA_CONFIGURATION_DIRECTORY=/etc/connector
 
