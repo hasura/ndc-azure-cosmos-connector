@@ -27,10 +27,8 @@ jobs:
           npm run build
 
       - name: Generate the connector configuration
-        # temporary-solution: starting jaeger-tracing in the background to avoid ECONNREFUSED on opentelemetry
         run: |
           cd cosmos
-          docker compose up -d
           chmod +x ./dist/cli/index.js
           export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
           export AZURE_COSMOS_ENDPOINT=https://test-azure-cosmos-one.documents.azure.com:443/
