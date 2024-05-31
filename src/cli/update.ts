@@ -26,6 +26,6 @@ export const cmd = new Command("update")
 
 
 async function cliUpdateAction(outputDirectory: string) {
-    generateConnectorConfig(outputDirectory)
+    await generateConnectorConfig(outputDirectory)
     console.log("Configuration updated successfully");
 }
