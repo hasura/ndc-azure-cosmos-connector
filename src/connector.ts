@@ -9,12 +9,12 @@ import { readFileSync } from "fs";
 export type Configuration = ConnectorConfig;
 
 export type ConnectorConfig = {
-    schema: CollectionsSchema
     connection: {
         endpoint: string,
         key: string,
         databaseName: string
     }
+    schema: CollectionsSchema
 }
 
 export type State = {

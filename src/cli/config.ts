@@ -252,12 +252,12 @@ export async function generateConnectorConfig(outputConfigDir: string) {
         const cosmosDbName = client.connectionDetails.databaseName;
 
         const response: any = {
-            schema,
             connection: {
                 endpoint: cosmosEndpoint,
                 key: cosmosKey,
                 databaseName: cosmosDbName
-            }
+            },
+            schema
         };
 
         const writeFile = promisify(fs.writeFile);

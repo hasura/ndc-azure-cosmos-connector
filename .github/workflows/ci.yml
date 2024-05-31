@@ -23,7 +23,6 @@ jobs:
       - name: Build connector
         run: |
           cd cosmos
-          rm -rf node_modules dist config.json
           npm install
           npm run build
 

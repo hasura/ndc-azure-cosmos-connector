@@ -42,8 +42,8 @@ export function constructCosmosDbClient() {
     }
 
     return {
-        dbClient,
-        connectionDetails
+        connectionDetails,
+        dbClient
     }
 
 }
