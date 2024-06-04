@@ -27,15 +27,20 @@ jobs:
           npm run build
 
       - name: Generate the connector configuration
+        env:
+          AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
+          AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
+          AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
           cd cosmos
           chmod +x ./dist/cli/index.js
-          export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
-          export AZURE_COSMOS_ENDPOINT=https://test-azure-cosmos-one.documents.azure.com:443/
-          export AZURE_COSMOS_DB_NAME=azure-cosmos-one
           ./dist/cli/index.js update
 
       - name: Start connector
+        env:
+          AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
+          AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
+          AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
           cd cosmos
           export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
