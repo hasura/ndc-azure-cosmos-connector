@@ -30,9 +30,9 @@ jobs:
         run: |
           cd cosmos
           chmod +x ./dist/cli/index.js
-          export AZURE_COSMOS_KEY=${{ secrets.AZURE_COSMOS_KEY }}
-          export AZURE_COSMOS_ENDPOINT=${{ secrets.AZURE_COSMOS_ENDPOINT }}
-          export AZURE_COSMOS_DB_NAME=${{ secrets.AZURE_COSMOS_DB_NAME }}
+          export AZURE_COSMOS_KEY='${{ secrets.AZURE_COSMOS_KEY }}'
+          export AZURE_COSMOS_ENDPOINT='${{ secrets.AZURE_COSMOS_ENDPOINT }}'
+          export AZURE_COSMOS_DB_NAME='${{ secrets.AZURE_COSMOS_DB_NAME }}'
           ./dist/cli/index.js update
 
       - name: Start connector
