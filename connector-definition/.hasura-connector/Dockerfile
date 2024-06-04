@@ -1,5 +1,5 @@
 # Use Node.js 20 as the base image
-FROM ghcr.io/hasura/ndc-azure-cosmos:v0.1.0
+FROM ghcr.io/hasura/ndc-azure-cosmos:v0.1.1
 
 WORKDIR /app
 
