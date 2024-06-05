@@ -12,4 +12,4 @@ ENV HASURA_CONNECTOR_PORT=8080
 # Expose the port specified by the HASURA_CONNECTOR_PORT environment variable
 EXPOSE $HASURA_CONNECTOR_PORT
 
-ENTRYPOINT [ "./dist/cli/index.js", "start" ]
+ENTRYPOINT [ "./dist/cli/index.js" ]
