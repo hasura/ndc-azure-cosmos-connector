@@ -1,6 +1,7 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as cosmos from "@azure/cosmos";
 import { SqlQuerySpec } from "@azure/cosmos";
+import * as schema from "./schema";
 
 export type Column = {
     name: string,
@@ -74,6 +75,223 @@ export type SubqueryJoinClause = {
 
 export type JoinClause = ArrayJoinClause | SubqueryJoinClause;
 
+type ScalarDbOperator = {
+    name: string,
+    isInfix: boolean
+}
+
+// Defines how the NDC's scalar operators map to the DB operators
+type ScalarDBOperatorMappings = {
+    comparison: {
+        [operatorName: string]: ScalarDbOperator
+    },
+    aggregate?: {
+        [operatorName: string]: ScalarDbOperator
+    } | undefined
+
+};
+
+type ScalarOperatorMappings = {
+    [scalarTypeName: string]: ScalarDBOperatorMappings
+}
+
+
+export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
+
+    "Integer": {
+        "comparison": {
+            "eq": {
+                "name": "=",
+                "isInfix": true
+            },
+            "neq": {
+                "name": "!=",
+                "isInfix": true
+            },
+            "gt": {
+                "name": ">",
+                "isInfix": true
+            },
+            "lt": {
+                "name": "<",
+                "isInfix": true
+            },
+            "gte": {
+                "name": ">=",
+                "isInfix": true
+            },
+            "lte": {
+                "name": "<=",
+                "isInfix": true
+            }
+        }
+
+    },
+    "Number": {
+        "comparison": {
+            "eq": {
+                "name": "=",
+                "isInfix": true
+            },
+            "neq": {
+                "name": "!=",
+                "isInfix": true
+            },
+            "gt": {
+                "name": ">",
+                "isInfix": true
+            },
+            "lt": {
+                "name": "<",
+                "isInfix": true
+            },
+            "gte": {
+                "name": ">=",
+                "isInfix": true
+            },
+            "lte": {
+                "name": "<=",
+                "isInfix": true
+            }
+        }
+
+    },
+    "Boolean": {
+        "comparison": {
+            "eq": {
+                "name": "=",
+                "isInfix": true
+            },
+            "neq": {
+                "name": "!=",
+                "isInfix": true
+            }
+        }
+
+    },
+    "String": {
+        "comparison": {
+            "eq": {
+                "name": "=",
+                "isInfix": true
+            },
+            "neq": {
+                "name": "!=",
+                "isInfix": true
+            },
+            "gt": {
+                "name": ">",
+                "isInfix": true
+            },
+            "lt": {
+                "name": "<",
+                "isInfix": true
+            },
+            "gte": {
+                "name": ">=",
+                "isInfix": true
+            },
+            "lte": {
+                "name": "<=",
+                "isInfix": true
+            },
+            "contains": {
+                "name": "CONTAINS",
+                "isInfix": false,
+            },
+            "endswith": {
+                "name": "ENDSWITH",
+                "isInfix": false,
+            },
+            "regexmatch": {
+                "name": "REGEXMATCH",
+                "isInfix": false,
+            },
+            "startswith": {
+                "name": "STARTSWITH",
+                "isInfix": false
+            }
+        }
+
+    },
+};
+
+export function getDbComparisonOperator(scalarTypeName: string, operator: string): ScalarDbOperator {
+    const scalarOperators = scalarComparisonOperatorMappings[scalarTypeName];
+
+    if (scalarOperators === undefined && scalarOperators === null) {
+        throw new sdk.BadRequest(`Couldn't find scalar type: ${scalarTypeName} in the schema`)
+    } else {
+        const scalarDbOperator = scalarOperators.comparison[operator];
+
+        if (scalarDbOperator) {
+            return scalarDbOperator
+        } else {
+            throw new sdk.BadRequest(`Comparison Operator ${operator} is not supported on type ${scalarTypeName}`)
+        }
+    }
+
+
+}
+
+
+export type ComparisonTarget =
+    | {
+        type: "column";
+        /**
+         * The name of the column
+         */
+        name: string;
+    }
+    | {
+        type: "root_collection_column";
+        /**
+         * The name of the column
+         */
+        name: string;
+    };
+
+export type ComparisonValue =
+    | {
+        type: "column";
+        column: string;
+    }
+    | {
+        type: "scalar";
+        value: unknown;
+    }
+    | {
+        type: "variable";
+        name: string;
+    };
+
+export type Expression =
+    | {
+        type: "and";
+        expressions: Expression[];
+    }
+    | {
+        type: "or";
+        expressions: Expression[];
+    }
+    | {
+        type: "not";
+        expression: Expression;
+    }
+    | {
+        type: "unary_comparison_operator";
+        column: string;
+        operator: "is_null";
+    }
+    | {
+        type: "binary_comparison_operator";
+        column: string;
+        value: ComparisonValue;
+        dbOperator: ScalarDbOperator;
+    };
+
+
+
 
 export type SqlQueryContext = {
     kind: 'sqlQueryContext',
@@ -82,7 +300,7 @@ export type SqlQueryContext = {
     selectAsValue: boolean,
     from?: FromClause | null,
     join?: JoinClause[] | null,
-    predicate?: sdk.Expression | null,
+    predicate?: Expression | null,
     offset?: number | null,
     limit?: number | null,
     orderBy?: sdk.OrderBy | null,
@@ -211,7 +429,7 @@ function constructSqlQuery(sqlQueryCtx: SqlQueryContext, source: string, queryVa
     }
 }
 
-export function generateSqlQuerySpec(sqlGenCtx: SqlQueryContext, containerName: string, queryVariables: QueryVariables): SqlQuerySpec {
+export function generateSqlQuerySpec(sqlGenCtx: SqlQueryContext, containerName: string, queryVariables: QueryVariables, schema: schema.CollectionsSchema): SqlQuerySpec {
 
     return constructSqlQuery(sqlGenCtx, `root_${containerName}`, queryVariables);
 
@@ -278,11 +496,11 @@ function visitOrderByElement(value: sdk.OrderByElement, containerAlias: string):
 /*
   Wraps the expression in parantheses to avoid generating SQL with wrong operator precedence.
  */
-function visitExpressionWithParentheses(parameters: SqlParameters, variables: VariablesMappings, expression: sdk.Expression, containerAlias: string): string {
+function visitExpressionWithParentheses(parameters: SqlParameters, variables: VariablesMappings, expression: Expression, containerAlias: string): string {
     return `(${visitExpression(parameters, variables, expression, containerAlias)})`
 }
 
-function visitExpression(parameters: SqlParameters, variables: VariablesMappings, expression: sdk.Expression, containerAlias: string): string {
+function visitExpression(parameters: SqlParameters, variables: VariablesMappings, expression: Expression, containerAlias: string): string {
     switch (expression.type) {
         case "and":
             if (expression.expressions.length > 0) {
@@ -297,56 +515,41 @@ function visitExpression(parameters: SqlParameters, variables: VariablesMappings
             } else {
                 return "false"
             };
+
         case "not":
             return `NOT ${visitExpressionWithParentheses(parameters, variables, expression.expression, containerAlias)} `
+
         case "unary_comparison_operator":
             switch (expression.operator) {
                 case "is_null":
-                    return `IS_NULL(${visitComparisonTarget(expression.column, containerAlias)
-                        })`
-                default:
-                    throw new sdk.BadRequest("Unknown unary comparison operator")
-
+                    return `IS_NULL(${expression.column})`
             }
+
         case "binary_comparison_operator":
-            const comparisonTarget = visitComparisonTarget(expression.column, containerAlias);
-            switch (expression.operator) { // TODO: This is not correct. Depending upon the type of the column, different operators will be available.
-                case "eq":
-                    return `${comparisonTarget} = ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "neq":
-                    return `${comparisonTarget} != ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "gte":
-                    return `${comparisonTarget} >= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "gt":
-                    return `${comparisonTarget} > ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "lte":
-                    return `${comparisonTarget} <= ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)} `
-                case "lt":
-                    return `${comparisonTarget} < ${visitComparisonValue(parameters, variables, expression.value, comparisonTarget, containerAlias)}`
+            const comparisonValue = visitComparisonValue(parameters, variables, expression.value, expression.column, containerAlias);
 
-                default:
-                    throw new sdk.BadRequest(`Unknown binary comparison operator ${expression.operator} found`)
+            if (expression.dbOperator.isInfix) {
+                return `${containerAlias}.${expression.column} ${expression.dbOperator.name} ${comparisonValue}`
+            } else {
+                return `${expression.dbOperator.name}(${containerAlias}.${expression.column}, ${comparisonValue}) `
             }
 
-
-        case "exists":
-            throw new sdk.NotSupported('EXISTS operator is not supported.')
     }
 }
 
-export function visitComparisonTarget(target: sdk.ComparisonTarget, containerAlias: string): string {
+export function visitComparisonTarget(target: sdk.ComparisonTarget): string {
     switch (target.type) {
         case 'column':
             if (target.path.length > 0) {
                 throw new sdk.NotSupported("Relationship fields are not supported in predicates.");
             }
-            return `${containerAlias}.${target.name}`;
+            return target.name;
         case 'root_collection_column':
             throw new sdk.NotSupported("Root collection column comparison is not supported");
     }
 }
 
-export function visitComparisonValue(parameters: SqlParameters, variables: VariablesMappings, target: sdk.ComparisonValue, comparisonTarget: string, containerAlias: string): string {
+function visitComparisonValue(parameters: SqlParameters, variables: VariablesMappings, target: ComparisonValue, comparisonTarget: string, containerAlias: string): string {
     switch (target.type) {
         case 'scalar':
             const comparisonTargetName = comparisonTarget.replace(".", "_");
@@ -365,7 +568,8 @@ export function visitComparisonValue(parameters: SqlParameters, variables: Varia
             }
 
         case 'column':
-            return visitComparisonTarget(target.column, containerAlias)
+            return `${containerAlias}.${target.column}`
+
         case 'variable':
             variables[comparisonTarget] = `vars["${target.name}"]`
             return `vars["${target.name}"]`
