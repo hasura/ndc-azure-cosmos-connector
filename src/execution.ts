@@ -4,6 +4,7 @@ import * as sql from "./sqlGeneration";
 import { Database } from "@azure/cosmos";
 import { runSQLQuery } from "./cosmosDb";
 
+
 function validateOrderBy(orderBy: sdk.OrderBy, collectionObjectType: schema.ObjectTypeDefinition) {
 
     for (const orderByElement of orderBy.elements) {
@@ -117,6 +118,88 @@ function getRequestedFieldsFromObject(objectName: string, objectType: schema.Obj
     return requestedFields
 }
 
+function getBaseType(typeDefn: schema.TypeDefinition): string {
+    switch (typeDefn.type) {
+        case "array":
+            return getBaseType(typeDefn.elementType)
+        case "nullable":
+            return getBaseType(typeDefn.underlyingType)
+        case "named":
+            switch (typeDefn.kind) {
+                case "object":
+                    return typeDefn.name
+                case "scalar":
+                    return typeDefn.name
+            }
+    }
+}
+
+function parseComparisonValue(value: sdk.ComparisonValue): sql.ComparisonValue {
+    switch (value.type) {
+        case "column":
+            return {
+                "type": "column",
+                column: sql.visitComparisonTarget(value.column)
+            }
+        case "scalar":
+            return {
+                "type": "scalar",
+                value: value.value
+            }
+        case "variable":
+            return {
+                "type": "variable",
+                name: value.name
+            }
+    }
+}
+
+function parseExpression(expression: sdk.Expression, collectionObjectProperties: schema.ObjectTypePropertiesMap, collectionObjectTypeName: string): sql.Expression {
+    switch (expression.type) {
+        case "and":
+            return {
+                type: "and",
+                expressions: expression.expressions.map(expr => parseExpression(expr, collectionObjectProperties, collectionObjectTypeName))
+            }
+        case "or":
+            return {
+                type: "or",
+                expressions: expression.expressions.map(expr => parseExpression(expr, collectionObjectProperties, collectionObjectTypeName))
+            }
+        case "not":
+            return {
+                type: "not",
+                expression: parseExpression(expression.expression, collectionObjectProperties, collectionObjectTypeName)
+            }
+        case "unary_comparison_operator":
+            switch (expression.operator) {
+                case "is_null":
+                    return {
+                        type: "unary_comparison_operator",
+                        column: sql.visitComparisonTarget(expression.column),
+                        operator: "is_null"
+                    }
+            }
+        case "binary_comparison_operator":
+            const comparisonTarget = sql.visitComparisonTarget(expression.column);
+            const comparisonTargetTypeProperty = collectionObjectProperties[comparisonTarget];
+            if (!comparisonTargetTypeProperty === undefined) {
+                throw new sdk.BadRequest(`Couldn't find column ${comparisonTarget} in object type: ${collectionObjectTypeName}`)
+            }
+            const comparisonTargetType = getBaseType(comparisonTargetTypeProperty.type);
+            const scalarDbOperator = sql.getDbComparisonOperator(comparisonTargetType, expression.operator);
+            return {
+                type: "binary_comparison_operator",
+                column: comparisonTarget,
+                value: parseComparisonValue(expression.value),
+                dbOperator: scalarDbOperator
+            }
+
+        case "exists":
+            throw new sdk.NotSupported('EXISTS operator is not supported.')
+    }
+}
+
 function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryRequest: sdk.QueryRequest): sql.SqlQueryContext {
     let isAggregateQuery = false;
 
@@ -227,8 +310,6 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
 
     };
 
-
-
     if (queryRequest.query.limit != null) {
         if (queryRequest.query.offset != null) {
             sqlGenCtx.offset = queryRequest.query.offset
@@ -246,7 +327,10 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
         validateOrderBy(queryRequest.query.order_by, collectionObjectType);
         sqlGenCtx.orderBy = queryRequest.query.order_by;
     }
-    sqlGenCtx.predicate = queryRequest.query.predicate;
+
+    if (queryRequest.query.predicate) {
+        sqlGenCtx.predicate = parseExpression(queryRequest.query.predicate, collectionObjectType.properties, collection);
+    }
 
     return sqlGenCtx
 
@@ -268,7 +352,7 @@ export async function executeQuery(queryRequest: sdk.QueryRequest, collectionsSc
 
     const sqlGenCtx: sql.SqlQueryContext = parseQueryRequest(collectionsSchema, queryRequest);
 
-    const sqlQuery = sql.generateSqlQuerySpec(sqlGenCtx, collection, queryRequest.variables);
+    const sqlQuery = sql.generateSqlQuerySpec(sqlGenCtx, collection, queryRequest.variables, collectionsSchema);
 
     const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(sqlQuery, dbContainer);
 

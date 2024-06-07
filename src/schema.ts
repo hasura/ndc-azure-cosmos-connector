@@ -122,6 +122,270 @@ export enum BuiltInScalarTypeName {
     Integer = "Integer"
 }
 
+export type ScalarTypes = {
+    [k: string]: ScalarType;
+};
+
+export type ScalarOperatorMappings = {
+    [k: string]: string
+};
+
+export const scalarTypes: ScalarTypes = {
+    "Integer": {
+        aggregate_functions: {
+            "count": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Integer,
+                }
+            },
+            "sum": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Integer,
+                }
+            },
+            "avg": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Integer,
+                }
+            },
+            "min": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Integer,
+                }
+            },
+            "max": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Integer,
+                }
+            }
+        },
+        comparison_operators: {
+            eq: {
+                type: "equal"
+            },
+            neq: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Integer"
+                }
+            },
+            gt: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Integer"
+                }
+            },
+            lt: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Integer"
+                }
+            },
+            gte: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Integer"
+                }
+            },
+            lte: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Integer"
+                }
+            }
+        },
+    },
+    "Number": {
+        aggregate_functions: {
+            "count": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Number,
+                }
+            },
+            "sum": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Number,
+                }
+            },
+            "avg": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Number,
+                }
+            },
+            "min": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Number,
+                }
+            },
+            "max": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Number,
+                }
+            }
+        },
+        comparison_operators: {
+            eq: {
+                type: "equal"
+            },
+            neq: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Number"
+                }
+            },
+            gt: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Number"
+                }
+            },
+            lt: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Number"
+                }
+            },
+            gte: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Number"
+                }
+            },
+            lte: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Number"
+                }
+            }
+        },
+    },
+    "Boolean": {
+        aggregate_functions: {
+            "bool_and": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Boolean,
+                }
+            },
+            "bool_or": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Boolean,
+                }
+            },
+            "bool_not": {
+                result_type: {
+                    type: "named",
+                    name: BuiltInScalarTypeName.Boolean,
+                }
+            }
+        },
+        comparison_operators: {
+            eq: {
+                type: "equal"
+            },
+            neq: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "Boolean"
+                }
+            }
+        },
+    },
+    "String": {
+        aggregate_functions: {},
+        comparison_operators: {
+            eq: {
+                type: "equal"
+            },
+            neq: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            gt: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            lt: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            gte: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            lte: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            contains: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            endswith: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            regexmatch: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            },
+            startswith: {
+                type: "custom",
+                argument_type: {
+                    type: "named",
+                    name: "String"
+                }
+            }
+        },
+    }
+};
+
 export function getJSONScalarTypes(): ScalarTypeDefinitions {
     var scalarTypeDefinitions: ScalarTypeDefinitions = {};
     scalarTypeDefinitions["Integer"] = {
@@ -179,264 +443,7 @@ export function getNdcSchemaResponse(collectionsSchema: CollectionsSchema): sdk.
         }
     });
 
-    type ScalarTypes = {
-        [k: string]: ScalarType;
-    };
-    const scalarTypes: ScalarTypes = {
-        "Integer": {
-            aggregate_functions: {
-                "count": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Integer,
-                    }
-                },
-                "sum": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Integer,
-                    }
-                },
-                "avg": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Integer,
-                    }
-                },
-                "min": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Integer,
-                    }
-                },
-                "max": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Integer,
-                    }
-                }
-            },
-            comparison_operators: {
-                eq: {
-                    type: "equal"
-                },
-                neq: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Integer"
-                    }
-                },
-                gt: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Integer"
-                    }
-                },
-                lt: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Integer"
-                    }
-                },
-                gte: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Integer"
-                    }
-                },
-                lte: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Integer"
-                    }
-                }
-            },
-        },
-        "Number": {
-            aggregate_functions: {
-                "count": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Number,
-                    }
-                },
-                "sum": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Number,
-                    }
-                },
-                "avg": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Number,
-                    }
-                },
-                "min": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Number,
-                    }
-                },
-                "max": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Number,
-                    }
-                }
-            },
-            comparison_operators: {
-                eq: {
-                    type: "equal"
-                },
-                neq: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Number"
-                    }
-                },
-                gt: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Number"
-                    }
-                },
-                lt: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Number"
-                    }
-                },
-                gte: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Number"
-                    }
-                },
-                lte: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Number"
-                    }
-                }
-            },
-        },
-        "Boolean": {
-            aggregate_functions: {
-                "bool_and": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Boolean,
-                    }
-                },
-                "bool_or": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Boolean,
-                    }
-                },
-                "bool_not": {
-                    result_type: {
-                        type: "named",
-                        name: BuiltInScalarTypeName.Boolean,
-                    }
-                }
-            },
-            comparison_operators: {
-                eq: {
-                    type: "equal"
-                },
-                neq: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "Boolean"
-                    }
-                }
-            },
-        },
-        "String": {
-            aggregate_functions: {},
-            comparison_operators: {
-                eq: {
-                    type: "equal"
-                },
-                neq: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                gt: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                lt: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                gte: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                lte: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                contains: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                endswith: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                regexmatch: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                },
-                startswith: {
-                    type: "custom",
-                    argument_type: {
-                        type: "named",
-                        name: "String"
-                    }
-                }
-            },
-        }
-    };
+
 
     return {
         functions: [],
