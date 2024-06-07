@@ -75,18 +75,23 @@ export type SubqueryJoinClause = {
 
 export type JoinClause = ArrayJoinClause | SubqueryJoinClause;
 
-type ScalarDbOperator = {
+type ComparisonScalarDbOperator = {
     name: string,
     isInfix: boolean
+}
+
+type AggregateScalarDbOperator = {
+    operator: string,
+    resultType: string
 }
 
 // Defines how the NDC's scalar operators map to the DB operators
 type ScalarDBOperatorMappings = {
     comparison: {
-        [operatorName: string]: ScalarDbOperator
+        [operatorName: string]: ComparisonScalarDbOperator
     },
     aggregate?: {
-        [operatorName: string]: ScalarDbOperator
+        [operatorName: string]: AggregateScalarDbOperator
     } | undefined
 
 };
@@ -97,7 +102,6 @@ type ScalarOperatorMappings = {
 
 
 export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
-
     "Integer": {
         "comparison": {
             "eq": {
@@ -124,8 +128,29 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
                 "name": "<=",
                 "isInfix": true
             }
+        },
+        "aggregate": {
+            "count": {
+                "operator": "count",
+                "resultType": "Integer"
+            },
+            "sum": {
+                "operator": "sum",
+                "resultType": "Integer"
+            },
+            "avg": {
+                "operator": "sum",
+                "resultType": "Number"
+            },
+            "min": {
+                "operator": "sum",
+                "resultType": "Integer"
+            },
+            "max": {
+                "operator": "sum",
+                "resultType": "Integer"
+            },
         }
-
     },
     "Number": {
         "comparison": {
@@ -153,8 +178,29 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
                 "name": "<=",
                 "isInfix": true
             }
+        },
+        "aggregate": {
+            "count": {
+                "operator": "count",
+                "resultType": "Integer"
+            },
+            "sum": {
+                "operator": "sum",
+                "resultType": "Number"
+            },
+            "avg": {
+                "operator": "sum",
+                "resultType": "Number"
+            },
+            "min": {
+                "operator": "sum",
+                "resultType": "Number"
+            },
+            "max": {
+                "operator": "sum",
+                "resultType": "Number"
+            },
         }
-
     },
     "Boolean": {
         "comparison": {
@@ -166,6 +212,20 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
                 "name": "!=",
                 "isInfix": true
             }
+        },
+        "aggregate": {
+            "bool_and": {
+                "operator": "bool_and",
+                "resultType": "Boolean"
+            },
+            "bool_or": {
+                "operator": "bool_or",
+                "resultType": "Boolean"
+            },
+            "bool_not": {
+                "operator": "bool_or",
+                "resultType": "Boolean"
+            },
         }
 
     },
@@ -216,7 +276,7 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
     },
 };
 
-export function getDbComparisonOperator(scalarTypeName: string, operator: string): ScalarDbOperator {
+export function getDbComparisonOperator(scalarTypeName: string, operator: string): ComparisonScalarDbOperator {
     const scalarOperators = scalarComparisonOperatorMappings[scalarTypeName];
 
     if (scalarOperators === undefined && scalarOperators === null) {
@@ -287,7 +347,7 @@ export type Expression =
         type: "binary_comparison_operator";
         column: string;
         value: ComparisonValue;
-        dbOperator: ScalarDbOperator;
+        dbOperator: ComparisonScalarDbOperator;
     };
 
 
