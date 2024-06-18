@@ -57,10 +57,10 @@ To use the Azure Cosmos connector, follow these steps in a Hasura project:
 ```env title="my_subgraph/connector/my_azure_cosmos/.env.local"
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://local.hasura.dev:4317
 OTEL_SERVICE_NAME=my_subgraph_my_azure_cosmos
-AZURE_COSMOS_CONNECTOR_DB_NAME: <YOUR_AZURE_DB_NAME>
-AZURE_COSMOS_CONNECTOR_ENDPOINT: <YOUR_AZURE_COSMOS_ENDPOINT>
-AZURE_COSMOS_CONNECTOR_KEY: <YOUR_AZURE_COSMOS_KEY>
-AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH: <NO-OF-ROWS-TO-FETCH>
+AZURE_COSMOS_DB_NAME= <YOUR_AZURE_DB_NAME>
+AZURE_COSMOS_ENDPOINT= <YOUR_AZURE_COSMOS_ENDPOINT>
+AZURE_COSMOS_KEY= <YOUR_AZURE_COSMOS_KEY>
+AZURE_COSMOS_NO_OF_ROWS_TO_FETCH= <NO-OF-ROWS-TO-FETCH>
 ```
 
 Note: If no value is provided for `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH`, 100 rows will be fetched by the connector by default
@@ -71,7 +71,7 @@ Note: If no value is provided for `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH`, 
 ddn connector introspect --connector my_subgraph/connector/my_azure_cosmos/connector.yaml
 ```
 
-If you look at the `configuration.json` for your connector, you'll see metadata describing your Azure Cosmos mappings.
+If you look at the `config.json` for your connector, you'll see metadata describing your Azure Cosmos mappings.
 
 ### 4. Create the Hasura metadata
 
