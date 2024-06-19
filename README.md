@@ -7,7 +7,7 @@
 
 With this connector, Hasura allows you to instantly create a real-time GraphQL API on top of your data models in Azure Cosmos Database containers. This connector supports Azure Cosmos's functionalities listed in the table below, allowing for efficient and scalable data operations.
 
-This connector is built using the [Typescript Data Connector SDK](https://github.com/hasura/ndc-sdk-typescript) and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
+This connector is built using the [TypeScript Data Connector SDK](https://github.com/hasura/ndc-sdk-typescript) and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
 - [Connector information in the Hasura Hub](https://hasura.io/connectors/azure-cosmos)
 - [Hasura V3 Documentation](https://hasura.io/docs/3.0)
