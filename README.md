@@ -65,7 +65,7 @@ AZURE_COSMOS_KEY= <YOUR_AZURE_COSMOS_KEY>
 AZURE_COSMOS_NO_OF_ROWS_TO_FETCH= <NO-OF-ROWS-TO-FETCH>
 ```
 
-Note: If no value is provided for `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH`, 100 rows will be fetched by the connector by default
+Note: `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH` is an optional field, with 100 rows to be fetched by default.
 
 ### 3. Intropsect your indices
 
