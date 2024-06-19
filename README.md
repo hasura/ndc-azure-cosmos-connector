@@ -54,6 +54,8 @@ To use the Azure Cosmos connector, follow these steps in a Hasura project:
 
 ### 2. Add your Azure Cosmos credentials:
 
+Add you credentials to `my_subgraph/connector/my_azure_cosmos/.env.local`
+
 ```env title="my_subgraph/connector/my_azure_cosmos/.env.local"
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://local.hasura.dev:4317
 OTEL_SERVICE_NAME=my_subgraph_my_azure_cosmos
@@ -67,6 +69,8 @@ Note: If no value is provided for `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH`, 
 
 ### 3. Intropsect your indices
 
+From the root of your project run:
+
 ```bash title="From the root of your project run:"
 ddn connector introspect --connector my_subgraph/connector/my_azure_cosmos/connector.yaml
 ```
@@ -74,6 +78,8 @@ ddn connector introspect --connector my_subgraph/connector/my_azure_cosmos/conne
 If you look at the `config.json` for your connector, you'll see metadata describing your Azure Cosmos mappings.
 
 ### 4. Create the Hasura metadata
+
+Run the following from the root of your project:
 
 ```bash title="Run the following from the root of your project:"
 ddn connector-link add my_azure_cosmos --subgraph my_subgraph
@@ -84,13 +90,13 @@ subgraph's `.env.my_subgraph` file. Each key is prefixed by the subgraph name, a
 connector. Ensure the port value matches what is published in your connector's docker compose file.
 
 ```env title="my_subgraph/.env.my_subgraph"
-MY_SUBGRAPH_MY_AZURE_COSMOS_READ_URL=http://local.hasura.dev:8082
-MY_SUBGRAPH_MY_AZURE_COSMOS_WRITE_URL=http://local.hasura.dev:8082
+MY_SUBGRAPH_MY_AZURE_COSMOS_READ_URL=http://local.hasura.dev:8081
+MY_SUBGRAPH_MY_AZURE_COSMOS_WRITE_URL=http://local.hasura.dev:8081
 ```
 
 ### 5. Start the connector's docker compose
 
-Let's start our connector's docker compose file.
+Let's start our connector's docker compose file. Run the following from the connector's subdirectory inside a subgraph:
 
 ```bash title="Run the following from the connector's subdirectory inside a subgraph:"
 docker compose -f docker-compose.my_azure_cosmos.yaml up
@@ -100,14 +106,14 @@ This starts our Azure Cosmos connector on the specified port. We can navigate to
 modified, to see the schema of our Azure Cosmos data source:
 
 ```bash
-http://localhost:8082/schema
+http://localhost:8081/schema
 ```
 
 ### 6. Include the connector in your docker compose
 
 Kill the connector by pressing `CTRL+C` in the terminal tab in which the connector is running.
 
-Then, add the following inclusion to the docker compose in your project's root directory, taking care to modify the
+Then, add the following inclusion to the docker compose `docker-compose.hasura.yaml` in your project's root directory, taking care to modify the
 subgraph's name.
 
 ```yaml title="docker-compose.hasura.yaml"
@@ -116,7 +122,7 @@ include:
 ```
 
 Now, whenever running the following, you'll bring up the GraphQL engine, observability tools, and any connectors you've
-included:
+included. From the root of your project, run:
 
 ```bash title="From the root of your project, run:"
 HASURA_DDN_PAT=$(ddn auth print-pat) docker compose -f docker-compose.hasura.yaml watch
@@ -126,7 +132,7 @@ HASURA_DDN_PAT=$(ddn auth print-pat) docker compose -f docker-compose.hasura.yam
 
 Finally, now that our `DataConnectorLink` has the correct environment variables configured for the Azure Cosmos connector,
 we can run the update command to have the CLI look at the configuration JSON and transform it to reflect our database's
-schema in `hml` format. In a new terminal tab, run:
+schema in `hml` format. In a new terminal tab from the root of your project, run:
 
 ```bash title="From the root of your project, run:"
 ddn connector-link update my_azure_cosmos --subgraph my_subgraph
@@ -137,7 +143,7 @@ scaffolded out for you 🎉
 
 ### 8. Import _all_ your indices
 
-You can do this in one convenience command.
+You can do this in one convenience command. From the root of your project, run:
 
 ```bash title="From the root of your project, run:"
 ddn connector-link update my_azure_cosmos --subgraph my_subgraph --add-all-resources
@@ -146,7 +152,7 @@ ddn connector-link update my_azure_cosmos --subgraph my_subgraph --add-all-resou
 ### 9. Create a supergraph build
 
 Pass the `local` subcommand along with specifying the output directory as `./engine` in the root of the project. This
-directory is used by the docker-compose file to serve the engine locally:
+directory is used by the docker-compose file to serve the engine locally. From the root of your project, run:
 
 ```bash title="From the root of your project, run:"
 ddn supergraph build local --output-dir ./engine
