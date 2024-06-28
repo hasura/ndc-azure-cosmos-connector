@@ -1,7 +1,7 @@
 {
   "name": "ndc-nodejs-azure-cosmos-connector",
   "version": "1.0.0",
-  "description": "NDC connector for the Azure Cosmos database",
+  "description": "NDC connector for the Azure Cosmos DB for NoSQL database",
   "bin": {
     "ndc-azure-cosmos": "./dist/cli/index.js"
   },

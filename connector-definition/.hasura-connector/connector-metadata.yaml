@@ -2,11 +2,11 @@ packagingDefinition:
   type: ManagedDockerBuild
 supportedEnvironmentVariables:
   - name: AZURE_COSMOS_KEY
-    description: The Azure Cosmos DB key
+    description: The Azure Cosmos DB for NoSQL DB key
   - name: AZURE_COSMOS_DB_NAME
-    description: Name of the Azure Cosmos DB
+    description: Name of the Azure Cosmos DB for NoSQL DB
   - name: AZURE_COSMOS_ENDPOINT
-    description: Endpoint of the Azure Cosmos DB
+    description: Endpoint of the Azure Cosmos DB for NoSQL DB
   - name: AZURE_COSMOS_NO_OF_ROWS_TO_FETCH
     description: Maximum number of rows to fetch per container to infer the schema of the container.
     default: "100"
