@@ -1,4 +1,4 @@
-# Azure Cosmos DB Connector
+# Azure Cosmos DB for NoSQL DB Connector
 
 Instructions for developers who wish to contribute or build upon the connector:
 
@@ -83,7 +83,7 @@ npm run start serve -- --configuration .
 
 The `--configuration` directory should contain the configuration file generated in the previous step.
 
-Alternatively, to use a local Azure Cosmos emulator, start the connector with the following command,
+Alternatively, to use a local Azure Cosmos DB for NoSQL emulator, start the connector with the following command,
 
 ```sh
 npm run start serve -- --configuration connector_config_emulator.json
@@ -93,7 +93,7 @@ The emulator can be setup by following [this](https://learn.microsoft.com/en-us/
 
 ## Steps to test the connector (ndc-test via emulator)
 
-1. Make sure that the Azure Cosmos emulator is up and running.
+1. Make sure that the Azure Cosmos DB for NoSQL emulator is up and running.
 
 2. Create a database contaner and upload data into the emulator,
 
