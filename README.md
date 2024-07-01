@@ -52,7 +52,7 @@ To use the Azure Cosmos DB for NoSQL connector, follow these steps in a Hasura p
    ddn connector init my_azure_cosmos --subgraph my_subgraph --hub-connector hasura/azure-cosmos
    ```
 
-### 2. Add your Azure Cosmos DB for NoSQL credentials:
+### 2. Add your Azure Cosmos DB for NoSQL credentials
 
 Add you credentials to `my_subgraph/connector/my_azure_cosmos/.env.local`
 
@@ -67,7 +67,7 @@ AZURE_COSMOS_NO_OF_ROWS_TO_FETCH= <NO-OF-ROWS-TO-FETCH>
 
 Note: `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH` is an optional field, with 100 rows to be fetched by default.
 
-### 3. Intropsect your indices
+### 3. Introspect your indices
 
 From the root of your project run:
 
@@ -103,7 +103,7 @@ docker compose -f docker-compose.my_azure_cosmos.yaml up
 ```
 
 This starts our Azure Cosmos DB for NoSQL connector on the specified port. We can navigate to the following address, with the port
-modified, to see the schema of our Azure Cosmos DB for NoSQL data source:
+modified, to see the schema of our Azure Cosmos DB for NoSQL source:
 
 ```bash
 http://localhost:8081/schema
@@ -164,7 +164,7 @@ and interact with your API using the Hasura Console.
 
 ## Contributing
 
-We're happy to receive any contributions from the community. Please refer to our [development guide](./docs/development.md).
+We're happy to receive any contributions from the community. Please refer to our [development guide](https://github.com/hasura/ndc-azure-cosmos-connector/blob/main/docs/development.md).
 
 ## License
 
