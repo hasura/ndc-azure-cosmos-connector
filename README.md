@@ -164,7 +164,7 @@ and interact with your API using the Hasura Console.
 
 ## Contributing
 
-We're happy to receive any contributions from the community. Please refer to our [development guide](https://github.com/hasura/ndc-azure-cosmos-connector/blob/main/docs/development.md).
+We're happy to receive any contributions from the community. Please refer to our [development guide](./docs/development.md).
 
 ## License
 
