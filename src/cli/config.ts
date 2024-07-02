@@ -247,14 +247,12 @@ export async function generateConnectorConfig(outputConfigDir: string) {
     try {
         const client = constructCosmosDbClient();
         const schema = await getCollectionsSchema(client.dbClient, parseInt(rowsToFetch));
-        const cosmosKey = client.connectionDetails.key;
         const cosmosEndpoint = client.connectionDetails.endpoint;
         const cosmosDbName = client.connectionDetails.databaseName;
 
         const response: any = {
             connection: {
                 endpoint: cosmosEndpoint,
-                key: cosmosKey,
                 databaseName: cosmosDbName
             },
             schema
