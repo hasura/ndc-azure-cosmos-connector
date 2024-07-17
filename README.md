@@ -49,11 +49,7 @@ To use the Azure Cosmos DB for NoSQL connector, follow these steps in a Hasura p
 (Note: here and following we are naming the subgraph "my_subgraph" and the connector "my_azure_cosmos")
 
    ```bash
-   ddn connector init my_azure_cosmos \
-  --subgraph my_subgraph/subgraph.yaml \
-  --hub-connector hasura/azure-cosmos \
-  --configure-port 8081 \
-  --add-to-compose-file compose.yaml
+   ddn connector init my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --hub-connector hasura/azure-cosmos --configure-port 8081 --add-to-compose-file compose.yaml
    ```
 
 ### 2. Add your Azure Cosmos DB for NoSQL credentials
@@ -71,7 +67,7 @@ AZURE_COSMOS_NO_OF_ROWS_TO_FETCH= <NO-OF-ROWS-TO-FETCH>
 
 Note: `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH` is an optional field, with 100 rows to be fetched by default.
 
-### 3. Introspect your indices
+### 3. Introspect your Database
 
 From the root of your project run:
 
@@ -96,11 +92,19 @@ The schema of the database can be viewed at http://localhost:8081/schema.
 In a new terminal tab from your project's root directory run:
 
 ```bash title="Run the following from the root of your project:"
-ddn connector-link add my_azure_cosmos \
-  --subgraph my_subgraph/subgraph.yaml \
-  --configure-host http://local.hasura.dev:8081 \
-  --target-env-file my_subgraph/.env.my_subgraph.local
+ddn connector-link add my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --configure-host http://local.hasura.dev:8081 --target-env-file my_subgraph/.env.my_subgraph.local
 ```
+
+The above step will add the following env vars to the `.env.my_subgraph.local` file.
+
+```env title="my_subgraph/.env.my_subgraph.local"
+MY_SUBGRAPH_MY_AZURE_COSMOS_READ_URL=http://local.hasura.dev:8081
+MY_SUBGRAPH_MY_AZURE_COSMOS_WRITE_URL=http://local.hasura.dev:8081
+```
+
+The generated file has two environment variables — one for reads and one for writes.
+Each key is prefixed by the subgraph name, an underscore, and the name of the
+connector.
 
 ### 6. Update the new DataConnectorLink object
 
@@ -109,9 +113,7 @@ we can run the update command to have the CLI look at the configuration JSON and
 schema in `hml` format. From your project's root directory, run:
 
 ```bash title="From the root of your project, run:"
-ddn connector-link update my_azure_cosmos \
-  --subgraph my_subgraph/subgraph.yaml \
-  --env-file my_subgraph/.env.my_subgraph.local
+ddn connector-link update my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --env-file my_subgraph/.env.my_subgraph.local
 ```
 
 After this command runs, you can open your `my_subgraph/metadata/my_azure_cosmos.hml` file and see your metadata completely
@@ -119,13 +121,10 @@ scaffolded out for you 🎉
 
 ### 7. Import _all_ your indices
 
-You can do this in one convenience command. From your project's root directory, run:
+You can do this with just one command. From your project's root directory, run:
 
 ```bash title="From the root of your project, run:"
-ddn connector-link update my_azure_cosmos \
-  --subgraph my_subgraph/subgraph.yaml \
-  --env-file my_subgraph/.env.my_subgraph.local \
-  --add-all-resources
+ddn connector-link update my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --env-file my_subgraph/.env.my_subgraph.local --add-all-resources
 ```
 
 ### 8. Create a supergraph build
@@ -134,9 +133,7 @@ Pass the `local` subcommand along with specifying the output directory as `./eng
 directory is used by the docker-compose file to serve the engine locally. From your project's root directory, run:
 
 ```bash title="From the root of your project, run:"
-ddn supergraph build local \
-  --output-dir engine \
-  --subgraph-env-file my_subgraph:my_subgraph/.env.my_subgraph.local
+ddn supergraph build local --output-dir engine --subgraph-env-file my_subgraph:my_subgraph/.env.my_subgraph.local
 ```
 
 You can now navigate to
