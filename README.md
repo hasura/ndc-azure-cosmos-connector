@@ -52,7 +52,7 @@ To use the Azure Cosmos DB for NoSQL connector, follow these steps in a Hasura p
    ddn connector init my_azure_cosmos \
   --subgraph my_subgraph/subgraph.yaml \
   --hub-connector hasura/azure-cosmos \
-  --configure-port 8082 \
+  --configure-port 8081 \
   --add-to-compose-file compose.yaml
    ```
 
@@ -89,7 +89,7 @@ Let's restart the docker compose services. Run the folowing from the root of you
 HASURA_DDN_PAT=$(ddn auth print-pat) docker compose up --build --watch
 ```
 
-The schema of the database can be viewed at http://localhost:8082/schema.
+The schema of the database can be viewed at http://localhost:8081/schema.
 
 ### 5. Create the Hasura metadata
 
@@ -98,7 +98,7 @@ In a new terminal tab from your project's root directory run:
 ```bash title="Run the following from the root of your project:"
 ddn connector-link add my_azure_cosmos \
   --subgraph my_subgraph/subgraph.yaml \
-  --configure-host http://local.hasura.dev:8082 \
+  --configure-host http://local.hasura.dev:8081 \
   --target-env-file my_subgraph/.env.my_subgraph.local
 ```
 
