@@ -6,7 +6,9 @@ WORKDIR /app
 RUN npm install
 RUN npm run install-bin
 
-RUN mkdir /etc/connector/
+RUN mkdir -p /etc/connector/
 WORKDIR /etc/connector/
+
+ENV HASURA_CONFIGURATION_DIRECTORY=/etc/connector
 
 ENTRYPOINT [ "ndc-azure-cosmos" ]
