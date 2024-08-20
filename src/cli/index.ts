@@ -52,12 +52,16 @@ function main() {
             .default(false)
     );
 
+    program.addCommand(updateCmd.cmd);
+
     // Define the action
     program.action(async (options: sdk.ServerOptions) => {
         const connector = createConnector();
         console.log("Starting server with options...", options);
         await sdk.startServer(connector, options);
     });
+
+
 
     // Parse the command line arguments
     program.parse(process.argv);

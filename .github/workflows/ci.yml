@@ -33,7 +33,6 @@ jobs:
           AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
           cd cosmos
-          touch config.json
           chmod +x ./dist/cli/index.js
           ./dist/cli/index.js update
 
