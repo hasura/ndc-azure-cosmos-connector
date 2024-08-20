@@ -57,7 +57,6 @@ function main() {
     // Define the action
     program.action(async (options: sdk.ServerOptions) => {
         const connector = createConnector();
-        console.log("Starting server with options...", options);
         await sdk.startServer(connector, options);
     });
 
