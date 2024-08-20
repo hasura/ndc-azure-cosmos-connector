@@ -1,6 +1,6 @@
 packagingDefinition:
-  type: PreBuiltDockerImage
-  dockerImage: ghcr.io/hasura/ndc-azure-cosmos:v0.1.4
+  type: PrebuiltDockerImage
+  dockerImage: ghcr.io/hasura/ndc-azure-cosmos:v0.1.6
 supportedEnvironmentVariables:
   - name: AZURE_COSMOS_KEY
     description: The Azure Cosmos DB for NoSQL DB key
@@ -12,4 +12,4 @@ supportedEnvironmentVariables:
     description: Maximum number of rows to fetch per container to infer the schema of the container.
     default: "100"
 commands:
-  update: docker run --rm -e AZURE_COSMOS_KEY="$AZURE_COSMOS_KEY" -e AZURE_COSMOS_DB_NAME="$AZURE_COSMOS_DB_NAME" -e AZURE_COSMOS_ENDPOINT="$AZURE_COSMOS_ENDPOINT" -v "$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH":/etc/connector ghcr.io/hasura/ndc-azure-cosmos:v0.1.4 update
+  update: docker run --rm -e AZURE_COSMOS_KEY="$AZURE_COSMOS_KEY" -e AZURE_COSMOS_DB_NAME="$AZURE_COSMOS_DB_NAME" -e AZURE_COSMOS_ENDPOINT="$AZURE_COSMOS_ENDPOINT" -v "$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH":/etc/connector ghcr.io/hasura/ndc-azure-cosmos:v0.1.6 update
