@@ -91,7 +91,7 @@ function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
                 }
             }
         case 'relationship':
-            throw new sdk.BadRequest("Relationships are not supported in Azure Cosmos")
+            throw new sdk.BadRequest("Relationships are not supported in Azure Cosmos DB for NoSQL")
 
     }
 }
@@ -314,7 +314,7 @@ function parseQueryRequest(collectionsSchema: schema.CollectionsSchema, queryReq
         if (queryRequest.query.offset != null) {
             sqlGenCtx.offset = queryRequest.query.offset
         } else {
-            // The Azure cosmos SQL syntax always requires an
+            // The Azure Cosmos DB for NoSQL SQL syntax always requires an
             // offset with the limit clause, so if an offset is not
             // provided, then assume the offset to be 0.
             sqlGenCtx.offset = 0

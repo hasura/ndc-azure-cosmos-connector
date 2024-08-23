@@ -4,7 +4,7 @@ import { generateConnectorConfig } from "./config"
 
 export const cmd = new Command("update")
     .description(
-        "Imports the containers from the specified Azure Cosmos DB and infers the schema by introspecting the containers."
+        "Imports the containers from the specified Azure Cosmos DB for NoSQL DB and infers the schema by introspecting the containers."
     )
     .addOption(
         new Option("--output-directory <directory>", "Output Directory where the config file will be written.")

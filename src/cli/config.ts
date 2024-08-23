@@ -42,7 +42,7 @@ export type JSONSchema = {
    * Fetches at-most `n` latest updated rows from the given container
 
    * @param n - Maximum number of rows to be fetched from the container
-   * @param container - Azure Cosmos DB Container to fetch the rows from.
+   * @param container - Azure Cosmos DB for NoSQL DB Container to fetch the rows from.
    * @returns The latest at-most `n` rows from the `container`.
 
 **/
@@ -191,7 +191,7 @@ export async function getObjectTypeDefinitionsFromJSONSchema(containerJSONSchema
    * all the containers present in the database and fetches the latest `nRows` rows from each container
    * and infer the schema of the container using these rows.
 
-   * @param {Database} database - Azure cosmos Database to get the collections schema from.
+   * @param {Database} database - Azure Cosmos DB for NoSQL Database to get the collections schema from.
    * @param {number} nRows - Number of rows to be read per container to infer the schema of the container.
    * @returns {Promise<CollectionsSchema} Schema of the collections (containers) present in the specified `database`.
 */
