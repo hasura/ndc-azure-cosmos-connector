@@ -43,19 +43,13 @@ jobs:
           AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
           cd cosmos
-          export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
-          export AZURE_COSMOS_ENDPOINT=https://test-azure-cosmos-one.documents.azure.com:443/
-          export AZURE_COSMOS_DB_NAME=azure-cosmos-one
           export HASURA_CONFIGURATION_DIRECTORY="."
           npm run start serve -- --configuration . &
 
-      - name: Checkout ndc-spec
-        uses: actions/checkout@v3
-        with:
-          repository: hasura/ndc-spec
-          path: ndc-spec
-
       - name: Run ndc-test
-        working-directory: ndc-spec
         # temporary-solution: the --no-validate-responses flag is used to avoid the errors from the changes in ndc-spec in [PR:141](https://github.com/hasura/ndc-spec/pull/141)
-        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots --no-validate-responses
+        run:  |
+          wget -O ndc-test https://github.com/hasura/ndc-spec/releases/download/v0.1.3/ndc-test-x86_64-unknown-linux-gnu
+          sudo apt-get install libssl3
+          chmod +x ndc-test
+          ./ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots --no-validate-responses
