@@ -46,14 +46,7 @@ jobs:
           export HASURA_CONFIGURATION_DIRECTORY="."
           npm run start serve -- --configuration . &
 
-      - name: Checkout ndc-spec
-        uses: actions/checkout@v3
-        with:
-          repository: hasura/ndc-spec
-          path: ndc-spec
-
       - name: Run ndc-test
-        working-directory: ndc-spec
         # temporary-solution: the --no-validate-responses flag is used to avoid the errors from the changes in ndc-spec in [PR:141](https://github.com/hasura/ndc-spec/pull/141)
         run:  |
           wget -O ndc-test https://github.com/hasura/ndc-spec/releases/download/v0.1.3/ndc-test-x86_64-unknown-linux-gnu
