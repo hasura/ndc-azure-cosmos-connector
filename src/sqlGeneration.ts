@@ -34,6 +34,7 @@ let nestedArrayColumn: Column = {
     kind: "array",
     nestedField: {
       kind: "object",
+
       field: "b",
       nestedField: {
         kind: "array",
@@ -113,8 +114,9 @@ type NestedField = NestedObjectField | NestedArrayField | NestedScalarField;
 type SimpleWhereExpression = {
   kind: "simpleWhereExpression";
   column: Column;
-  operator: string;
-  value: ComparisonValue;
+  operator: ComparisonScalarDbOperator;
+  // When value is undefined, it means that the operator is unary
+  value?: ComparisonValue | undefined;
 };
 
 type AndWhereExpression = {
@@ -192,9 +194,10 @@ export type SubqueryJoinClause = {
 
 export type JoinClause = ArrayJoinClause | SubqueryJoinClause;
 
-type ComparisonScalarDbOperator = {
+export type ComparisonScalarDbOperator = {
   name: string;
   isInfix: boolean;
+  isUnary: boolean;
 };
 
 type AggregateScalarDbOperator = {
@@ -221,29 +224,40 @@ type ScalarOperatorMappings = {
 export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
   Integer: {
     comparison: {
+      is_null: {
+        name: "IS_NULL",
+        isInfix: false,
+        isUnary: true,
+      },
       eq: {
         name: "=",
         isInfix: true,
+        isUnary: false,
       },
       neq: {
         name: "!=",
         isInfix: true,
+        isUnary: false,
       },
       gt: {
         name: ">",
         isInfix: true,
+        isUnary: false,
       },
       lt: {
         name: "<",
         isInfix: true,
+        isUnary: false,
       },
       gte: {
         name: ">=",
         isInfix: true,
+        isUnary: false,
       },
       lte: {
         name: "<=",
         isInfix: true,
+        isUnary: false,
       },
     },
     aggregate: {
@@ -271,29 +285,41 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
   },
   Number: {
     comparison: {
+      is_null: {
+        name: "IS_NULL",
+        isInfix: false,
+        isUnary: true,
+      },
+
       eq: {
         name: "=",
         isInfix: true,
+        isUnary: false,
       },
       neq: {
         name: "!=",
         isInfix: true,
+        isUnary: false,
       },
       gt: {
         name: ">",
         isInfix: true,
+        isUnary: false,
       },
       lt: {
         name: "<",
         isInfix: true,
+        isUnary: false,
       },
       gte: {
         name: ">=",
         isInfix: true,
+        isUnary: false,
       },
       lte: {
         name: "<=",
         isInfix: true,
+        isUnary: false,
       },
     },
     aggregate: {
@@ -321,13 +347,21 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
   },
   Boolean: {
     comparison: {
+      is_null: {
+        name: "IS_NULL",
+        isInfix: false,
+        isUnary: true,
+      },
+
       eq: {
         name: "=",
         isInfix: true,
+        isUnary: false,
       },
       neq: {
         name: "!=",
         isInfix: true,
+        isUnary: false,
       },
     },
     aggregate: {
@@ -347,45 +381,61 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
   },
   String: {
     comparison: {
+      is_null: {
+        name: "IS_NULL",
+        isInfix: false,
+        isUnary: true,
+      },
+
       eq: {
         name: "=",
         isInfix: true,
+        isUnary: false,
       },
       neq: {
         name: "!=",
         isInfix: true,
+        isUnary: false,
       },
       gt: {
         name: ">",
         isInfix: true,
+        isUnary: false,
       },
       lt: {
         name: "<",
         isInfix: true,
+        isUnary: false,
       },
       gte: {
         name: ">=",
         isInfix: true,
+        isUnary: false,
       },
       lte: {
         name: "<=",
         isInfix: true,
+        isUnary: false,
       },
       contains: {
         name: "CONTAINS",
         isInfix: false,
+        isUnary: false,
       },
       endswith: {
         name: "ENDSWITH",
         isInfix: false,
+        isUnary: false,
       },
       regexmatch: {
         name: "REGEXMATCH",
         isInfix: false,
+        isUnary: false,
       },
       startswith: {
         name: "STARTSWITH",
         isInfix: false,
+        isUnary: false,
       },
     },
   },
@@ -460,7 +510,7 @@ export type Expression =
   | {
       type: "unary_comparison_operator";
       column: string;
-      operator: "is_null";
+      dbOperator: ComparisonScalarDbOperator;
     }
   | {
       type: "binary_comparison_operator";
@@ -517,6 +567,59 @@ function formatFromClause(fromClause: FromClause): string {
   }
 }
 
+// function to convert sdk.Expression to WhereExpression
+function convertExpressionToWhereExpression(
+  expression: Expression,
+  containerAlias: string,
+): WhereExpression {
+  switch (expression.type) {
+    case "binary_comparison_operator":
+      return {
+        kind: "simpleWhereExpression",
+        column: {
+          name: expression.column,
+          prefix: containerAlias,
+        },
+        operator: expression.dbOperator,
+        value: {
+          type: "scalar",
+          value: expression.value,
+        },
+      };
+    case "unary_comparison_operator":
+      return {
+        kind: "simpleWhereExpression",
+        column: {
+          name: expression.column,
+          prefix: containerAlias,
+        },
+        operator: expression.dbOperator,
+      };
+    case "and":
+      return {
+        kind: "and",
+        expressions: expression.expressions.map((e) =>
+          convertExpressionToWhereExpression(e, containerAlias),
+        ),
+      };
+    case "or":
+      return {
+        kind: "or",
+        expressions: expression.expressions.map((e) =>
+          convertExpressionToWhereExpression(e, containerAlias),
+        ),
+      };
+    case "not":
+      return {
+        kind: "not",
+        expression: convertExpressionToWhereExpression(
+          expression.expression,
+          containerAlias,
+        ),
+      };
+  }
+}
+
 /** Constructs a SQL query from the given `sqlQueryContext`
    * @param sqlQueryCtx - `SqlQueryContext` which contains the data required to generate the SQL query.
    * @param source - `source` to run the query on. Note that, the source can be a container or a nested field of a document of a container.
@@ -541,12 +644,13 @@ function constructSqlQuery(
 
   let parameters: cosmos.SqlParameter[] = [];
 
-  if (sqlQueryCtx.predicate != null && sqlQueryCtx.predicate != undefined) {
-    const whereExp = visitExpression(
+  if (sqlQueryCtx.predicate !== null && sqlQueryCtx.predicate !== undefined) {
+    let exp = convertExpressionToWhereExpression(sqlQueryCtx.predicate, source);
+    const whereExp = translateWhereExpression(
+      // Translate the where expression to SQL
+      exp,
       predicateParameters,
       utilisedVariables,
-      sqlQueryCtx.predicate,
-      source,
     );
 
     whereClause = `WHERE ${whereExp}`;
@@ -751,10 +855,12 @@ function visitExpression(
       return `NOT ${visitExpressionWithParentheses(parameters, variables, expression.expression, containerAlias)} `;
 
     case "unary_comparison_operator":
-      switch (expression.operator) {
+      let unaryPredicate = "";
+      switch (expression.dbOperator.name) {
         case "is_null":
-          return `IS_NULL(${expression.column})`;
+          unaryPredicate = `IS_NULL(${containerAlias}.${expression.column})`;
       }
+      return unaryPredicate;
 
     case "binary_comparison_operator":
       const comparisonValue = visitComparisonValue(
@@ -770,6 +876,9 @@ function visitExpression(
       } else {
         return `${expression.dbOperator.name}(${containerAlias}.${expression.column}, ${comparisonValue}) `;
       }
+
+    default:
+      throw new sdk.InternalServerError("Unknown expression type");
   }
 }
 
@@ -805,19 +914,6 @@ export function visitComparisonTarget(
         }
       }
 
-      // if (target.field_path && target.field_path.length > 0) {
-      //   for (let i = 0; i < target.field_path.length; i++) {
-      //     const field = target.field_path[i];
-      //     const fieldProperty = collectionObjectProperties[field];
-      //     if (fieldProperty === undefined) {
-      //       throw new sdk.NotSupported(
-      //         `Field ${field} does not exist in the schema`,
-      //       );
-      //     } else {
-      //       console.log("Field Property: ", fieldProperty);
-      //     }
-      //   }
-      // }
       return target.name;
     case "root_collection_column":
       throw new sdk.NotSupported(
@@ -880,127 +976,123 @@ function serializeSqlParameters(
   return sqlParameters;
 }
 
-function translateWhereExpression(whereExpression: WhereExpression): string {
+export function translateWhereExpression(
+  whereExpression: WhereExpression,
+  parameters: SqlParameters,
+  variables: VariablesMappings,
+): string {
   switch (whereExpression.kind) {
     case "simpleWhereExpression":
-      return "";
-    //      return translateSimpleWhereExpression(whereExpression);
+      return translateColumnPredicate(
+        whereExpression.column,
+        whereExpression.operator,
+        whereExpression.value,
+        parameters,
+        variables,
+      );
     case "and":
-      return whereExpression.expressions
-        .map(translateWhereExpression)
-        .join(" AND ");
+      if (whereExpression.expressions.length > 0) {
+        return whereExpression.expressions
+          .map((e) => `(${translateWhereExpression(e, parameters, variables)})`)
+          .join(" AND ");
+      } else {
+        return "true";
+      }
+
     case "or":
-      return whereExpression.expressions
-        .map(translateWhereExpression)
-        .join(" OR ");
+      if (whereExpression.expressions.length > 0) {
+        return whereExpression.expressions
+          .map((e) => `(${translateWhereExpression(e, parameters, variables)})`)
+          .join(" OR ");
+      } else {
+        return "false";
+      }
+
     case "not":
-      return `NOT (${translateWhereExpression(whereExpression.expression)})`;
+      return `(NOT (${translateWhereExpression(whereExpression.expression, parameters, variables)})) `;
   }
 }
 
 // Function to generate the SQL query
-export function generateCosmosDbQuery(column: Column): string {
+export function translateColumnPredicate(
+  column: Column,
+  operator: ComparisonScalarDbOperator,
+  value: ComparisonValue | undefined,
+  parameters: SqlParameters,
+  variables: VariablesMappings,
+): string {
   const { name, prefix, nestedField } = column;
-
-  let arrayCounter = 1;
 
   // Function to recursively build the nested query part
   function buildNestedQuery(
     nestedField: NestedField,
     parentField: string,
+    arrayCounter: number,
   ): string {
+    let predicate = "";
     if (nestedField.kind === "array") {
       const alias = `array_element_${arrayCounter++}`;
-      return `EXISTS(
+      predicate = `EXISTS(
                 SELECT 1
                 FROM ${alias} IN ${parentField}
-                WHERE ${buildNestedQuery(nestedField.nestedField, alias)})`;
+                WHERE ${buildNestedQuery(nestedField.nestedField, alias, arrayCounter)})`;
     } else if (nestedField.kind === "object") {
       const alias = `${parentField}.${(nestedField as NestedObjectField).field}`;
-      return buildNestedQuery(nestedField.nestedField, alias);
+      return buildNestedQuery(nestedField.nestedField, alias, arrayCounter);
     } else if (nestedField.kind === "scalar") {
-      // Direct comparison if scalar
-      return `${parentField}.${(nestedField as NestedScalarField).field} > 2`;
+      if (value === undefined) {
+        if (operator.isUnary) {
+          predicate = `${operator.name}(${parentField}.${(nestedField as NestedScalarField).field})`;
+        }
+      } else {
+        const comparisonValueRef = visitComparisonValue(
+          parameters,
+          variables,
+          value,
+          (nestedField as NestedScalarField).field,
+          parentField,
+        );
+
+        // abstract the logic for infix and prefix operators in a function to avoid code duplication
+        if (operator.isInfix) {
+          predicate = `${parentField}.${(nestedField as NestedScalarField).field} ${operator.name} ${comparisonValueRef}`;
+        } else {
+          predicate = `${operator.name}(${parentField}.${(nestedField as NestedScalarField).field}, ${comparisonValueRef})`;
+        }
+      }
     }
-    return "";
+    return predicate;
   }
 
   // Initial alias for the top-level field
   const topLevelAlias = prefix + "." + name;
-  const nestedQuery = buildNestedQuery(
-    nestedField as NestedField,
-    topLevelAlias,
-  );
+  let query = "";
+  let predicate = "";
+  if (nestedField === undefined) {
+    if (value !== undefined) {
+      const comparisonValueRef = visitComparisonValue(
+        parameters,
+        variables,
+        value,
+        name,
+        prefix,
+      );
+      if (operator.isInfix) {
+        predicate = `${topLevelAlias} ${operator.name} ${comparisonValueRef}`;
+      } else {
+        predicate = `${operator.name}(${topLevelAlias}, ${comparisonValueRef})`;
+      }
+      query = predicate;
+    } else if (operator.isUnary) {
+      predicate = `${operator.name}(${topLevelAlias})`;
+    } else {
+      throw new sdk.InternalServerError(
+        "Binary comparison operator requires a value to be provided",
+      );
+    }
+  } else {
+    query = buildNestedQuery(nestedField, topLevelAlias, 1);
+  }
 
-  // Construct the final query string
-  const query = `
-        SELECT 1
-        FROM ${prefix}
-        WHERE ${nestedQuery}
-    `;
-
-  return query.trim();
+  return `${query.trim()}`;
 }
-
-// function translateSimpleWhereExpression(
-//   simpleWhereExpression: SimpleWhereExpression,
-// ): string {
-//   const { column, operator } = simpleWhereExpression;
-//   const dbOperator = getDbComparisonOperator(column.name, operator);
-
-//     function calculateNestedFieldPredicate(
-//       nestedField: NestedField,
-//       operator: string,
-//       value: ComparisonValue,
-//       arrayIndex: number,
-//         parentField?: string | undefined,
-
-//     ): string {
-//       switch (nestedField.kind) {
-//         case "object":
-//           return `EXISTS (SELECT VALUE 1 FROM ${nestedField.field} WHERE ${calculateNestedFieldPredicate(
-//             nestedField.nestedField,
-//             operator,
-//             value,
-
-//           )})`;
-//         case "array":
-//           return `EXISTS (SELECT VALUE 1 FROM ${nestedField.field} WHERE ${calculateNestedFieldPredicate(
-//             nestedField.nestedField,
-//             operator,
-//             value,
-//             context,
-//           )})`;
-//         case "scalar":
-//           return `${nestedField.field} ${operator} ${value}`;
-//       }
-//     }
-
-//   if (column.nestedField) {
-//     return `EXISTS (SELECT VALUE 1 FROM ${column.prefix} ${column.name} WHERE ${column.name} ${dbOperator.name} @${column.name})`;
-//   } else {
-//     return `${column.prefix}.${column.name} ${dbOperator.name} @${column.name}`;
-//   }
-// }
-
-// // function translateNestedFieldPredicate(
-// //   nestedField: NestedField,
-// //   operator: string,
-// //   value: ComparisonValue,
-// //   context: string[],
-// // ): string {
-// //   switch (nestedField.kind) {
-// //     case "object":
-// //       return `EXISTS (SELECT VALUE 1 FROM ${nestedField.field} WHERE ${translateNestedFieldPredicate(
-// //         nestedField.nestedField,
-// //       )})`;
-// //     case "array":
-// //       return `EXISTS (SELECT VALUE 1 FROM ${nestedField.field} WHERE ${translateNestedFieldPredicate(
-// //         nestedField.nestedField,
-// //       )})`;
-// //     case "scalar":
-// //       return nestedField.field;
-// //   }
-// // }
-
-// function translateSimple

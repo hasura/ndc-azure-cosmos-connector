@@ -239,7 +239,11 @@ function parseExpression(
               collectionObjectProperties,
               collectionsSchema,
             ),
-            operator: "is_null",
+            dbOperator: {
+              name: "is_null",
+              isInfix: false,
+              isUnary: true,
+            },
           };
       }
     case "binary_comparison_operator":
