@@ -144,7 +144,7 @@ function getRequestedFieldsFromObject(
   return requestedFields;
 }
 
-function getBaseType(typeDefn: schema.TypeDefinition): string {
+export function getBaseType(typeDefn: schema.TypeDefinition): string {
   switch (typeDefn.type) {
     case "array":
       return getBaseType(typeDefn.elementType);
@@ -163,6 +163,7 @@ function getBaseType(typeDefn: schema.TypeDefinition): string {
 function parseComparisonValue(
   value: sdk.ComparisonValue,
   collectionObjectProperties: schema.ObjectTypePropertiesMap,
+  collectionName: string,
   collectionsSchema: schema.CollectionsSchema,
 ): sql.ComparisonValue {
   switch (value.type) {
@@ -172,6 +173,7 @@ function parseComparisonValue(
         column: sql.visitComparisonTarget(
           value.column,
           collectionObjectProperties,
+          collectionName,
           collectionsSchema,
         ),
       };
@@ -193,11 +195,11 @@ function parseExpression(
   collectionObjectProperties: schema.ObjectTypePropertiesMap,
   collectionObjectTypeName: string,
   collectionsSchema: schema.CollectionsSchema,
-): sql.Expression {
+): sql.WhereExpression {
   switch (expression.type) {
     case "and":
       return {
-        type: "and",
+        kind: "and",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
             expr,
@@ -209,7 +211,7 @@ function parseExpression(
       };
     case "or":
       return {
-        type: "or",
+        kind: "or",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
             expr,
@@ -221,7 +223,7 @@ function parseExpression(
       };
     case "not":
       return {
-        type: "not",
+        kind: "not",
         expression: parseExpression(
           expression.expression,
           collectionObjectProperties,
@@ -233,13 +235,14 @@ function parseExpression(
       switch (expression.operator) {
         case "is_null":
           return {
-            type: "unary_comparison_operator",
+            kind: "simpleWhereExpression",
             column: sql.visitComparisonTarget(
               expression.column,
               collectionObjectProperties,
+              collectionObjectTypeName,
               collectionsSchema,
             ),
-            dbOperator: {
+            operator: {
               name: "is_null",
               isInfix: false,
               isUnary: true,
@@ -250,11 +253,12 @@ function parseExpression(
       const comparisonTarget = sql.visitComparisonTarget(
         expression.column,
         collectionObjectProperties,
+        collectionObjectTypeName,
         collectionsSchema,
       );
       const comparisonTargetTypeProperty =
-        collectionObjectProperties[comparisonTarget];
-      if (!comparisonTargetTypeProperty === undefined) {
+        collectionObjectProperties[comparisonTarget.name];
+      if (!comparisonTargetTypeProperty) {
         throw new sdk.BadRequest(
           `Couldn't find column ${comparisonTarget} in object type: ${collectionObjectTypeName}`,
         );
@@ -267,14 +271,15 @@ function parseExpression(
         expression.operator,
       );
       return {
-        type: "binary_comparison_operator",
+        kind: "simpleWhereExpression",
         column: comparisonTarget,
         value: parseComparisonValue(
           expression.value,
           collectionObjectProperties,
+          collectionObjectTypeName,
           collectionsSchema,
         ),
-        dbOperator: scalarDbOperator,
+        operator: scalarDbOperator,
       };
 
     case "exists":
@@ -444,12 +449,14 @@ function parseQueryRequest(
   }
 
   if (queryRequest.query.predicate) {
-    sqlGenCtx.predicate = parseExpression(
+    const predicate = parseExpression(
       queryRequest.query.predicate,
       collectionObjectType.properties,
-      collection,
+      "Users", // FIXME(KC): This should be the collection name
       collectionsSchema,
     );
+    console.log("predicate: ", JSON.stringify(predicate, null, 2));
+    sqlGenCtx.predicate = predicate;
   }
 
   return sqlGenCtx;
