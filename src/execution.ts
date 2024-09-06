@@ -161,6 +161,7 @@ export function getBaseType(typeDefn: schema.TypeDefinition): string {
 }
 
 function parseComparisonValue(
+  rootContainerAlias: string,
   value: sdk.ComparisonValue,
   collectionObjectProperties: schema.ObjectTypePropertiesMap,
   collectionName: string,
@@ -171,6 +172,7 @@ function parseComparisonValue(
       return {
         type: "column",
         column: sql.visitComparisonTarget(
+          rootContainerAlias,
           value.column,
           collectionObjectProperties,
           collectionName,
@@ -191,6 +193,7 @@ function parseComparisonValue(
 }
 
 function parseExpression(
+  rootContainerAlias: string,
   expression: sdk.Expression,
   collectionObjectProperties: schema.ObjectTypePropertiesMap,
   collectionObjectTypeName: string,
@@ -202,6 +205,7 @@ function parseExpression(
         kind: "and",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
+            rootContainerAlias,
             expr,
             collectionObjectProperties,
             collectionObjectTypeName,
@@ -214,6 +218,7 @@ function parseExpression(
         kind: "or",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
+            rootContainerAlias,
             expr,
             collectionObjectProperties,
             collectionObjectTypeName,
@@ -225,6 +230,7 @@ function parseExpression(
       return {
         kind: "not",
         expression: parseExpression(
+          rootContainerAlias,
           expression.expression,
           collectionObjectProperties,
           collectionObjectTypeName,
@@ -237,6 +243,7 @@ function parseExpression(
           return {
             kind: "simpleWhereExpression",
             column: sql.visitComparisonTarget(
+              rootContainerAlias,
               expression.column,
               collectionObjectProperties,
               collectionObjectTypeName,
@@ -251,6 +258,7 @@ function parseExpression(
       }
     case "binary_comparison_operator":
       const comparisonTarget: sql.Column = sql.visitComparisonTarget(
+        rootContainerAlias,
         expression.column,
         collectionObjectProperties,
         collectionObjectTypeName,
@@ -273,6 +281,7 @@ function parseExpression(
         kind: "simpleWhereExpression",
         column: comparisonTarget,
         value: parseComparisonValue(
+          rootContainerAlias,
           expression.value,
           collectionObjectProperties,
           collectionObjectTypeName,
@@ -449,12 +458,13 @@ function parseQueryRequest(
 
   if (queryRequest.query.predicate) {
     const predicate = parseExpression(
+      rootContainerAlias,
       queryRequest.query.predicate,
       collectionObjectType.properties,
-      "Users", // FIXME(KC): This should be the collection name
+      collectionObjectBaseType,
       collectionsSchema,
     );
-    console.log("predicate: ", JSON.stringify(predicate, null, 2));
+
     sqlGenCtx.predicate = predicate;
   }
 

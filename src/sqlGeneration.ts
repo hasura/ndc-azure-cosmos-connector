@@ -778,6 +778,8 @@ function constructSqlQuery(
         ${offsetClause ? "OFFSET " + offsetClause : ""}
         ${limitClause ? "LIMIT " + limitClause : ""}`;
 
+  console.log("Query", query);
+
   return {
     query,
     parameters,
@@ -1054,6 +1056,7 @@ function visitNestedField1(
 }
 
 export function visitComparisonTarget(
+  rootContainerAlias: string,
   target: sdk.ComparisonTarget,
   collectionObject: schema.ObjectTypePropertiesMap,
   collectionObjectName: string,
@@ -1086,7 +1089,7 @@ export function visitComparisonTarget(
 
       return {
         name: target.name,
-        prefix: "root",
+        prefix: rootContainerAlias,
         type: comparisonTargetType,
         nestedField,
       };
