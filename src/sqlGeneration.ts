@@ -7,6 +7,7 @@ import { getBaseType } from "./execution";
 export type Column = {
   name: string;
   prefix: string;
+  type?: schema.TypeDefinition; // TODO(KC): Modify this to not be optional
   nestedField?: NestedField;
 };
 
@@ -31,6 +32,14 @@ export type Column = {
 let nestedArrayColumn: Column = {
   name: "a",
   prefix: "users",
+  type: {
+    type: "array",
+    elementType: {
+      type: "named",
+      kind: "object",
+      name: "A",
+    },
+  },
   nestedField: {
     kind: "array",
     nestedField: {
@@ -44,6 +53,7 @@ let nestedArrayColumn: Column = {
           field: "c",
           nestedField: {
             kind: "scalar",
+            type: "Integer",
             field: "c",
           },
         },
@@ -64,6 +74,11 @@ let nestedArrayColumn: Column = {
 let nestedObjectColumn: Column = {
   name: "a",
   prefix: "users",
+  type: {
+    type: "named",
+    kind: "object",
+    name: "A",
+  },
   nestedField: {
     kind: "object",
     field: "b",
@@ -72,6 +87,7 @@ let nestedObjectColumn: Column = {
       field: "c",
       nestedField: {
         kind: "scalar",
+        type: "Integer",
         field: "c",
       },
     },
@@ -97,6 +113,7 @@ export type SelectColumn =
 type NestedObjectField = {
   kind: "object";
   field: string;
+
   nestedField: NestedField;
 };
 
@@ -107,6 +124,7 @@ type NestedArrayField = {
 
 type NestedScalarField = {
   field: string;
+  type: string;
   kind: "scalar";
 };
 
@@ -441,6 +459,48 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
     },
   },
 };
+
+export function getScalarType(column: Column): string {
+  if (column.nestedField) {
+    return getNestedScalarType(column.nestedField);
+  } else {
+    if (column.type === undefined) {
+      throw new sdk.BadRequest(`Couldn't find type of column: ${column.name}`);
+    } else {
+      switch (column.type.type) {
+        case "array":
+          throw new sdk.BadRequest(
+            `Expected column ${column.name} to be a scalar type, but found array type`,
+          );
+        case "named":
+          if (column.type.kind === "object") {
+            throw new sdk.BadRequest(
+              `Expected column ${column.name} to be a scalar type, but found object type`,
+            );
+          } else {
+            return column.type.name;
+          }
+        case "nullable":
+          return getScalarType({
+            name: column.name,
+            prefix: column.prefix,
+            type: column.type.underlyingType,
+          });
+      }
+    }
+  }
+}
+
+function getNestedScalarType(nestedField: NestedField): string {
+  switch (nestedField.kind) {
+    case "scalar":
+      return nestedField.type;
+    case "object":
+      return getNestedScalarType(nestedField.nestedField);
+    case "array":
+      return getNestedScalarType(nestedField.nestedField);
+  }
+}
 
 export function getDbComparisonOperator(
   scalarTypeName: string,
@@ -957,6 +1017,7 @@ function visitNestedField1(
                         return {
                           kind: "scalar",
                           field: fieldNames[0],
+                          type: currentFieldDefn.type.name,
                         } as NestedScalarField;
                       } else {
                         throw new sdk.BadRequest(
@@ -982,39 +1043,11 @@ function visitNestedField1(
                     collectionsSchema,
                   );
               }
-
-              // const nextObject =
-              //   collectionsSchema.objectTypes[parentFieldType.name];
-              // if (nextObject === undefined) {
-              //   throw new sdk.BadRequest(
-              //     `Could not find the object ${parentFieldType.name} in the schema`,
-              //   );
-              // }
-
-              // console.log("Current field defn", currentFieldDefn);
-
-              // return {
-              //   kind: "object",
-              //   field: currentFieldName,
-              //   nestedField: visitNestedField(
-              //     fieldNames.slice(1),
-              //     currentFieldDefn.type,
-              //     parentFieldType.name,
-              //     collectionsSchema,
-              //   ),
-              // } as NestedObjectField;
             }
           case "scalar":
-            if (fieldNames.length === 1) {
-              return {
-                kind: "scalar",
-                field: fieldNames[0],
-              } as NestedScalarField;
-            } else {
-              throw new sdk.BadRequest(
-                `11Found the type of the field ${parentObjectName} to be a scalar, but scalar fields can only be the last element in the field path`,
-              );
-            }
+            throw new sdk.BadRequest(
+              `Found the type of the field ${parentObjectName} to be a scalar, but scalar fields can only be the last element in the field path`,
+            );
         }
     }
   }
@@ -1054,6 +1087,7 @@ export function visitComparisonTarget(
       return {
         name: target.name,
         prefix: "root",
+        type: comparisonTargetType,
         nestedField,
       };
     case "root_collection_column":

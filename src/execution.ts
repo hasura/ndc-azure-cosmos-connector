@@ -91,7 +91,7 @@ function selectNestedField(
 function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
   switch (field.type) {
     case "column":
-      const column = {
+      const column: sql.Column = {
         name: field.column,
         prefix: fieldPrefix,
       };
@@ -250,22 +250,21 @@ function parseExpression(
           };
       }
     case "binary_comparison_operator":
-      const comparisonTarget = sql.visitComparisonTarget(
+      const comparisonTarget: sql.Column = sql.visitComparisonTarget(
         expression.column,
         collectionObjectProperties,
         collectionObjectTypeName,
         collectionsSchema,
       );
-      const comparisonTargetTypeProperty =
-        collectionObjectProperties[comparisonTarget.name];
-      if (!comparisonTargetTypeProperty) {
-        throw new sdk.BadRequest(
-          `Couldn't find column ${comparisonTarget} in object type: ${collectionObjectTypeName}`,
-        );
-      }
-      const comparisonTargetType = getBaseType(
-        comparisonTargetTypeProperty.type,
-      );
+
+      // write a function getBinaryComparisonOperator to get the type of the `comparisonTarget` column
+      // if the `comparisonTarget` contains a nested field, then we need to get the type of the nested field
+
+      console.log("comparisonTarget: ", comparisonTarget);
+      const comparisonTargetType = sql.getScalarType(comparisonTarget);
+
+      console.log("comparisonTargetType: ", comparisonTargetType);
+
       const scalarDbOperator = sql.getDbComparisonOperator(
         comparisonTargetType,
         expression.operator,

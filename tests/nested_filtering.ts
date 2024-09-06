@@ -22,6 +22,14 @@ import { expect } from "chai";
 let nestedArrayColumn: sql.Column = {
   name: "a",
   prefix: "users",
+  type: {
+    type: "array",
+    elementType: {
+      type: "named",
+      kind: "object",
+      name: "A",
+    },
+  },
   nestedField: {
     kind: "array",
     nestedField: {
@@ -30,6 +38,7 @@ let nestedArrayColumn: sql.Column = {
       nestedField: {
         kind: "array",
         nestedField: {
+          type: "Integer",
           kind: "scalar",
           field: "c",
         },
@@ -56,11 +65,17 @@ let lteComparisonOperator: sql.ComparisonScalarDbOperator = {
 let nestedObjectColumn: sql.Column = {
   name: "a",
   prefix: "users",
+  type: {
+    type: "named",
+    kind: "object",
+    name: "A",
+  },
   nestedField: {
     kind: "object",
     field: "b",
     nestedField: {
       kind: "scalar",
+      type: "Integer",
       field: "c",
     },
   },
@@ -106,6 +121,7 @@ let nestedArrayObjectObjectArray: sql.Column = {
           kind: "array",
           nestedField: {
             kind: "scalar",
+            type: "Integer",
             field: "d",
           },
         },
@@ -137,6 +153,7 @@ let nestedObjectObjectObject: sql.Column = {
       field: "c",
       nestedField: {
         kind: "scalar",
+        type: "Integer",
         field: "d",
       },
     },
