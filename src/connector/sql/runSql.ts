@@ -1,7 +1,7 @@
 // Function that accepts a SQL query and returns the result
 
 import { Container } from "@azure/cosmos";
-import { constructCosmosDbClient } from "./cosmosDb";
+import { constructCosmosDbClient } from "../db/cosmosDb";
 import { Command } from "commander";
 import * as fs from "fs-extra";
 

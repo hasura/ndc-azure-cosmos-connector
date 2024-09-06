@@ -2,7 +2,7 @@
 
 import { Command, Option } from "commander";
 import * as updateCmd from "./update";
-import { createConnector } from "../connector";
+import { createConnector } from "../connector/connector";
 import { version } from "../../package.json"
 import * as sdk from "@hasura/ndc-sdk-typescript";
 

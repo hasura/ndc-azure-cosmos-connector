@@ -1,8 +1,7 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as cosmos from "@azure/cosmos";
 import { SqlQuerySpec } from "@azure/cosmos";
-import * as schema from "./schema";
-import { getBaseType } from "./execution";
+import * as schema from "../schema";
 
 export type Column = {
   name: string;

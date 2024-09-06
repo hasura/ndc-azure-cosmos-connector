@@ -1,8 +1,8 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as schema from "./schema";
-import * as sql from "./sqlGeneration";
+import * as sql from "./sql/sqlGeneration";
 import { Database } from "@azure/cosmos";
-import { runSQLQuery } from "./cosmosDb";
+import { runSQLQuery } from "./db/cosmosDb";
 
 function validateOrderBy(
   orderBy: sdk.OrderBy,
