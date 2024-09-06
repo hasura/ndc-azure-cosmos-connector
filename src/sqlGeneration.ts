@@ -946,7 +946,7 @@ function visitExpression(
   }
 }
 
-function visitNestedField1(
+function visitNestedField(
   fieldNames: string[],
   parentFieldType: schema.TypeDefinition,
   parentObjectName: string,
@@ -959,7 +959,7 @@ function visitNestedField1(
       case "array":
         return {
           kind: "array",
-          nestedField: visitNestedField1(
+          nestedField: visitNestedField(
             fieldNames,
             parentFieldType.elementType,
             parentObjectName,
@@ -967,7 +967,7 @@ function visitNestedField1(
           ),
         } as NestedArrayField;
       case "nullable":
-        return visitNestedField1(
+        return visitNestedField(
           fieldNames,
           parentFieldType.underlyingType,
           parentObjectName,
@@ -1007,7 +1007,7 @@ function visitNestedField1(
                       return {
                         kind: "object",
                         field: currentFieldName,
-                        nestedField: visitNestedField1(
+                        nestedField: visitNestedField(
                           remainingFields,
                           currentFieldDefn.type,
                           currentFieldDefn.type.name,
@@ -1030,7 +1030,7 @@ function visitNestedField1(
                 case "array":
                   return {
                     kind: "array",
-                    nestedField: visitNestedField1(
+                    nestedField: visitNestedField(
                       remainingFields,
                       currentFieldDefn.type.elementType,
                       parentObjectName,
@@ -1038,7 +1038,7 @@ function visitNestedField1(
                     ),
                   } as NestedArrayField;
                 case "nullable":
-                  return visitNestedField1(
+                  return visitNestedField(
                     remainingFields,
                     currentFieldDefn.type.underlyingType,
                     parentObjectName,
@@ -1077,7 +1077,7 @@ export function visitComparisonTarget(
       if (target.field_path && target.field_path.length > 0) {
         let fieldPath = target.field_path;
 
-        nestedField = visitNestedField1(
+        nestedField = visitNestedField(
           fieldPath,
           comparisonTargetType,
           collectionObjectName,
