@@ -546,59 +546,6 @@ function formatFromClause(fromClause: FromClause): string {
   }
 }
 
-// function to convert sdk.Expression to WhereExpression
-function convertExpressionToWhereExpression(
-  expression: Expression,
-  containerAlias: string,
-): WhereExpression {
-  switch (expression.type) {
-    case "binary_comparison_operator":
-      return {
-        kind: "simpleWhereExpression",
-        column: {
-          name: expression.column,
-          prefix: containerAlias,
-        },
-        operator: expression.dbOperator,
-        value: {
-          type: "scalar",
-          value: expression.value,
-        },
-      };
-    case "unary_comparison_operator":
-      return {
-        kind: "simpleWhereExpression",
-        column: {
-          name: expression.column,
-          prefix: containerAlias,
-        },
-        operator: expression.dbOperator,
-      };
-    case "and":
-      return {
-        kind: "and",
-        expressions: expression.expressions.map((e) =>
-          convertExpressionToWhereExpression(e, containerAlias),
-        ),
-      };
-    case "or":
-      return {
-        kind: "or",
-        expressions: expression.expressions.map((e) =>
-          convertExpressionToWhereExpression(e, containerAlias),
-        ),
-      };
-    case "not":
-      return {
-        kind: "not",
-        expression: convertExpressionToWhereExpression(
-          expression.expression,
-          containerAlias,
-        ),
-      };
-  }
-}
-
 /** Constructs a SQL query from the given `sqlQueryContext`
    * @param sqlQueryCtx - `SqlQueryContext` which contains the data required to generate the SQL query.
    * @param source - `source` to run the query on. Note that, the source can be a container or a nested field of a document of a container.
