@@ -95,7 +95,7 @@ function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
         name: field.column,
         prefix: fieldPrefix,
       };
-      if (field.fields !== null && field.fields !== undefined) {
+      if (field.fields) {
         const [nestedFieldSelectCol, _] = selectNestedField(
           field.fields,
           column,
@@ -344,10 +344,7 @@ function parseQueryRequest(
     );
   }
 
-  if (
-    queryRequest.query.fields !== null &&
-    queryRequest.query.fields !== undefined
-  ) {
+  if (queryRequest.query.fields) {
     requestedFields = getRequestedFieldsFromObject(
       collectionObjectBaseType,
       collectionObjectType,
@@ -356,10 +353,7 @@ function parseQueryRequest(
     );
   }
 
-  if (
-    queryRequest.query.aggregates !== null &&
-    queryRequest.query.aggregates !== undefined
-  ) {
+  if (queryRequest.query.aggregates) {
     isAggregateQuery = true;
     Object.entries(queryRequest.query.aggregates).forEach(
       ([fieldName, aggregateField]) => {
