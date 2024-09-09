@@ -10,89 +10,6 @@ export type Column = {
   nestedField?: NestedField;
 };
 
-/*
-[
-    {
-        "a": [
-            {
-                "b": [
-                    {
-                        "c": 3
-                    },
-                    {
-                        "c": 4
-                    }
-                ]
-            }
-        ]
-    }
-]
-*/
-let nestedArrayColumn: Column = {
-  name: "a",
-  prefix: "users",
-  type: {
-    type: "array",
-    elementType: {
-      type: "named",
-      kind: "object",
-      name: "A",
-    },
-  },
-  nestedField: {
-    kind: "array",
-    nestedField: {
-      kind: "object",
-
-      field: "b",
-      nestedField: {
-        kind: "array",
-        nestedField: {
-          kind: "object",
-          field: "c",
-          nestedField: {
-            kind: "scalar",
-            type: "Integer",
-            field: "c",
-          },
-        },
-      },
-    },
-  },
-};
-
-/*
-  {
-  "a": {
-    "b": {
-      "c": 3
-    }
-    }
-    }
-  */
-let nestedObjectColumn: Column = {
-  name: "a",
-  prefix: "users",
-  type: {
-    type: "named",
-    kind: "object",
-    name: "A",
-  },
-  nestedField: {
-    kind: "object",
-    field: "b",
-    nestedField: {
-      kind: "object",
-      field: "c",
-      nestedField: {
-        kind: "scalar",
-        type: "Integer",
-        field: "c",
-      },
-    },
-  },
-};
-
 export type SelectContainerColumn = {
   kind: "column";
   column: Column;
@@ -1206,7 +1123,7 @@ function buildNestedQuery(
       return `EXISTS(
                 SELECT 1
                 FROM ${nestedFieldAlias} IN ${parentField}
-                WHERE ${buildNestedQuery(nestedField.nestedField, nestedFieldAlias, arrayCounter, value, operator, parameters, variables)})})})})`;
+                WHERE ${buildNestedQuery(nestedField.nestedField, nestedFieldAlias, arrayCounter, value, operator, parameters, variables)})`;
 
     case "object":
       const alias = `${parentField}.${(nestedField as NestedObjectField).field}`;
