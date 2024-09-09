@@ -552,7 +552,7 @@ function formatFromClause(fromClause: FromClause): string {
    * @param queryVariables - values of the variables provided with the request.
 
  */
-function constructSqlQuery(
+export function constructSqlQuery(
   sqlQueryCtx: SqlQueryContext,
   source: string,
   queryVariables: QueryVariables,
@@ -613,11 +613,7 @@ function constructSqlQuery(
 
   let orderByClause = null;
 
-  if (
-    sqlQueryCtx.orderBy != null &&
-    sqlQueryCtx.orderBy != null &&
-    sqlQueryCtx.orderBy.elements.length > 0
-  ) {
+  if (sqlQueryCtx.orderBy && sqlQueryCtx.orderBy.elements.length > 0) {
     orderByClause = visitOrderByElements(sqlQueryCtx.orderBy.elements, source);
   }
 
@@ -653,7 +649,6 @@ export function generateSqlQuerySpec(
   sqlGenCtx: SqlQueryContext,
   containerName: string,
   queryVariables: QueryVariables,
-  schema: schema.CollectionsSchema,
 ): SqlQuerySpec {
   return constructSqlQuery(sqlGenCtx, `root_${containerName}`, queryVariables);
 }
@@ -981,7 +976,8 @@ function visitComparisonValue(
         if (index !== -1) {
           return `@${comparisonTargetName}_${index} `;
         } else {
-          let newIndex = parameters[comparisonTargetName].push(target.value);
+          let newIndex =
+            parameters[comparisonTargetName].push(target.value) - 1;
           return `@${comparisonTargetName}_${newIndex} `;
         }
       } else {
@@ -1031,6 +1027,7 @@ export function translateWhereExpression(
         parameters,
         variables,
       );
+
     case "and":
       if (whereExpression.expressions.length > 0) {
         return whereExpression.expressions

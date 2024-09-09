@@ -1,84 +1,10 @@
-import * as sql from "../src/sqlGeneration";
+import * as sql from "../src/connector/sql/sqlGeneration";
 import { expect } from "chai";
-
-/*
-[
-    {
-        "a": [
-            {
-                "b": [
-                    {
-                        "c": 3
-                    },
-                    {
-                        "c": 4
-                    }
-                ]
-            }
-        ]
-    }
-]
-*/
-let nestedArrayColumn: sql.Column = {
-  name: "a",
-  prefix: "users",
-  type: {
-    type: "array",
-    elementType: {
-      type: "named",
-      kind: "object",
-      name: "A",
-    },
-  },
-  nestedField: {
-    kind: "array",
-    nestedField: {
-      kind: "object",
-      field: "b",
-      nestedField: {
-        kind: "array",
-        nestedField: {
-          type: "Integer",
-          kind: "scalar",
-          field: "c",
-        },
-      },
-    },
-  },
-};
 
 let lteComparisonOperator: sql.ComparisonScalarDbOperator = {
   name: "<=",
   isInfix: true,
   isUnary: false,
-};
-
-/*
-  {
-  "a": {
-    "b": {
-      "c": 3
-    }
-    }
-    }
-  */
-let nestedObjectColumn: sql.Column = {
-  name: "a",
-  prefix: "users",
-  type: {
-    type: "named",
-    kind: "object",
-    name: "A",
-  },
-  nestedField: {
-    kind: "object",
-    field: "b",
-    nestedField: {
-      kind: "scalar",
-      type: "Integer",
-      field: "c",
-    },
-  },
 };
 
 /*
@@ -262,7 +188,7 @@ describe("Nested filtering", function () {
     );
 
     expect(query).to.eq(
-      `(users.nested_object_object_object.b.c.d <= @d_0) AND (users.nested_object_object_object.b.c.d <= @d_2) AND (users.username = @username_0)`,
+      `(users.nested_object_object_object.b.c.d <= @d_0) AND (users.nested_object_object_object.b.c.d <= @d_1) AND (users.username = @username_0)`,
     );
 
     expect(parameterMap).to.deep.equal({

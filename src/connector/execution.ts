@@ -496,7 +496,6 @@ export async function executeQuery(
     sqlGenCtx,
     collection,
     queryRequest.variables,
-    collectionsSchema,
   );
 
   const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(
