@@ -54,6 +54,7 @@ jobs:
         with:
           repository: hasura/ndc-spec
           path: ndc-spec
+          ref: 'v0.1.5'
 
       - name: Run ndc-test
         working-directory: ndc-spec
