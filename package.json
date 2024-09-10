@@ -30,7 +30,7 @@
     "rimraf": "^5.0.7"
   },
   "dependencies": {
-    "@hasura/ndc-sdk-typescript": "^6.0.0",
+    "@hasura/ndc-sdk-typescript": "^6.1.0",
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.0.1",
     "dotenv": "^16.4.5",

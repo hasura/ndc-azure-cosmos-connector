@@ -54,9 +54,8 @@ jobs:
         with:
           repository: hasura/ndc-spec
           path: ndc-spec
-          ref: 'v0.1.5'
+          ref: 'v0.1.6'
 
       - name: Run ndc-test
         working-directory: ndc-spec
-        # temporary-solution: the --no-validate-responses flag is used to avoid the errors from the changes in ndc-spec in [PR:141](https://github.com/hasura/ndc-spec/pull/141)
-        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots --no-validate-responses
+        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots
