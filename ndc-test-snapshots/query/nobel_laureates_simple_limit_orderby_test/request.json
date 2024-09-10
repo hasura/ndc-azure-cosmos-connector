@@ -7,11 +7,6 @@
         "column": "year",
         "fields": null
       },
-      "laureates_8171": {
-        "type": "column",
-        "column": "laureates",
-        "fields": null
-      },
       "overallMotivation_2599": {
         "type": "column",
         "column": "overallMotivation",
