@@ -6,22 +6,22 @@
         "type": "column",
         "column": "laureates",
         "fields": {
-          "type": "array",
-          "fields": {
-            "type": "object",
+            "type": "array",
             "fields": {
-              "firstName": {
-                "type": "column",
-                "column": "firstname"
-              },
-              "id": {
-                "type": "column",
-                "column": "id"
-              }
+                "type": "object",
+                "fields": {
+                    "firstName": {
+                        "type": "column",
+                        "column": "firstname"
+                    },
+                    "id": {
+                        "type": "column",
+                        "column": "id"
+                    }
+                }
             }
-          }
         }
-      }
+    }
     },
     "limit": 10,
     "order_by": {
