@@ -32,21 +32,8 @@ jobs:
       - name: Download Cosmos DB Emulator certificate
         run: |
           curl -k https://localhost:8081/_explorer/emulator.pem > emulatorcert.crt
-
-      - name: Install certificate
-        run: |
           sudo cp emulatorcert.crt /usr/local/share/ca-certificates/
           sudo update-ca-certificates
-
-      - name: Run your tests or commands
-        env:
-          COSMOS_ENDPOINT: https://localhost:8081
-          COSMOS_KEY: C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
-        run: |
-         # Replace this with your actual test command or script
-         echo "Running tests against Cosmos DB Emulator"
-         # For example:
-         # dotnet test YourTestProject.csproj
 
       - name: Build connector
         run: |
