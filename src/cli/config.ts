@@ -246,6 +246,7 @@ async function getCollectionsSchema(
       nRows,
       dbContainer,
     );
+    console.log(`Fetched ${nContainerRows.length} rows from ${container.id}`);
     nContainerRows.reverse();
     const containerJsonSchema = await inferJSONSchemaFromContainerRows(
       nContainerRows,
@@ -291,6 +292,7 @@ export async function generateConnectorConfig(outputConfigDir: string) {
     client.dbClient,
     parseInt(rowsToFetch),
   );
+
   const cosmosKey = client.connectionDetails.key;
   const cosmosEndpoint = client.connectionDetails.endpoint;
   const cosmosDbName = client.connectionDetails.databaseName;
