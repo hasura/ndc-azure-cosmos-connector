@@ -13,13 +13,6 @@ jobs:
         with:
           path: cosmos
 
-      - name: Log in to GitHub Container Registry 📦
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build connector
         run: |
           cd cosmos
@@ -31,42 +24,12 @@ jobs:
           curl -L https://github.com/hasura/ndc-spec/releases/download/v0.1.6/ndc-test-x86_64-unknown-linux-gnu -o ndc-test
           chmod +x ndc-test
           ./ndc-test --version  # Optional: Verify the binary works
-
-      - name: Make binary globally accessible
-        run: |
           sudo mv ndc-test /usr/local/bin/
-          which ndc-test
 
-      - name: Verify binary is accessible
+
+      - name: Verify the ndc-test binary is accessible
         run: |
           ndc-test -V
-
-      # - name: Generate the connector configuration
-      #   env:
-      #     AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
-      #     AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
-      #     AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
-      #   run: |
-      #     cd cosmos
-      #     chmod +x ./dist/cli/index.js
-      #     ./dist/cli/index.js update
-
-      # - name: Start connector
-      #   env:
-      #     AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
-      #     AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
-      #     AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
-      #   run: |
-      #     cd cosmos
-      #     export HASURA_CONFIGURATION_DIRECTORY="."
-      #     npm run start serve -- --configuration . &
-
-      # - name: Checkout ndc-spec
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: hasura/ndc-spec
-      #     path: ndc-spec
-      #     ref: 'v0.1.6'
 
       - name: Run tests
         env:
@@ -75,5 +38,4 @@ jobs:
           AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
           cd cosmos
-          echo "${PWD} is the current directory"
           npm run ndc-test
