@@ -30,11 +30,15 @@ async function runTests() {
   let serverProcess = null;
 
   try {
+    console.log('Generating project configuration...');
+    execSync('npm run cli update', { stdio: 'inherit', cwd: projectRoot });
+    console.log('Configuration generated successfully.');
+
     const port = await findVacantPort();
     console.log(`Found vacant port: ${port}`);
 
     const startCommand = `npm run start serve -- --configuration . --port ${port} | jq -R -r '. as $line | try fromjson catch $line'`;
-      const testCommand = `ndc-test replay --endpoint http://0.0.0.0:${port} --snapshots-dir ${path.join(projectRoot, 'ndc-test-snapshots')}`;
+    const testCommand = `ndc-test replay --endpoint http://0.0.0.0:${port} --snapshots-dir ${path.join(projectRoot, 'ndc-test-snapshots')}`;
 
     console.log('Starting server...');
     serverProcess = exec(startCommand, { cwd: projectRoot });
