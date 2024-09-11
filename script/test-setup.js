@@ -44,8 +44,8 @@ async function setupCosmosEmulatorDB() {
   try {
 
 
-      const { database }  = client.databases.createIfNotExists({ id: cosmosConfig.databaseId });;
-      const { container } = database.container.createContainerIfNotExists({ id: cosmosConfig.containerId, partitionKey: { paths: ['/year'] } });
+      const { database }  = await client.databases.createIfNotExists({ id: cosmosConfig.databaseId });;
+      const { container } = await database.container.createContainerIfNotExists({ id: cosmosConfig.containerId, partitionKey: { paths: ['/year'] } });
 
     console.log('Deleting existing data...');
     const { resources: items } = await container.items.readAll().fetchAll();
