@@ -26,36 +26,52 @@ jobs:
           npm install
           npm run build
 
-      - name: Generate the connector configuration
+      - name: Download NDC Test Binary
+        run: |
+          curl -L https://github.com/hasura/ndc-spec/releases/download/v0.1.6/ndc-test-x86_64-unknown-linux-gnu -o ndc-test
+          chmod +x ndc-test
+          ./ndc-test --version  # Optional: Verify the binary works
+
+      - name: Make binary globally accessible
+        run: |
+          sudo mv ndc-test /usr/local/bin/
+          which ndc-test
+
+      - name: Verify binary is accessible
+        run: |
+          ndc-test -V
+
+      # - name: Generate the connector configuration
+      #   env:
+      #     AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
+      #     AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
+      #     AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
+      #   run: |
+      #     cd cosmos
+      #     chmod +x ./dist/cli/index.js
+      #     ./dist/cli/index.js update
+
+      # - name: Start connector
+      #   env:
+      #     AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
+      #     AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
+      #     AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
+      #   run: |
+      #     cd cosmos
+      #     export HASURA_CONFIGURATION_DIRECTORY="."
+      #     npm run start serve -- --configuration . &
+
+      # - name: Checkout ndc-spec
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: hasura/ndc-spec
+      #     path: ndc-spec
+      #     ref: 'v0.1.6'
+
+      - name: Run tests
         env:
           AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
           AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
           AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
-          cd cosmos
-          chmod +x ./dist/cli/index.js
-          ./dist/cli/index.js update
-
-      - name: Start connector
-        env:
-          AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
-          AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
-          AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
-        run: |
-          cd cosmos
-          export AZURE_COSMOS_KEY=Bh3EVxRH6BsUnger4tfXkKAvUenZhVosnvNpk185PyYZ9wd4qZO1kf7Y6hvERc7EUUJUE9j8RvDNACDbsgKqLg==
-          export AZURE_COSMOS_ENDPOINT=https://test-azure-cosmos-one.documents.azure.com:443/
-          export AZURE_COSMOS_DB_NAME=azure-cosmos-one
-          export HASURA_CONFIGURATION_DIRECTORY="."
-          npm run start serve -- --configuration . &
-
-      - name: Checkout ndc-spec
-        uses: actions/checkout@v3
-        with:
-          repository: hasura/ndc-spec
-          path: ndc-spec
-          ref: 'v0.1.6'
-
-      - name: Run ndc-test
-        working-directory: ndc-spec
-        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots
+          npm run ndc-test
