@@ -47,15 +47,12 @@ async function setupCosmosDB() {
 
     console.log('Deleting existing data...');
     const { resources: items } = await container.items.readAll().fetchAll();
-      if (items.length > 0) {
-          for (const item of items) {
-
-              console.log(`Deleting item with ID: ${item.id} and ${JSON.stringify(item, null, 2) }`);
-              await container.item(item.id, item.year).delete();
-          }
-          console.log(`${items.length} items deleted.`);
-
+    if (items.length > 0) {
+      for (const item of items) {
+        await container.item(item.id, item.year).delete();
       }
+      console.log(`${items.length} items deleted.`);
+    }
 
     console.log('Inserting new test data...');
     const newItems = readTestData();
@@ -93,17 +90,22 @@ function findVacantPort(startPort = 8000) {
   });
 }
 
-async function runTests() {
+async function runTests(setupData) {
   const projectRoot = path.resolve(__dirname, '..');
   const logFile = path.join(projectRoot, 'server-output.log');
   let serverProcess = null;
 
   try {
+      if (setupData) {
+          await setupCosmosDB();
+      } else {
+          console.log('Skipping Cosmos DB setup as --setup-data flag is not set.');
+      }
+
+
     console.log('Running CLI update...');
     execSync('npm run cli update', { stdio: 'inherit', cwd: projectRoot });
     console.log('CLI update completed.');
-
-    await setupCosmosDB();
 
     const port = await findVacantPort();
     console.log(`Found vacant port: ${port}`);
@@ -155,4 +157,14 @@ async function runTests() {
   }
 }
 
-runTests().then(() => process.exit(0)).catch(() => process.exit(1));
+async function main() {
+  const args = process.argv.slice(2);
+  const setupData = args.includes('--setup-data');
+
+  await runTests(setupData);
+}
+
+main().then(() => process.exit(0)).catch((error) => {
+  console.error('An error occurred:', error);
+  process.exit(1);
+});
