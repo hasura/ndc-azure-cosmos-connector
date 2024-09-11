@@ -5,8 +5,23 @@
       "laureates": {
         "type": "column",
         "column": "laureates",
-        "fields": null
-      },
+        "fields": {
+            "type": "array",
+            "fields": {
+                "type": "object",
+                "fields": {
+                    "firstName": {
+                        "type": "column",
+                        "column": "firstname"
+                    },
+                    "id": {
+                        "type": "column",
+                        "column": "id"
+                    }
+                }
+            }
+        }
+    },
       "overallMotivation": {
         "type": "column",
         "column": "overallMotivation",

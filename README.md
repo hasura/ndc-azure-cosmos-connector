@@ -9,7 +9,7 @@ With this connector, Hasura allows you to instantly create a real-time GraphQL A
 
 This connector is built using the [TypeScript Data Connector SDK](https://github.com/hasura/ndc-sdk-typescript) and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
-- [Connector information in the Hasura Hub](https://hasura.io/connectors/azure-cosmos)
+- [See the listing in the Hasura Hub](https://hasura.io/connectors/azure-cosmos)
 - [Hasura V3 Documentation](https://hasura.io/docs/3.0)
 
 ## Features
@@ -17,129 +17,84 @@ This connector is built using the [TypeScript Data Connector SDK](https://github
 Below, you'll find a matrix of all supported features for the Azure Cosmos DB for NoSQL connector:
 
 | Feature                         | Supported | Notes |
-| ------------------------------- | --------- | ----- |
-| Native Queries + Logical Models |    ✅     |       |
-| Simple Object Query             |    ✅     |       |
-| Filter / Search                 |    ✅     |       |
-| Simple Aggregation              |    ✅     |       |
-| Sort                            |    ✅     |       |
-| Paginate                        |    ✅     |       |
-| Nested Objects                  |    ✅     |       |
-| Nested Arrays                   |    ✅     |       |
-| Nested Filtering                |    ❌     |       |
-| Nested Sorting                  |    ❌     |       |
-| Nested Relationships            |    ❌     |       |
+|---------------------------------|-----------|-------|
+| Native Queries + Logical Models | ✅        |       |
+| Simple Object Query             | ✅        |       |
+| Filter / Search                 | ✅        |       |
+| Simple Aggregation              | ✅        |       |
+| Sort                            | ✅        |       |
+| Paginate                        | ✅        |       |
+| Nested Objects                  | ✅        |       |
+| Nested Arrays                   | ✅        |       |
+| Nested Filtering                | ❌        |       |
+| Nested Sorting                  | ❌        |       |
+| Nested Relationships            | ❌        |       |
 
 
 ## Before you get Started
 
 1. Create a [Hasura Cloud account](https://console.hasura.io)
-2. Install the [CLI](https://hasura.io/docs/3.0/cli/installation/)
-3. Install the [Hasura VS Code extension](https://marketplace.visualstudio.com/items?itemName=HasuraHQ.hasura)
-4. [Create a supergraph](https://hasura.io/docs/3.0/getting-started/init-supergraph)
-5. [Create a subgraph](https://hasura.io/docs/3.0/getting-started/init-subgraph)
-
-## Using the connector
-
-To use the Azure Cosmos DB for NoSQL connector, follow these steps in a Hasura project:
-(Note: for more information on the following steps, please refer to the Postgres connector documentation [here](https://hasura.io/docs/3.0/getting-started/connect-to-data/connect-a-source))
+2. Please ensure you have the  [DDN CLI](https://hasura.io/docs/3.0/cli/installation) and [Docker](https://docs.docker.com/engine/install/) installed
+2. [Create a supergraph](https://hasura.io/docs/3.0/getting-started/init-supergraph)
+3. [Create a subgraph](https://hasura.io/docs/3.0/getting-started/init-subgraph)
 
 
-### 1. Init the connector
-(Note: here and following we are naming the subgraph "my_subgraph" and the connector "my_azure_cosmos")
+The steps below explain how to Initialize and configure a connector for local development. You can learn how to deploy a
+connector — after it's been configured — [here](https://hasura.io/docs/3.0/getting-started/deployment/deploy-a-connector).
 
-   ```bash
-   ddn connector init my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --hub-connector hasura/azure-cosmos --configure-port 8081 --add-to-compose-file compose.yaml
-   ```
+## Using the Azure Cosmos DB for NoSQL connector
 
-### 2. Add your Azure Cosmos DB for NoSQL credentials
+### Step 1: Authenticate your CLI session
 
-Add you credentials to `my_subgraph/connector/my_azure_cosmos/.env.local`
-
-```env title="my_subgraph/connector/my_azure_cosmos/.env.local"
-OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://local.hasura.dev:4317
-OTEL_SERVICE_NAME=my_subgraph_my_azure_cosmos
-AZURE_COSMOS_DB_NAME= <YOUR_AZURE_DB_NAME>
-AZURE_COSMOS_ENDPOINT= <YOUR_AZURE_COSMOS_ENDPOINT>
-AZURE_COSMOS_KEY= <YOUR_AZURE_COSMOS_KEY>
-AZURE_COSMOS_NO_OF_ROWS_TO_FETCH= <NO-OF-ROWS-TO-FETCH>
+```bash
+ddn auth login
 ```
 
-Note: `AZURE_COSMOS_CONNECTOR_NO_OF_ROWS_TO_FETCH` is an optional field, with 100 rows to be fetched by default.
+### Step 2: Configure the connector
 
-### 3. Introspect your Database
+Once you have an initialized supergraph and subgraph, run the initialization command in interactive mode while
+providing a name for the connector in the prompt:
 
-From the root of your project run:
-
-```bash title="From the root of your project run:"
-ddn connector introspect --connector my_subgraph/connector/my_azure_cosmos/connector.local.yaml
+```bash
+ddn connector init <connector-name> -i
 ```
 
-If you look at the `config.json` for your connector, you'll see metadata describing your Azure Cosmos DB for NoSQL mappings.
+#### Step 2.1: Choose the `hasura/azure-cosmos` from the list
 
-### 4. Restart the services
+#### Step 2.2: Choose a port for the connector
 
-Let's restart the docker compose services. Run the folowing from the root of your project:
+The CLI will ask for a specific port to run the connector on. Choose a port that is not already in use or use the
+default suggested port.
 
-```bash title="From the root of your project run:"
-HASURA_DDN_PAT=$(ddn auth print-pat) docker compose up --build --watch
+#### Step 2.3: Provide the env vars for the connector
+
+
+| Name                             | Description                                                                   | Required | Default |
+|----------------------------------|-------------------------------------------------------------------------------|----------|---------|
+| AZURE_COSMOS_KEY                 | Primary/Secondary key asssociated with the Azure Cosmos DB for NoSQL          | Yes      | N/A     |
+| AZURE_COSMOS_ENDPOINT            | Endpoint of the Azure Cosmos DB for NoSQL                                     | Yes      | N/A     |
+| AZURE_COSMOS_DB_NAME             | Name of the Database                                                          | Yes      | N/A     |
+| AZURE_COSMOS_NO_OF_ROWS_TO_FETCH | Maximum number of rows to fetch per container to infer the schema. (Optional) | No       | 100     |
+
+
+
+
+## Step 3: Introspect the connector
+
+
+```bash
+ddn connector introspect <connector-name>
 ```
 
-The schema of the database can be viewed at http://localhost:8081/schema.
+This will generate a `configuration.json` file that will have the schema of your Azure Cosmos DB for NoSQL.
 
-### 5. Create the Hasura metadata
+## Step 4: Add your resources
 
-In a new terminal tab from your project's root directory run:
-
-```bash title="Run the following from the root of your project:"
-ddn connector-link add my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --configure-host http://local.hasura.dev:8081 --target-env-file my_subgraph/.env.my_subgraph.local
+```bash
+ddn connector-link add-resources <connector-name>
 ```
 
-The above step will add the following env vars to the `.env.my_subgraph.local` file.
-
-```env title="my_subgraph/.env.my_subgraph.local"
-MY_SUBGRAPH_MY_AZURE_COSMOS_READ_URL=http://local.hasura.dev:8081
-MY_SUBGRAPH_MY_AZURE_COSMOS_WRITE_URL=http://local.hasura.dev:8081
-```
-
-The generated file has two environment variables — one for reads and one for writes.
-Each key is prefixed by the subgraph name, an underscore, and the name of the
-connector.
-
-### 6. Update the new DataConnectorLink object
-
-Finally, now that our `DataConnectorLink` has the correct environment variables configured for the Azure Cosmos DB for NoSQL connector,
-we can run the update command to have the CLI look at the configuration JSON and transform it to reflect our database's
-schema in `hml` format. From your project's root directory, run:
-
-```bash title="From the root of your project, run:"
-ddn connector-link update my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --env-file my_subgraph/.env.my_subgraph.local
-```
-
-After this command runs, you can open your `my_subgraph/metadata/my_azure_cosmos.hml` file and see your metadata completely
-scaffolded out for you 🎉
-
-### 7. Import _all_ your indices
-
-You can do this with just one command. From your project's root directory, run:
-
-```bash title="From the root of your project, run:"
-ddn connector-link update my_azure_cosmos --subgraph my_subgraph/subgraph.yaml --env-file my_subgraph/.env.my_subgraph.local --add-all-resources
-```
-
-### 8. Create a supergraph build
-
-Pass the `local` subcommand along with specifying the output directory as `./engine` in the root of the project. This
-directory is used by the docker-compose file to serve the engine locally. From your project's root directory, run:
-
-```bash title="From the root of your project, run:"
-ddn supergraph build local --output-dir engine --subgraph-env-file my_subgraph:my_subgraph/.env.my_subgraph.local
-```
-
-You can now navigate to
-[`https://console.hasura.io/local/graphql?url=http://localhost:3000`](https://console.hasura.io/local/graphql?url=http://localhost:3000)
-and interact with your API using the Hasura Console.
-
+This command will track all the containers in your Azure Cosmos DB for NoSQL as [Models](https://hasura.io/docs/3.0/supergraph-modeling/models).
 ## Contributing
 
 We're happy to receive any contributions from the community. Please refer to our [development guide](./docs/development.md).

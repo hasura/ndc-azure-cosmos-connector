@@ -46,10 +46,13 @@ jobs:
           export HASURA_CONFIGURATION_DIRECTORY="."
           npm run start serve -- --configuration . &
 
+      - name: Checkout ndc-spec
+        uses: actions/checkout@v3
+        with:
+          repository: hasura/ndc-spec
+          path: ndc-spec
+          ref: 'v0.1.6'
+
       - name: Run ndc-test
-        # temporary-solution: the --no-validate-responses flag is used to avoid the errors from the changes in ndc-spec in [PR:141](https://github.com/hasura/ndc-spec/pull/141)
-        run:  |
-          wget -O ndc-test https://github.com/hasura/ndc-spec/releases/download/v0.1.3/ndc-test-x86_64-unknown-linux-gnu
-          sudo apt-get install libssl3
-          chmod +x ndc-test
-          ./ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots --no-validate-responses
+        working-directory: ndc-spec
+        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots

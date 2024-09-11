@@ -2,11 +2,6 @@
   "collection": "TestNobelLaureates",
   "query": {
     "fields": {
-      "laureates_8802": {
-        "type": "column",
-        "column": "laureates",
-        "fields": null
-      },
       "overallMotivation_2578": {
         "type": "column",
         "column": "overallMotivation",
