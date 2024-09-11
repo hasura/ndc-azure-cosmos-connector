@@ -16,6 +16,7 @@ const cosmosConfig = {
   containerId: 'TestNobelLaureates' // Use the existing container
 };
 
+
 // Validate Cosmos DB configuration
 Object.entries(cosmosConfig).forEach(([key, value]) => {
   if (typeof value !== 'string' || value.trim() === '') {
@@ -37,6 +38,9 @@ function readTestData() {
 }
 
 async function setupCosmosEmulatorDB() {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
+
+
   console.log('Setting up Azure Cosmos DB...');
   console.log(`Database ID: ${cosmosConfig.databaseId}`);
   console.log(`Container ID: ${cosmosConfig.containerId}`);
