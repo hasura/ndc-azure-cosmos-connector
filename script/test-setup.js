@@ -36,14 +36,15 @@ function readTestData() {
   }
 }
 
-async function setupCosmosDB() {
+async function setupCosmosEmulatorDB() {
   console.log('Setting up Azure Cosmos DB...');
   console.log(`Database ID: ${cosmosConfig.databaseId}`);
   console.log(`Container ID: ${cosmosConfig.containerId}`);
 
   try {
-    const database = client.database(cosmosConfig.databaseId);
-    const container = database.container(cosmosConfig.containerId);
+
+    const database = client.createDatabaseIfNotExists({ id: cosmosConfig.databaseId });;
+    const container = database.createContainerIfNotExists({ id: cosmosConfig.containerId, partitionKey: { paths: ['/year'] } });
 
     console.log('Deleting existing data...');
     const { resources: items } = await container.items.readAll().fetchAll();
@@ -97,7 +98,7 @@ async function runTests(setupData) {
 
   try {
       if (setupData) {
-          await setupCosmosDB();
+          await setupCosmosEmulatorDB();
       } else {
           console.log('Skipping Cosmos DB setup as --setup-data flag is not set.');
       }
@@ -159,7 +160,7 @@ async function runTests(setupData) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const setupData = args.includes('--setup-data');
+  const setupData = args.includes('--setup-emulator-data');
 
   await runTests(setupData);
 }
