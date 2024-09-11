@@ -286,33 +286,28 @@ async function getCollectionsSchema(
 export async function generateConnectorConfig(outputConfigDir: string) {
   const rowsToFetch = process.env["AZURE_COSMOS_NO_OF_ROWS_TO_FETCH"] ?? "100";
 
-  try {
-    const client = constructCosmosDbClient();
-    const schema = await getCollectionsSchema(
-      client.dbClient,
-      parseInt(rowsToFetch),
-    );
-    const cosmosKey = client.connectionDetails.key;
-    const cosmosEndpoint = client.connectionDetails.endpoint;
-    const cosmosDbName = client.connectionDetails.databaseName;
+  const client = constructCosmosDbClient();
+  const schema = await getCollectionsSchema(
+    client.dbClient,
+    parseInt(rowsToFetch),
+  );
+  const cosmosKey = client.connectionDetails.key;
+  const cosmosEndpoint = client.connectionDetails.endpoint;
+  const cosmosDbName = client.connectionDetails.databaseName;
 
-    const response: any = {
-      connection: {
-        endpoint: cosmosEndpoint,
-        key: cosmosKey,
-        databaseName: cosmosDbName,
-      },
-      schema,
-    };
+  const response: any = {
+    connection: {
+      endpoint: cosmosEndpoint,
+      key: cosmosKey,
+      databaseName: cosmosDbName,
+    },
+    schema,
+  };
 
-    const writeFile = promisify(fs.writeFile);
+  const writeFile = promisify(fs.writeFile);
 
-    await writeFile(
-      `${outputConfigDir}/config.json`,
-      JSON.stringify(response, null, 2),
-    );
-  } catch (error) {
-    console.log("Error while generating the config", error);
-    exit(1);
-  }
+  await writeFile(
+    `${outputConfigDir}/config.json`,
+    JSON.stringify(response, null, 2),
+  );
 }
