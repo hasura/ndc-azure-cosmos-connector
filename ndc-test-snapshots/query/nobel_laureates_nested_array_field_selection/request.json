@@ -2,26 +2,30 @@
   "collection": "TestNobelLaureates",
   "query": {
     "fields": {
+      "year": {
+        "type": "column",
+        "column": "year"
+      },
       "laureates": {
         "type": "column",
         "column": "laureates",
         "fields": {
-            "type": "array",
+          "type": "array",
+          "fields": {
+            "type": "object",
             "fields": {
-                "type": "object",
-                "fields": {
-                    "firstName": {
-                        "type": "column",
-                        "column": "firstname"
-                    },
-                    "id": {
-                        "type": "column",
-                        "column": "id"
-                    }
-                }
+              "firstName": {
+                "type": "column",
+                "column": "firstname"
+              },
+              "id": {
+                "type": "column",
+                "column": "id"
+              }
             }
+          }
         }
-    }
+      }
     },
     "limit": 10,
     "order_by": {
@@ -30,7 +34,7 @@
           "order_direction": "desc",
           "target": {
             "type": "column",
-            "name": "id",
+            "name": "year",
             "path": []
           }
         }

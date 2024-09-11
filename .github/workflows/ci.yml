@@ -6,19 +6,34 @@ on:
 jobs:
   unit_tests:
     name: Run NDC tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout (GitHub)
         uses: actions/checkout@v3
         with:
           path: cosmos
 
-      - name: Log in to GitHub Container Registry 📦
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker
+        uses: docker-practice/actions-setup-docker@master
+
+      - name: Pull and run Azure Cosmos DB Emulator
+        run: |
+          docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+          docker run -d --name=cosmos-emulator -p 8081:8081 -p 10251:10251 -p 10252:10252 -p 10253:10253 -p 10254:10254 \
+            -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10 \
+            -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=false \
+            mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+
+      - name: Wait for Cosmos DB Emulator to be ready
+        run: |
+          timeout 300 bash -c 'until curl -ks https://localhost:8081/_explorer/emulator.pem > /dev/null; do sleep 5; done'
+          echo "Cosmos DB Emulator is ready"
+
+      - name: Download Cosmos DB Emulator certificate
+        run: |
+          curl -k https://localhost:8081/_explorer/emulator.pem > emulatorcert.crt
+          sudo cp emulatorcert.crt /usr/local/share/ca-certificates/
+          sudo update-ca-certificates
 
       - name: Build connector
         run: |
@@ -26,33 +41,23 @@ jobs:
           npm install
           npm run build
 
-      - name: Generate the connector configuration
+      - name: Download NDC Test Binary
+        run: |
+          curl -L https://github.com/hasura/ndc-spec/releases/download/v0.1.6/ndc-test-x86_64-unknown-linux-gnu -o ndc-test
+          chmod +x ndc-test
+          ./ndc-test --version  # Optional: Verify the binary works
+          sudo mv ndc-test /usr/local/bin/
+
+
+      - name: Verify the ndc-test binary is accessible
+        run: |
+          ndc-test -V
+
+      - name: Run tests
         env:
-          AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
-          AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
-          AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
+          AZURE_COSMOS_KEY: C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
+          AZURE_COSMOS_ENDPOINT: https://localhost:8081
+          AZURE_COSMOS_DB_NAME: TestNobelLaureates
         run: |
           cd cosmos
-          chmod +x ./dist/cli/index.js
-          ./dist/cli/index.js update
-
-      - name: Start connector
-        env:
-          AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
-          AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
-          AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
-        run: |
-          cd cosmos
-          export HASURA_CONFIGURATION_DIRECTORY="."
-          npm run start serve -- --configuration . &
-
-      - name: Checkout ndc-spec
-        uses: actions/checkout@v3
-        with:
-          repository: hasura/ndc-spec
-          path: ndc-spec
-          ref: 'v0.1.6'
-
-      - name: Run ndc-test
-        working-directory: ndc-spec
-        run: cargo run --bin ndc-test -- replay --endpoint http://0.0.0.0:8080 --snapshots-dir ../cosmos/ndc-test-snapshots
+          npm run ndc-test -- --setup-emulator-data
