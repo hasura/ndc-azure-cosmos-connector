@@ -16,7 +16,6 @@ const cosmosConfig = {
   containerId: 'TestNobelLaureates' // Use the existing container
 };
 
-
 // Validate Cosmos DB configuration
 Object.entries(cosmosConfig).forEach(([key, value]) => {
   if (typeof value !== 'string' || value.trim() === '') {
@@ -38,77 +37,75 @@ function readTestData() {
 }
 
 async function setupCosmosEmulatorDB() {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
-
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
   console.log('Setting up Azure Cosmos DB...');
   console.log(`Database ID: ${cosmosConfig.databaseId}`);
   console.log(`Container ID: ${cosmosConfig.containerId}`);
 
   try {
-
-
-      const { database }  = await client.databases.createIfNotExists({ id: cosmosConfig.databaseId });;
-      const { container } = await database.containers.createIfNotExists(
-          {
-              id: cosmosConfig.containerId,
-              partitionKey: { paths: ['/year'] },
-              indexingPolicy: {
-    "indexingMode": "consistent",
-    "automatic": true,
-    "includedPaths": [
-        {
-            "path": "/*"
-        }
-    ],
-    "excludedPaths": [
-        {
-            "path": "/\"_etag\"/?"
-        }
-    ],
-    "compositeIndexes": [
-        [
+    const { database } = await client.databases.createIfNotExists({ id: cosmosConfig.databaseId });
+    const { container } = await database.containers.createIfNotExists(
+      {
+        id: cosmosConfig.containerId,
+        partitionKey: { paths: ['/year'] },
+        indexingPolicy: {
+          "indexingMode": "consistent",
+          "automatic": true,
+          "includedPaths": [
             {
+              "path": "/*"
+            }
+          ],
+          "excludedPaths": [
+            {
+              "path": "/\"_etag\"/?"
+            }
+          ],
+          "compositeIndexes": [
+            [
+              {
                 "path": "/overallMotivation",
                 "order": "descending"
-            },
-            {
+              },
+              {
                 "path": "/prize_id",
                 "order": "descending"
-            }
-        ],
-        [
-            {
+              }
+            ],
+            [
+              {
                 "path": "/overallMotivation",
                 "order": "ascending"
-            },
-            {
+              },
+              {
                 "path": "/prize_id",
                 "order": "descending"
-            }
-        ],
-        [
-            {
+              }
+            ],
+            [
+              {
                 "path": "/year",
                 "order": "ascending"
-            },
-            {
+              },
+              {
                 "path": "/prize_id",
                 "order": "ascending"
-            }
-        ],
-        [
-            {
+              }
+            ],
+            [
+              {
                 "path": "/year",
                 "order": "ascending"
-            },
-            {
+              },
+              {
                 "path": "/prize_id",
                 "order": "descending"
-            }
-        ]
-    ]}
-});
+              }
+            ]
+          ]
+        }
+      });
 
     console.log('Deleting existing data...');
     const { resources: items } = await container.items.readAll().fetchAll();
@@ -161,12 +158,11 @@ async function runTests(setupData) {
   let serverProcess = null;
 
   try {
-      if (setupData) {
-          await setupCosmosEmulatorDB();
-      } else {
-          console.log('Skipping Cosmos DB setup as --setup-data flag is not set.');
-      }
-
+    if (setupData) {
+      await setupCosmosEmulatorDB();
+    } else {
+      console.log('Skipping Cosmos DB setup as --setup-emulator-data flag is not set.');
+    }
 
     console.log('Running CLI update...');
     execSync('npm run cli update', { stdio: 'inherit', cwd: projectRoot });
@@ -204,6 +200,7 @@ async function runTests(setupData) {
     } catch (readError) {
       console.error('Failed to read server output log:', readError);
     }
+    throw error; // Re-throw the error to be caught in the main function
   } finally {
     // Terminate the server process
     if (serverProcess) {
@@ -223,13 +220,16 @@ async function runTests(setupData) {
 }
 
 async function main() {
-  const args = process.argv.slice(2);
-  const setupData = args.includes('--setup-emulator-data');
+  try {
+    const args = process.argv.slice(2);
+    const setupData = args.includes('--setup-emulator-data');
 
-  await runTests(setupData);
+    await runTests(setupData);
+    process.exit(0); // Successful execution
+  } catch (error) {
+    console.error('An error occurred in the main function:', error);
+    process.exit(1); // Exit with error status
+  }
 }
 
-main().then(() => process.exit(0)).catch((error) => {
-  console.error('An error occurred:', error);
-  process.exit(1);
-});
+main();
