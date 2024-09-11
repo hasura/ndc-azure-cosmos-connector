@@ -74,5 +74,6 @@ jobs:
           AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
           AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
-          echo "$PWD is the current directory"
+          cd cosmos
+          echo "${PWD} is the current directory"
           npm run ndc-test
