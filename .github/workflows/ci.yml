@@ -60,4 +60,4 @@ jobs:
           AZURE_COSMOS_DB_NAME: TestNobelLaureates
         run: |
           cd cosmos
-          npm run ndc-test -- --setup-emulator-data
+          npm run ndc-test
