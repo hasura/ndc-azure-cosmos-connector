@@ -34,6 +34,7 @@
     "@azure/cosmos": "^4.0.0",
     "@azure/identity": "^4.0.1",
     "@hasura/ndc-sdk-typescript": "^6.1.0",
+    "@types/fs-extra": "^11.0.4",
     "dotenv": "^16.4.5",
     "fs-extra": "^11.2.0",
     "quicktype-core": "^23.0.104",
