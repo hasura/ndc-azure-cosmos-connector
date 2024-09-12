@@ -334,10 +334,7 @@ function parseQueryRequest(
     );
 
   if (
-    queryRequest.query.fields !== null &&
-    queryRequest.query.fields !== undefined &&
-    queryRequest.query.aggregates !== null &&
-    queryRequest.query.aggregates !== undefined
+    queryRequest.query.fields && queryRequest.query.aggregates
   ) {
     throw new sdk.NotSupported(
       "Aggregates and fields cannot be requested together.",
