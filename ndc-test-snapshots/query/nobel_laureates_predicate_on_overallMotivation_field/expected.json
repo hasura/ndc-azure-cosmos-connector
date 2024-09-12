@@ -1,101 +1,34 @@
 [
-    {
-        "rows": [
-            {
-                "laureates": [
-                    {
-                        "id": "960",
-                        "firstname": "Arthur",
-                        "surname": "Ashkin",
-                        "motivation": "\"for the optical tweezers and their application to biological systems\"",
-                        "share": "2",
-                        "birth": {
-                            "year": 1973,
-                            "country": {
-                                "city": "Berlin",
-                                "state": "Ile-de-France"
-                            }
-                        },
-                        "awards": [
-                            {
-                                "award_name": "Fields Medal",
-                                "year": 2021,
-                                "details": {
-                                    "category": "mathematics",
-                                    "organization": "Lasker Foundation"
-                                }
-                            },
-                            {
-                                "award_name": "Fields Medal",
-                                "year": 2009,
-                                "details": {
-                                    "category": "mathematics",
-                                    "organization": "Nobel Committee"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "id": "961",
-                        "firstname": "Gérard",
-                        "surname": "Mourou",
-                        "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
-                        "share": "4",
-                        "birth": {
-                            "year": 1960,
-                            "country": {
-                                "city": "Los Angeles",
-                                "state": "Maharashtra"
-                            }
-                        },
-                        "awards": [
-                            {
-                                "award_name": "Nobel Prize in Chemistry",
-                                "year": 2006,
-                                "details": {
-                                    "category": "mathematics",
-                                    "organization": "Nobel Committee"
-                                }
-                            },
-                            {
-                                "award_name": "Fields Medal",
-                                "year": 2001,
-                                "details": {
-                                    "category": "mathematics",
-                                    "organization": "Wolf Foundation"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "id": "962",
-                        "firstname": "Donna",
-                        "surname": "Strickland",
-                        "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
-                        "share": "4",
-                        "birth": {
-                            "year": 1973,
-                            "country": {
-                                "city": "Sao Paulo",
-                                "state": "New South Wales"
-                            }
-                        },
-                        "awards": [
-                            {
-                                "award_name": "Lasker Award",
-                                "year": 2021,
-                                "details": {
-                                    "category": "mathematics",
-                                    "organization": "Wolf Foundation"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
-                "prize_id": 35,
-                "year": 2018
-            }
-        ]
-    }
+  {
+    "rows": [
+      {
+        "laureates": [
+          {
+            "id": "960",
+            "firstname": "Arthur",
+            "surname": "Ashkin",
+            "motivation": "\"for the optical tweezers and their application to biological systems\"",
+            "share": "2"
+          },
+          {
+            "id": "961",
+            "firstname": "Gérard",
+            "surname": "Mourou",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          },
+          {
+            "id": "962",
+            "firstname": "Donna",
+            "surname": "Strickland",
+            "motivation": "\"for their method of generating high-intensity, ultra-short optical pulses\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": "\"for groundbreaking inventions in the field of laser physics\"",
+        "prize_id": 35,
+        "year": 2018
+      }
+    ]
+  }
 ]

@@ -1,109 +1,34 @@
 [
-    {
-        "rows": [
-            {
-                "laureates": [
-                    {
-                        "id": "963",
-                        "firstname": "Frances H.",
-                        "surname": "Arnold",
-                        "motivation": "\"for the directed evolution of enzymes\"",
-                        "share": "2",
-                        "birth": {
-                            "year": 1977,
-                            "country": {
-                                "city": "Paris",
-                                "state": "Ile-de-France"
-                            }
-                        },
-                        "awards": [
-                            {
-                                "award_name": "Wolf Prize in Physics",
-                                "year": 2019,
-                                "details": {
-                                    "category": "physics",
-                                    "organization": "Turing Award Committee"
-                                }
-                            },
-                            {
-                                "award_name": "Nobel Prize in Chemistry",
-                                "year": 2014,
-                                "details": {
-                                    "category": "computer science",
-                                    "organization": "Lasker Foundation"
-                                }
-                            },
-                            {
-                                "award_name": "Fields Medal",
-                                "year": 2007,
-                                "details": {
-                                    "category": "computer science",
-                                    "organization": "Lasker Foundation"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "id": "964",
-                        "firstname": "George P.",
-                        "surname": "Smith",
-                        "motivation": "\"for the phage display of peptides and antibodies\"",
-                        "share": "4",
-                        "birth": {
-                            "year": 1982,
-                            "country": {
-                                "city": "Los Angeles",
-                                "state": "Tokyo"
-                            }
-                        },
-                        "awards": [
-                            {
-                                "award_name": "Wolf Prize in Physics",
-                                "year": 2014,
-                                "details": {
-                                    "category": "chemistry",
-                                    "organization": "Nobel Committee"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "id": "965",
-                        "firstname": "Sir Gregory P.",
-                        "surname": "Winter",
-                        "motivation": "\"for the phage display of peptides and antibodies\"",
-                        "share": "4",
-                        "birth": {
-                            "year": 2022,
-                            "country": {
-                                "city": "Sydney",
-                                "state": "England"
-                            }
-                        },
-                        "awards": [
-                            {
-                                "award_name": "Lasker Award",
-                                "year": 2016,
-                                "details": {
-                                    "category": "physics",
-                                    "organization": "Lasker Foundation"
-                                }
-                            },
-                            {
-                                "award_name": "Lasker Award",
-                                "year": 2020,
-                                "details": {
-                                    "category": "physics",
-                                    "organization": "Wolf Foundation"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "overallMotivation": null,
-                "prize_id": 31,
-                "year": 2018
-            }
-        ]
-    }
+  {
+    "rows": [
+      {
+        "laureates": [
+          {
+            "id": "963",
+            "firstname": "Frances H.",
+            "surname": "Arnold",
+            "motivation": "\"for the directed evolution of enzymes\"",
+            "share": "2"
+          },
+          {
+            "id": "964",
+            "firstname": "George P.",
+            "surname": "Smith",
+            "motivation": "\"for the phage display of peptides and antibodies\"",
+            "share": "4"
+          },
+          {
+            "id": "965",
+            "firstname": "Sir Gregory P.",
+            "surname": "Winter",
+            "motivation": "\"for the phage display of peptides and antibodies\"",
+            "share": "4"
+          }
+        ],
+        "overallMotivation": null,
+        "prize_id": 31,
+        "year": 2018
+      }
+    ]
+  }
 ]
