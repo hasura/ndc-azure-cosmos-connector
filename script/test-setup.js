@@ -37,8 +37,6 @@ function readTestData() {
 }
 
 async function setupCosmosEmulatorDB() {
-  // Disable certificate validation for local emulator
-
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
   console.log('Setting up Azure Cosmos DB...');
@@ -154,13 +152,13 @@ function findVacantPort(startPort = 8000) {
   });
 }
 
-async function runTests(setupEmulatorData) {
+async function runTests(setupData) {
   const projectRoot = path.resolve(__dirname, '..');
   const logFile = path.join(projectRoot, 'server-output.log');
   let serverProcess = null;
 
   try {
-    if (setupEmulatorData) {
+    if (setupData) {
       await setupCosmosEmulatorDB();
     } else {
       console.log('Skipping Cosmos DB setup as --setup-emulator-data flag is not set.');
