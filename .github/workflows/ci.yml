@@ -13,27 +13,27 @@ jobs:
         with:
           path: cosmos
 
-      - name: Set up Docker
-        uses: docker-practice/actions-setup-docker@master
+      # - name: Set up Docker
+      #   uses: docker-practice/actions-setup-docker@master
 
-      - name: Pull and run Azure Cosmos DB Emulator
-        run: |
-          docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
-          docker run -d --name=cosmos-emulator -p 8081:8081 -p 10251:10251 -p 10252:10252 -p 10253:10253 -p 10254:10254 \
-            -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10 \
-            -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=false \
-            mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+      # - name: Pull and run Azure Cosmos DB Emulator
+      #   run: |
+      #     docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+      #     docker run -d --name=cosmos-emulator -p 8081:8081 -p 10251:10251 -p 10252:10252 -p 10253:10253 -p 10254:10254 \
+      #       -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10 \
+      #       -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=false \
+      #       mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
 
-      - name: Wait for Cosmos DB Emulator to be ready
-        run: |
-          timeout 300 bash -c 'until curl -ks https://localhost:8081/_explorer/emulator.pem > /dev/null; do sleep 5; done'
-          echo "Cosmos DB Emulator is ready"
+      # - name: Wait for Cosmos DB Emulator to be ready
+      #   run: |
+      #     timeout 300 bash -c 'until curl -ks https://localhost:8081/_explorer/emulator.pem > /dev/null; do sleep 5; done'
+      #     echo "Cosmos DB Emulator is ready"
 
-      - name: Download Cosmos DB Emulator certificate
-        run: |
-          curl -k https://localhost:8081/_explorer/emulator.pem > emulatorcert.crt
-          sudo cp emulatorcert.crt /usr/local/share/ca-certificates/
-          sudo update-ca-certificates
+      # - name: Download Cosmos DB Emulator certificate
+      #   run: |
+      #     curl -k https://localhost:8081/_explorer/emulator.pem > emulatorcert.crt
+      #     sudo cp emulatorcert.crt /usr/local/share/ca-certificates/
+      #     sudo update-ca-certificates
 
       - name: Build connector
         run: |
@@ -55,9 +55,9 @@ jobs:
 
       - name: Run tests
         env:
-          AZURE_COSMOS_KEY: C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
-          AZURE_COSMOS_ENDPOINT: https://localhost:8081
-          AZURE_COSMOS_DB_NAME: TestNobelLaureates
+          AZURE_COSMOS_KEY: ${{ secrets.AZURE_COSMOS_KEY }}
+          AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
+          AZURE_COSMOS_DB_NAME: ${{ secrets.AZURE_COSMOS_DB_NAME }}
         run: |
           cd cosmos
-          npm run ndc-test -- --setup-emulator-data
+          npm run ndc-test
