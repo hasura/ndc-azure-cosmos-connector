@@ -35,6 +35,7 @@ type NestedObjectField = {
 
 type NestedArrayField = {
   kind: "array";
+  field?: string;
   nestedField: NestedField;
 };
 
@@ -876,7 +877,7 @@ function visitNestedField(
                       if (remainingFields.length === 0) {
                         return {
                           kind: "scalar",
-                          field: fieldNames[0],
+                          field: currentFieldName,
                           type: currentFieldDefn.type.name,
                         } as NestedScalarField;
                       } else {
@@ -888,6 +889,7 @@ function visitNestedField(
                 case "array":
                   return {
                     kind: "array",
+                    field: currentFieldName,
                     nestedField: visitNestedField(
                       remainingFields,
                       currentFieldDefn.type.elementType,
@@ -932,10 +934,12 @@ export function visitComparisonTarget(
 
       let comparisonTargetType = collectionObject[target.name].type;
 
+      console.log("initial comparison target type is ", comparisonTargetType);
+
       if (target.field_path && target.field_path.length > 0) {
         let fieldPath = target.field_path;
 
-        nestedField = visitNestedFieldRefactored(
+        nestedField = visitNestedField(
           fieldPath,
           comparisonTargetType,
           collectionObjectName,
@@ -1052,7 +1056,7 @@ export function translateWhereExpression(
 }
 
 // Function to recursively build the nested query part
-function buildNestedQuery(
+function buildNestedFieldPredicate(
   nestedField: NestedField,
   parentField: string,
   arrayCounter: number,
@@ -1066,12 +1070,12 @@ function buildNestedQuery(
       const nestedFieldAlias = `array_element_${arrayCounter++}`;
       return `EXISTS(
                 SELECT 1
-                FROM ${nestedFieldAlias} IN ${parentField}
-                WHERE ${buildNestedQuery(nestedField.nestedField, nestedFieldAlias, arrayCounter, value, operator, parameters, variables)})`;
+                FROM ${nestedFieldAlias} IN ${parentField}.${nestedField.field}
+                WHERE ${buildNestedFieldPredicate(nestedField.nestedField, nestedFieldAlias, arrayCounter, value, operator, parameters, variables)})`;
 
     case "object":
       const alias = `${parentField}.${(nestedField as NestedObjectField).field}`;
-      return buildNestedQuery(
+      return buildNestedFieldPredicate(
         nestedField.nestedField,
         alias,
         arrayCounter,
@@ -1145,9 +1149,14 @@ export function translateColumnPredicate(
       );
     }
   } else {
-    query = buildNestedQuery(
+    console.log(
+      "********* nestd field AST ",
+      JSON.stringify(nestedField, null, 2),
+    );
+    nestedField.field = name;
+    query = buildNestedFieldPredicate(
       nestedField,
-      topLevelAlias,
+      prefix,
       1,
       value,
       operator,
@@ -1265,6 +1274,7 @@ function handleObjectType(
   collectionsSchema: schema.CollectionsSchema,
 ): NestedField {
   const [currentFieldName, ...remainingFields] = fieldNames;
+  console.log("current field name is ", currentFieldName, fieldType);
   const parentObjectType: schema.ObjectTypeDefinition =
     collectionsSchema.objectTypes[fieldType.name];
 

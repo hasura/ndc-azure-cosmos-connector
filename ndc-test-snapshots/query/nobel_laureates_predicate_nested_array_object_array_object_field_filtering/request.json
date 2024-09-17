@@ -69,27 +69,16 @@
         "type": "column",
         "name": "laureates",
         "field_path": [
-          "share"
+          "awards",
+          "year"
         ],
         "path": []
       },
-      "operator": "gt",
+      "operator": "eq",
       "value": {
         "type": "scalar",
-        "value": "1"
+        "value": 2023
       }
-    },
-    "order_by": {
-      "elements": [
-        {
-          "order_direction": "asc",
-          "target": {
-            "type": "column",
-            "name": "year",
-            "path": []
-          }
-        }
-      ]
     }
   },
   "arguments": {},
