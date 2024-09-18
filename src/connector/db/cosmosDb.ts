@@ -4,12 +4,14 @@ import { throwError } from "../../utils";
 
 export type ManagedIdentityConfig = {
   type: "ManagedIdentity";
-  clientId: string;
+  // Name of the ENV var where the key can be found
+  fromEnvVar: string;
 };
 
 export type CosmosKeyConfig = {
   type: "Key";
-  key: string;
+  // Name of the ENV var where the key can be found
+  fromEnvVar: string;
 };
 
 export type AzureCosmosAuthenticationConfig =
@@ -23,7 +25,7 @@ export type RawCosmosDbConfig = {
 };
 
 /* Creates a new cosmos DB client with which the specified database can be queried. */
-function getCosmosDbClient(
+export function getCosmosDbClient(
   endpoint: string,
   databaseName: string,
   connectionConfig: AzureCosmosAuthenticationConfig,
@@ -31,14 +33,25 @@ function getCosmosDbClient(
   let dbClient: CosmosClient;
   switch (connectionConfig.type) {
     case "Key":
+      const key =
+        getEnvVariable(connectionConfig.fromEnvVar, true) ??
+        throwError(
+          `Azure Cosmos Key not found in the env var "${connectionConfig.fromEnvVar}"`,
+        );
       dbClient = new CosmosClient({
-        key: connectionConfig.key,
+        key,
         endpoint,
       });
       break;
     case "ManagedIdentity":
+      const managedIdentityClientId =
+        getEnvVariable(connectionConfig.fromEnvVar, true) ??
+        throwError(
+          `Azure Cosmos Key not found in the env var "${connectionConfig.fromEnvVar}"`,
+        );
+
       let credentials = new DefaultAzureCredential({
-        managedIdentityClientId: connectionConfig.clientId,
+        managedIdentityClientId,
       });
       dbClient = new CosmosClient({
         endpoint,
@@ -83,12 +96,12 @@ function getConnectionConfig(): AzureCosmosAuthenticationConfig | null {
     if (key) {
       return {
         type: "Key",
-        key,
+        fromEnvVar: "AZURE_COSMOS_KEY",
       };
     } else if (managed_identity_client_id) {
       return {
         type: "ManagedIdentity",
-        clientId: managed_identity_client_id,
+        fromEnvVar: "AZURE_COSMOS_MANAGED_CLIENT_ID",
       };
     }
   }

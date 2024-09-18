@@ -292,7 +292,7 @@ type UpdateConfig = {
   connection: {
     endpoint: string;
     databaseName: string;
-    authenticationConfig: AzureCosmosAuthenticationConfig;
+    authentication: AzureCosmosAuthenticationConfig;
   };
   schema: CollectionsSchema;
 };
@@ -321,7 +321,7 @@ export async function generateConnectorConfig(outputConfigDir: string) {
       version: 2,
       connection: {
         endpoint: cosmosEndpoint,
-        authenticationConfig: connectionConfig,
+        authentication: connectionConfig,
         databaseName: cosmosDbName,
       },
       schema,
