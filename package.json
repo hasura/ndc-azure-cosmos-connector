@@ -11,7 +11,8 @@
     "build": "rimraf ./build && tsc",
     "start": "npm run build && ts-node ./src/index.ts",
     "install-bin": "tsc && npm install -g",
-    "cli": "ts-node ./src/cli/index.ts"
+    "cli": "ts-node ./src/cli/index.ts",
+    "runSql": "ts-node ./src/runSql.ts"
   },
   "author": "Karthikeyan Chinnakonda",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "@apidevtools/json-schema-ref-parser": "^11.5.4",
     "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
+    "@types/fs-extra": "^11.0.4",
     "@types/json-pointer": "^1.0.34",
     "@types/jsonpath": "^0.2.4",
     "@types/mocha": "^10.0.6",
@@ -31,7 +33,7 @@
     "rimraf": "^5.0.7"
   },
   "dependencies": {
-    "@azure/cosmos": "^4.0.0",
+    "@azure/cosmos": "^4.1.0",
     "@azure/identity": "^4.0.1",
     "@hasura/ndc-sdk-typescript": "^6.1.0",
     "@types/fs-extra": "^11.0.4",

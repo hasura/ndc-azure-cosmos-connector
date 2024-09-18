@@ -1,0 +1,459 @@
+[
+    {
+        "rows": [
+            {
+                "laureates": [
+                    {
+                        "firstName": "Claudia",
+                        "id": "1034",
+                        "share": "1",
+                        "awards": [
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2023
+                            },
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2014
+                            },
+                            {
+                                "name": "Fields Medal",
+                                "year": 2003
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 2,
+                "year": 2023
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Pierre",
+                        "id": "1026",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2003
+                            },
+                            {
+                                "name": "Fields Medal",
+                                "year": 2007
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Ferenc",
+                        "id": "1027",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Lasker Award",
+                                "year": 2016
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2014
+                            },
+                            {
+                                "name": "Lasker Award",
+                                "year": 2006
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Anne",
+                        "id": "1028",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2023
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 5,
+                "year": 2023
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Carolyn",
+                        "id": "1015",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Lasker Award",
+                                "year": 2020
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2023
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Morten",
+                        "id": "1016",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2004
+                            },
+                            {
+                                "name": "Lasker Award",
+                                "year": 2022
+                            },
+                            {
+                                "name": "Lasker Award",
+                                "year": 2014
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Barry",
+                        "id": "743",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2005
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2005
+                            },
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2001
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 7,
+                "year": 2022
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "James",
+                        "id": "973",
+                        "share": "2",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2023
+                            },
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2005
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2009
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Michel",
+                        "id": "974",
+                        "share": "4",
+                        "awards": [
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2015
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2019
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Didier",
+                        "id": "975",
+                        "share": "4",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2001
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": "\"for contributions to our understanding of the evolution of the universe and Earth’s place in the cosmos\"",
+                "prize_id": 29,
+                "year": 2019
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "William D.",
+                        "id": "968",
+                        "share": "2",
+                        "awards": [
+                            {
+                                "name": "Fields Medal",
+                                "year": 2003
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2021
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Paul M.",
+                        "id": "969",
+                        "share": "2",
+                        "awards": [
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2023
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 32,
+                "year": 2018
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Jacques",
+                        "id": "944",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2018
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2016
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Joachim",
+                        "id": "945",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Fields Medal",
+                                "year": 2023
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2020
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Richard",
+                        "id": "946",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2020
+                            },
+                            {
+                                "name": "Lasker Award",
+                                "year": 2007
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 37,
+                "year": 2017
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "International Campaign to Abolish Nuclear Weapons",
+                        "id": "948",
+                        "share": "1",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2023
+                            },
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2003
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 40,
+                "year": 2017
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Jeffrey C.",
+                        "id": "938",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2021
+                            },
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2013
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Michael",
+                        "id": "939",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2023
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Michael W.",
+                        "id": "940",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2009
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2013
+                            },
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2000
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 42,
+                "year": 2017
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "Tomas",
+                        "id": "921",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2014
+                            },
+                            {
+                                "name": "Nobel Prize in Chemistry",
+                                "year": 2006
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Paul",
+                        "id": "922",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2010
+                            },
+                            {
+                                "name": "Lasker Award",
+                                "year": 2007
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Aziz",
+                        "id": "923",
+                        "share": "3",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2000
+                            },
+                            {
+                                "name": "Lasker Award",
+                                "year": 2023
+                            },
+                            {
+                                "name": "Turing Award",
+                                "year": 2003
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 49,
+                "year": 2015
+            },
+            {
+                "laureates": [
+                    {
+                        "firstName": "John",
+                        "id": "903",
+                        "share": "2",
+                        "awards": [
+                            {
+                                "name": "Lasker Award",
+                                "year": 2003
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "May-Britt",
+                        "id": "904",
+                        "share": "4",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2022
+                            },
+                            {
+                                "name": "Wolf Prize in Physics",
+                                "year": 2023
+                            },
+                            {
+                                "name": "Fields Medal",
+                                "year": 2010
+                            }
+                        ]
+                    },
+                    {
+                        "firstName": "Edvard I.",
+                        "id": "905",
+                        "share": "4",
+                        "awards": [
+                            {
+                                "name": "Turing Award",
+                                "year": 2023
+                            }
+                        ]
+                    }
+                ],
+                "overallMotivation": null,
+                "prize_id": 60,
+                "year": 2014
+            }
+        ]
+    }
+]
