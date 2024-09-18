@@ -91,11 +91,11 @@ function selectNestedField(
 function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
   switch (field.type) {
     case "column":
-      const column: sql.Column = {
+      const column = {
         name: field.column,
         prefix: fieldPrefix,
       };
-      if (field.fields) {
+      if (field.fields !== null && field.fields !== undefined) {
         const [nestedFieldSelectCol, _] = selectNestedField(
           field.fields,
           column,
@@ -144,7 +144,7 @@ function getRequestedFieldsFromObject(
   return requestedFields;
 }
 
-export function getBaseType(typeDefn: schema.TypeDefinition): string {
+function getBaseType(typeDefn: schema.TypeDefinition): string {
   switch (typeDefn.type) {
     case "array":
       return getBaseType(typeDefn.elementType);
@@ -268,7 +268,10 @@ function parseExpression(
       // write a function getBinaryComparisonOperator to get the type of the `comparisonTarget` column
       // if the `comparisonTarget` contains a nested field, then we need to get the type of the nested field
 
+      console.log("comparisonTarget: ", comparisonTarget);
       const comparisonTargetType = sql.getScalarType(comparisonTarget);
+
+      console.log("comparisonTargetType: ", comparisonTargetType);
 
       const scalarDbOperator = sql.getDbComparisonOperator(
         comparisonTargetType,
@@ -341,7 +344,10 @@ function parseQueryRequest(
     );
   }
 
-  if (queryRequest.query.fields) {
+  if (
+    queryRequest.query.fields !== null &&
+    queryRequest.query.fields !== undefined
+  ) {
     requestedFields = getRequestedFieldsFromObject(
       collectionObjectBaseType,
       collectionObjectType,
@@ -350,7 +356,10 @@ function parseQueryRequest(
     );
   }
 
-  if (queryRequest.query.aggregates) {
+  if (
+    queryRequest.query.aggregates !== null &&
+    queryRequest.query.aggregates !== undefined
+  ) {
     isAggregateQuery = true;
     Object.entries(queryRequest.query.aggregates).forEach(
       ([fieldName, aggregateField]) => {

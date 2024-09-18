@@ -6,8 +6,6 @@ import {
   NamedObjectTypeDefinition,
   ScalarTypeDefinitions,
   getJSONScalarTypes,
-} from "../connector/schema";
-import {
   BuiltInScalarTypeName,
   ObjectTypeDefinitions,
   TypeDefinition,
@@ -21,7 +19,12 @@ import {
   jsonInputForTargetLanguage,
   quicktype,
 } from "quicktype-core";
-import { runSQLQuery, constructCosmosDbClient } from "../connector/db/cosmosDb";
+import {
+  runSQLQuery,
+  constructCosmosDbClient,
+  AzureCosmosAuthenticationConfig,
+} from "../connector/db/cosmosDb";
+
 import { exit } from "process";
 import fs from "fs";
 import { promisify } from "util";
@@ -285,6 +288,23 @@ async function getCollectionsSchema(
   return schema;
 }
 
+type UpdateConfig = {
+  version: 2;
+  connection: {
+    endpoint: string;
+    databaseName: string;
+    authentication: AzureCosmosAuthenticationConfig;
+  };
+  schema: CollectionsSchema;
+};
+
+/**
+   * Generates the connector configuration for Azure Cosmos DB for NoSQL DB. This function fetches the schema
+   * of the containers present in the specified Azure Cosmos DB and writes the configuration to the specified
+   * `outputConfigDir`.
+
+   * @param {string} outputConfigDir - Output Directory where the config file will be written.
+*/
 export async function generateConnectorConfig(outputConfigDir: string) {
   const rowsToFetch = process.env["AZURE_COSMOS_NO_OF_ROWS_TO_FETCH"] ?? "100";
 
@@ -294,14 +314,15 @@ export async function generateConnectorConfig(outputConfigDir: string) {
       client.dbClient,
       parseInt(rowsToFetch),
     );
-    const cosmosKey = client.connectionDetails.key;
+    const connectionConfig = client.connectionDetails.connectionConfig;
     const cosmosEndpoint = client.connectionDetails.endpoint;
     const cosmosDbName = client.connectionDetails.databaseName;
 
-    const response: any = {
+    const response: UpdateConfig = {
+      version: 2,
       connection: {
         endpoint: cosmosEndpoint,
-        key: cosmosKey,
+        authentication: connectionConfig,
         databaseName: cosmosDbName,
       },
       schema,

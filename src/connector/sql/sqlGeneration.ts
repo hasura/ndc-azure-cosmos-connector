@@ -425,7 +425,7 @@ export function getDbComparisonOperator(
 ): ComparisonScalarDbOperator {
   const scalarOperators = scalarComparisonOperatorMappings[scalarTypeName];
 
-  if (scalarOperators === undefined || scalarOperators === null) {
+  if (scalarOperators === undefined && scalarOperators === null) {
     throw new sdk.BadRequest(
       `Couldn't find scalar type: ${scalarTypeName} in the schema`,
     );
@@ -505,6 +505,7 @@ export type SqlQueryContext = {
   from?: FromClause | null;
   join?: JoinClause[] | null;
   predicate?: WhereExpression | null;
+
   offset?: number | null;
   limit?: number | null;
   orderBy?: sdk.OrderBy | null;
@@ -837,6 +838,7 @@ export function visitComparisonTarget(
         type: comparisonTargetType,
         nestedField,
       };
+
     case "root_collection_column":
       throw new sdk.NotSupported(
         "Root collection column comparison is not supported",
@@ -864,6 +866,7 @@ function visitComparisonValue(
         } else {
           let newIndex =
             parameters[comparisonTargetName].push(target.value) - 1;
+
           return `@${comparisonTargetName}_${newIndex} `;
         }
       } else {

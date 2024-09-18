@@ -1,6 +1,9 @@
 import * as sdk from "@hasura/ndc-sdk-typescript";
 import { CollectionsSchema, getNdcSchemaResponse } from "./schema";
-import { constructCosmosDbClient } from "./db/cosmosDb";
+import {
+  AzureCosmosAuthenticationConfig,
+  getCosmosDbClient,
+} from "./db/cosmosDb";
 import { Database } from "@azure/cosmos";
 import { executeQuery } from "./execution";
 import { readFileSync } from "fs";
@@ -10,7 +13,7 @@ export type Configuration = ConnectorConfig;
 export type ConnectorConfig = {
   connection: {
     endpoint: string;
-    key: string;
+    authentication: AzureCosmosAuthenticationConfig;
     databaseName: string;
   };
   schema: CollectionsSchema;
@@ -40,11 +43,25 @@ export function createConnector(): sdk.Connector<Configuration, State> {
     },
 
     tryInitState: async function (
-      _: Configuration,
+      config: Configuration,
       __: unknown,
     ): Promise<State> {
       try {
-        const databaseClient = constructCosmosDbClient().dbClient;
+        const {
+          databaseName,
+          authentication: authenticationConfig,
+          endpoint,
+        } = config.connection;
+        console.log(
+          "Initializing the state of the connector",
+          authenticationConfig,
+        );
+        const databaseClient = getCosmosDbClient(
+          endpoint,
+          databaseName,
+          authenticationConfig,
+        );
+
         return Promise.resolve({
           databaseClient,
         });
