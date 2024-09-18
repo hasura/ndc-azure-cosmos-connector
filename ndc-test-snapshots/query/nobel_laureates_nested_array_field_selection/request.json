@@ -2,6 +2,10 @@
   "collection": "TestNobelLaureates",
   "query": {
     "fields": {
+      "year": {
+        "type": "column",
+        "column": "year"
+      },
       "laureates": {
         "type": "column",
         "column": "laureates",
@@ -30,7 +34,7 @@
           "order_direction": "desc",
           "target": {
             "type": "column",
-            "name": "id",
+            "name": "year",
             "path": []
           }
         }
