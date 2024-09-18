@@ -268,10 +268,7 @@ function parseExpression(
       // write a function getBinaryComparisonOperator to get the type of the `comparisonTarget` column
       // if the `comparisonTarget` contains a nested field, then we need to get the type of the nested field
 
-      console.log("comparisonTarget: ", comparisonTarget);
       const comparisonTargetType = sql.getScalarType(comparisonTarget);
-
-      console.log("comparisonTargetType: ", comparisonTargetType);
 
       const scalarDbOperator = sql.getDbComparisonOperator(
         comparisonTargetType,

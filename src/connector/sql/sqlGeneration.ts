@@ -425,8 +425,6 @@ export function getDbComparisonOperator(
 ): ComparisonScalarDbOperator {
   const scalarOperators = scalarComparisonOperatorMappings[scalarTypeName];
 
-  console.log("scalarOperators", scalarOperators, scalarTypeName);
-
   if (scalarOperators === undefined || scalarOperators === null) {
     throw new sdk.BadRequest(
       `Couldn't find scalar type: ${scalarTypeName} in the schema`,
@@ -638,8 +636,6 @@ export function constructSqlQuery(
         ${offsetClause ? "OFFSET " + offsetClause : ""}
         ${limitClause ? "LIMIT " + limitClause : ""}`;
 
-  console.log("Query", query);
-
   return {
     query,
     parameters,
@@ -805,116 +801,6 @@ function visitExpression(
   }
 }
 
-function visitNestedField(
-  fieldNames: string[],
-  parentFieldType: schema.TypeDefinition,
-  parentObjectName: string,
-  collectionsSchema: schema.CollectionsSchema,
-): NestedField | undefined {
-  if (fieldNames.length === 0) {
-    throw new sdk.BadRequest("Field path cannot be empty");
-  } else {
-    switch (parentFieldType.type) {
-      case "array":
-        return {
-          kind: "array",
-          nestedField: visitNestedField(
-            fieldNames,
-            parentFieldType.elementType,
-            parentObjectName,
-            collectionsSchema,
-          ),
-        } as NestedArrayField;
-      case "nullable":
-        return visitNestedField(
-          fieldNames,
-          parentFieldType.underlyingType,
-          parentObjectName,
-          collectionsSchema,
-        );
-      case "named":
-        switch (parentFieldType.kind) {
-          case "object":
-            const [currentFieldName, ...remainingFields] = fieldNames;
-
-            const parentObjectType: schema.ObjectTypeDefinition =
-              collectionsSchema.objectTypes[parentFieldType.name];
-
-            if (parentObjectType === undefined) {
-              throw new sdk.BadRequest(
-                `Could not find the object ${parentFieldType.name} in the schema`,
-              );
-            }
-            console.log(
-              "Looking for field",
-              currentFieldName,
-              "in object",
-              parentObjectType,
-            );
-            const currentFieldDefn =
-              parentObjectType.properties[currentFieldName];
-
-            if (currentFieldDefn === undefined || currentFieldDefn === null) {
-              throw new sdk.NotSupported(
-                `Field ${currentFieldName} does not exist in the object ${parentObjectName}`,
-              );
-            } else {
-              switch (currentFieldDefn.type.type) {
-                case "named":
-                  switch (currentFieldDefn.type.kind) {
-                    case "object":
-                      return {
-                        kind: "object",
-                        field: currentFieldName,
-                        nestedField: visitNestedField(
-                          remainingFields,
-                          currentFieldDefn.type,
-                          currentFieldDefn.type.name,
-                          collectionsSchema,
-                        ),
-                      } as NestedObjectField;
-                    case "scalar":
-                      if (remainingFields.length === 0) {
-                        return {
-                          kind: "scalar",
-                          field: currentFieldName,
-                          type: currentFieldDefn.type.name,
-                        } as NestedScalarField;
-                      } else {
-                        throw new sdk.BadRequest(
-                          `Found the type of the field ${currentFieldName} to be a scalar, but scalar fields can only be the last element in the field path`,
-                        );
-                      }
-                  }
-                case "array":
-                  return {
-                    kind: "array",
-                    field: currentFieldName,
-                    nestedField: visitNestedField(
-                      remainingFields,
-                      currentFieldDefn.type.elementType,
-                      parentObjectName,
-                      collectionsSchema,
-                    ),
-                  } as NestedArrayField;
-                case "nullable":
-                  return visitNestedField(
-                    remainingFields,
-                    currentFieldDefn.type.underlyingType,
-                    parentObjectName,
-                    collectionsSchema,
-                  );
-              }
-            }
-          case "scalar":
-            throw new sdk.BadRequest(
-              `Found the type of the field ${parentObjectName} to be a scalar, but scalar fields can only be the last element in the field path`,
-            );
-        }
-    }
-  }
-}
-
 export function visitComparisonTarget(
   rootContainerAlias: string,
   target: sdk.ComparisonTarget,
@@ -934,8 +820,6 @@ export function visitComparisonTarget(
 
       let comparisonTargetType = collectionObject[target.name].type;
 
-      console.log("initial comparison target type is ", comparisonTargetType);
-
       if (target.field_path && target.field_path.length > 0) {
         let fieldPath = target.field_path;
 
@@ -945,8 +829,6 @@ export function visitComparisonTarget(
           collectionObjectName,
           schema,
         );
-
-        console.log("nestedField", nestedField);
       }
 
       return {
@@ -1149,10 +1031,6 @@ export function translateColumnPredicate(
       );
     }
   } else {
-    console.log(
-      "********* nestd field AST ",
-      JSON.stringify(nestedField, null, 2),
-    );
     nestedField.field = name;
     query = buildNestedFieldPredicate(
       nestedField,
@@ -1168,7 +1046,7 @@ export function translateColumnPredicate(
   return `${query.trim()}`;
 }
 
-function visitNestedFieldRefactored(
+function visitNestedField(
   fieldNames: string[],
   parentFieldType: schema.TypeDefinition,
   parentObjectName: string,
@@ -1274,7 +1152,6 @@ function handleObjectType(
   collectionsSchema: schema.CollectionsSchema,
 ): NestedField {
   const [currentFieldName, ...remainingFields] = fieldNames;
-  console.log("current field name is ", currentFieldName, fieldType);
   const parentObjectType: schema.ObjectTypeDefinition =
     collectionsSchema.objectTypes[fieldType.name];
 
@@ -1315,6 +1192,7 @@ function handleObjectType(
     case "array":
       return {
         kind: "array",
+        field: currentFieldName,
         nestedField: handleFieldType(
           remainingFields,
           currentFieldDefn.type.elementType,
