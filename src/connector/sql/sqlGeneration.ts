@@ -822,10 +822,8 @@ export function visitComparisonTarget(
       let comparisonTargetType = collectionObject[target.name].type;
 
       if (target.field_path && target.field_path.length > 0) {
-        let fieldPath = target.field_path;
-
         nestedField = visitNestedField(
-          fieldPath,
+          target.field_path,
           comparisonTargetType,
           collectionObjectName,
           schema,
