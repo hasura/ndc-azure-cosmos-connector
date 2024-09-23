@@ -24,6 +24,7 @@ import {
   constructCosmosDbClient,
   AzureCosmosAuthenticationConfig,
 } from "../connector/db/cosmosDb";
+
 import { exit } from "process";
 import fs from "fs";
 import { promisify } from "util";

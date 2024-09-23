@@ -88,7 +88,9 @@ export function createConnector(): sdk.Connector<Configuration, State> {
     getCapabilities(_: Configuration): sdk.Capabilities {
       return {
         query: {
-          nested_fields: {},
+          nested_fields: {
+            filter_by: {},
+          },
         },
         mutation: {},
       };
