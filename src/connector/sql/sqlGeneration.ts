@@ -572,7 +572,7 @@ export function constructSqlQuery(
 
   let parameters: cosmos.SqlParameter[] = [];
 
-  if (sqlQueryCtx.predicate !== null && sqlQueryCtx.predicate !== undefined) {
+  if (sqlQueryCtx.predicate) {
     const whereExp = translateWhereExpression(
       // Translate the where expression to SQL
       sqlQueryCtx.predicate,
