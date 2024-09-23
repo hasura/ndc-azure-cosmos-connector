@@ -384,7 +384,7 @@ export function getScalarType(column: Column): string {
     return getNestedScalarType(column.nestedField);
   }
 
-  if (column.type === undefined) {
+  if (!column.type) {
     throw new sdk.BadRequest(`Couldn't find type of column: ${column.name}`);
   } else {
     switch (column.type.type) {

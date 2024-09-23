@@ -304,7 +304,7 @@ function parseQueryRequest(
 
   let requestedFields: sql.SelectColumns = {};
 
-  if (collectionDefinition === undefined)
+  if (!collectionDefinition)
     throw new sdk.BadRequest(
       `Couldn't find collection '${collection}' in the schema.`,
     );
@@ -322,7 +322,7 @@ function parseQueryRequest(
   const collectionObjectType =
     collectionsSchema.objectTypes[collectionObjectBaseType];
 
-  if (collectionObjectType === undefined)
+  if (!collectionObjectType)
     throw new sdk.InternalServerError(
       `Couldn't find the schema of the object type: '${collectionObjectBaseType}'`,
     );
@@ -419,8 +419,8 @@ function parseQueryRequest(
     selectAsValue: false,
   };
 
-  if (queryRequest.query.limit != null) {
-    if (queryRequest.query.offset != null) {
+  if (queryRequest.query.limit) {
+    if (queryRequest.query.offset) {
       sqlGenCtx.offset = queryRequest.query.offset;
     } else {
       // The Azure Cosmos DB for NoSQL SQL syntax always requires an
@@ -431,10 +431,7 @@ function parseQueryRequest(
     sqlGenCtx.limit = queryRequest.query.limit;
   }
 
-  if (
-    queryRequest.query.order_by != null &&
-    queryRequest.query.order_by != undefined
-  ) {
+  if (queryRequest.query.order_by) {
     validateOrderBy(queryRequest.query.order_by, collectionObjectType);
     sqlGenCtx.orderBy = queryRequest.query.order_by;
   }
@@ -464,7 +461,7 @@ export async function executeQuery(
   const collectionDefinition: schema.CollectionDefinition =
     collectionsSchema.collections[collection];
 
-  if (collectionDefinition === undefined)
+  if (!collectionDefinition)
     throw new sdk.BadRequest(
       `Couldn't find collection '${collection}' in the schema.`,
     );
