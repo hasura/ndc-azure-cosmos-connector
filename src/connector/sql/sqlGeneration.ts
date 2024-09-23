@@ -377,6 +377,8 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
   },
 };
 
+// Function to get the scalar type of a column, if the column is nested, it will return the scalar type of the nested field
+// Throws an error if the column is not a scalar type
 export function getScalarType(column: Column): string {
   if (column.nestedField) {
     return getNestedScalarType(column.nestedField);

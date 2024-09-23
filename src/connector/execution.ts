@@ -265,13 +265,7 @@ function parseExpression(
         collectionsSchema,
       );
 
-      // write a function getBinaryComparisonOperator to get the type of the `comparisonTarget` column
-      // if the `comparisonTarget` contains a nested field, then we need to get the type of the nested field
-
-      console.log("comparisonTarget: ", comparisonTarget);
       const comparisonTargetType = sql.getScalarType(comparisonTarget);
-
-      console.log("comparisonTargetType: ", comparisonTargetType);
 
       const scalarDbOperator = sql.getDbComparisonOperator(
         comparisonTargetType,
@@ -333,9 +327,7 @@ function parseQueryRequest(
       `Couldn't find the schema of the object type: '${collectionObjectBaseType}'`,
     );
 
-  if (
-    queryRequest.query.fields && queryRequest.query.aggregates
-  ) {
+  if (queryRequest.query.fields && queryRequest.query.aggregates) {
     throw new sdk.NotSupported(
       "Aggregates and fields cannot be requested together.",
     );
@@ -490,7 +482,7 @@ export async function executeQuery(
   );
 
   const sqlQuery = sql.generateSqlQuerySpec(
-    sqlGenCtx, 
+    sqlGenCtx,
     collection,
     queryRequest.variables,
   );
