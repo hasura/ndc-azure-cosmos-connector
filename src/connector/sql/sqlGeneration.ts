@@ -382,30 +382,30 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
 export function getScalarType(column: Column): string {
   if (column.nestedField) {
     return getNestedScalarType(column.nestedField);
+  }
+
+  if (column.type === undefined) {
+    throw new sdk.BadRequest(`Couldn't find type of column: ${column.name}`);
   } else {
-    if (column.type === undefined) {
-      throw new sdk.BadRequest(`Couldn't find type of column: ${column.name}`);
-    } else {
-      switch (column.type.type) {
-        case "array":
+    switch (column.type.type) {
+      case "array":
+        throw new sdk.BadRequest(
+          `Expected column ${column.name} to be a scalar type, but found array type`,
+        );
+      case "named":
+        if (column.type.kind === "object") {
           throw new sdk.BadRequest(
-            `Expected column ${column.name} to be a scalar type, but found array type`,
+            `Expected column ${column.name} to be a scalar type, but found object type`,
           );
-        case "named":
-          if (column.type.kind === "object") {
-            throw new sdk.BadRequest(
-              `Expected column ${column.name} to be a scalar type, but found object type`,
-            );
-          } else {
-            return column.type.name;
-          }
-        case "nullable":
-          return getScalarType({
-            name: column.name,
-            prefix: column.prefix,
-            type: column.type.underlyingType,
-          });
-      }
+        }
+        return column.type.name;
+
+      case "nullable":
+        return getScalarType({
+          name: column.name,
+          prefix: column.prefix,
+          type: column.type.underlyingType,
+        });
     }
   }
 }
@@ -798,9 +798,6 @@ function visitExpression(
       } else {
         return `${expression.dbOperator.name}(${containerAlias}.${expression.column}, ${comparisonValue}) `;
       }
-
-    default:
-      throw new sdk.InternalServerError("Unknown expression type");
   }
 }
 
