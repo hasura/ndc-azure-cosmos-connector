@@ -798,6 +798,9 @@ function visitExpression(
       } else {
         return `${expression.dbOperator.name}(${containerAlias}.${expression.column}, ${comparisonValue}) `;
       }
+
+    default:
+      throw new sdk.InternalServerError("Unknown expression type");
   }
 }
 

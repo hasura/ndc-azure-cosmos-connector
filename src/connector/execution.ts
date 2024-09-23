@@ -266,7 +266,6 @@ function parseExpression(
       );
 
       const comparisonTargetType = sql.getScalarType(comparisonTarget);
-
       const scalarDbOperator = sql.getDbComparisonOperator(
         comparisonTargetType,
         expression.operator,
