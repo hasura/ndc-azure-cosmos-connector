@@ -44,15 +44,23 @@ export function getCosmosDbClient(
       });
       break;
     case "ManagedIdentity":
-      const managedIdentityClientId =
-        getEnvVariable(connectionConfig.fromEnvVar, true) ??
-        throwError(
-          `Azure Cosmos Key not found in the env var "${connectionConfig.fromEnvVar}"`,
-        );
+      const managedIdentityClientId = getEnvVariable(
+        connectionConfig.fromEnvVar,
+        false,
+      );
 
-      let credentials = new DefaultAzureCredential({
-        managedIdentityClientId,
-      });
+      let credentials;
+      if (managedIdentityClientId) {
+        // If the managed identity client id is provided, it means
+        // the user-assigned managed identity is being used.
+        credentials = new DefaultAzureCredential({
+          managedIdentityClientId,
+        });
+      } else {
+        // default to system-assigned managed identity
+        credentials = new DefaultAzureCredential();
+      }
+
       dbClient = new CosmosClient({
         endpoint,
         aadCredentials: credentials,
@@ -78,19 +86,15 @@ function getEnvVariable(
   return envVariable;
 }
 
-function getConnectionConfig(): AzureCosmosAuthenticationConfig | null {
+function getConnectionConfig(): AzureCosmosAuthenticationConfig {
   const key = getEnvVariable("AZURE_COSMOS_KEY");
   const managed_identity_client_id = getEnvVariable(
     "AZURE_COSMOS_MANAGED_CLIENT_ID",
   );
 
-  if (key === null && managed_identity_client_id === null) {
+  if (key && managed_identity_client_id) {
     throw new Error(
-      `Either the AZURE_COSMOS_KEY or the AZURE_COSMOS_MANAGED_CLIENT_ID env var is expected`,
-    );
-  } else if (key && managed_identity_client_id) {
-    throw new Error(
-      `Both AZURE_COSMOS_KEY and the AZURE_COSMOS_MANAGED_CLIENT_ID cannot be set`,
+      `Both AZURE_COSMOS_KEY and the AZURE_COSMOS_MANAGED_CLIENT_ID cannot be set together`,
     );
   } else {
     if (key) {
@@ -98,14 +102,12 @@ function getConnectionConfig(): AzureCosmosAuthenticationConfig | null {
         type: "Key",
         fromEnvVar: "AZURE_COSMOS_KEY",
       };
-    } else if (managed_identity_client_id) {
-      return {
-        type: "ManagedIdentity",
-        fromEnvVar: "AZURE_COSMOS_MANAGED_CLIENT_ID",
-      };
     }
   }
-  return null;
+  return {
+    type: "ManagedIdentity",
+    fromEnvVar: "AZURE_COSMOS_MANAGED_CLIENT_ID",
+  };
 }
 
 export function constructCosmosDbClient() {
