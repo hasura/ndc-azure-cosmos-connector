@@ -110,6 +110,10 @@ function getConnectionConfig(): AzureCosmosAuthenticationConfig {
   };
 }
 
+export async function testConnection(dbClient: Database) {
+  await dbClient.read();
+}
+
 export function constructCosmosDbClient() {
   const endpoint =
     getEnvVariable("AZURE_COSMOS_ENDPOINT", true) ??

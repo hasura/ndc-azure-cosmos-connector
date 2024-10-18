@@ -3,6 +3,7 @@ import { CollectionsSchema, getNdcSchemaResponse } from "./schema";
 import {
   AzureCosmosAuthenticationConfig,
   getCosmosDbClient,
+  testConnection,
 } from "./db/cosmosDb";
 import { Database } from "@azure/cosmos";
 import { executeQuery } from "./execution";
@@ -61,6 +62,16 @@ export function createConnector(): sdk.Connector<Configuration, State> {
           databaseName,
           authenticationConfig,
         );
+
+        try {
+          await testConnection(databaseClient);
+        } catch (error) {
+          console.error("Failed to test the database connection", error);
+          throw new sdk.InternalServerError(
+            "Internal server error, failed to test the connection",
+            {},
+          );
+        }
 
         return Promise.resolve({
           databaseClient,

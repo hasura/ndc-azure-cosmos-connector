@@ -23,6 +23,7 @@ import {
   runSQLQuery,
   constructCosmosDbClient,
   AzureCosmosAuthenticationConfig,
+  testConnection,
 } from "../connector/db/cosmosDb";
 import { exit } from "process";
 import fs from "fs";
@@ -309,6 +310,13 @@ export async function generateConnectorConfig(outputConfigDir: string) {
 
   try {
     const client = constructCosmosDbClient();
+    try {
+      await testConnection(client.dbClient);
+    } catch (error) {
+      console.log("Error while testing connection", error);
+      exit(1);
+    }
+
     const schema = await getCollectionsSchema(
       client.dbClient,
       parseInt(rowsToFetch),
