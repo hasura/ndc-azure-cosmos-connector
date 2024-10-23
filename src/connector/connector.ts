@@ -91,6 +91,9 @@ export function createConnector(): sdk.Connector<Configuration, State> {
           nested_fields: {
             filter_by: {},
           },
+          exists: {
+            nested_collections: {},
+          },
         },
         mutation: {},
       };
