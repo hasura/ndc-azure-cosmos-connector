@@ -192,6 +192,7 @@ function parseComparisonValue(
 }
 
 function parseExpression(
+  predicate_subquery_counter: number,
   collectionAlias: string,
   expression: sdk.Expression,
   collectionObjectProperties: schema.ObjectTypePropertiesMap,
@@ -204,6 +205,7 @@ function parseExpression(
         kind: "and",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
+            predicate_subquery_counter,
             collectionAlias,
             expr,
             collectionObjectProperties,
@@ -217,6 +219,7 @@ function parseExpression(
         kind: "or",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
+            predicate_subquery_counter,
             collectionAlias,
             expr,
             collectionObjectProperties,
@@ -229,6 +232,7 @@ function parseExpression(
       return {
         kind: "not",
         expression: parseExpression(
+          predicate_subquery_counter,
           collectionAlias,
           expression.expression,
           collectionObjectProperties,
@@ -291,13 +295,16 @@ function parseExpression(
             "Exists operator is not supported to query other tables",
           );
         case "nested_collection":
-          const nestedCollectionPredicateColumn: sql.NestedCollectionPredicateColumn =
-            sql.nestedCollectionComparisonTarget(
-              expression.in_collection.column_name,
-              expression.in_collection.field_path ?? [],
-              collectionsSchema,
-              collectionObjectProperties,
-            );
+          const [
+            nestedCollectionPredicateColumn,
+            new_predicate_subquery_counter,
+          ] = sql.nestedCollectionComparisonTarget(
+            predicate_subquery_counter,
+            expression.in_collection.column_name,
+            expression.in_collection.field_path ?? [],
+            collectionsSchema,
+            collectionObjectProperties,
+          );
 
           if (expression.predicate) {
             const nestedCollectionObjectBaseType = getBaseType(
@@ -312,7 +319,7 @@ function parseExpression(
               kind: "exists",
               nestedCollectionPredicateColumn,
               expression: parseExpression(
-                // TODO: This expression should be parsed in the context of the nested collection
+                new_predicate_subquery_counter,
                 collectionAlias,
                 expression.predicate,
                 nestedCollectionObjectProperties,
@@ -479,6 +486,7 @@ function parseQueryRequest(
 
   if (queryRequest.query.predicate) {
     const predicate = parseExpression(
+      0,
       rootContainerAlias,
       queryRequest.query.predicate,
       collectionObjectType.properties,

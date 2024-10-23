@@ -1185,11 +1185,12 @@ function handleScalarType(
 }
 
 export function nestedCollectionComparisonTarget(
+  predicate_subquery_counter: number,
   columnName: string,
   fieldPath: string[],
   schema: schema.CollectionsSchema,
   collectionObject: schema.ObjectTypePropertiesMap,
-): NestedCollectionPredicateColumn {
+): [NestedCollectionPredicateColumn, number] {
   const currentColumnType = collectionObject[columnName].type;
 
   if (fieldPath.length > 0) {
@@ -1199,7 +1200,7 @@ export function nestedCollectionComparisonTarget(
     function traverseFieldPath(
       currentFieldPath: string[],
       lastObject: schema.ObjectTypePropertiesMap,
-    ) {
+    ): [NestedCollectionPredicateColumn, number] {
       if (currentFieldPath.length === 1) {
         const currentField = lastObject[currentFieldPath[0]];
         if (!currentField) {
@@ -1213,12 +1214,15 @@ export function nestedCollectionComparisonTarget(
               "The comparison target of an nested collection must be of the array type",
             );
           } else {
-            return {
-              prefix: `__predicate_subquery_${currentFieldPath[0]}`,
-              columnName,
-              fieldPath,
-              type: currentField.type,
-            };
+            return [
+              {
+                prefix: `__predicate_subquery_${currentFieldPath[0]}_${predicate_subquery_counter++}`,
+                columnName,
+                fieldPath,
+                type: currentField.type,
+              },
+              predicate_subquery_counter,
+            ];
           }
         }
       } else {
@@ -1257,12 +1261,15 @@ export function nestedCollectionComparisonTarget(
         "The comparison target of an nested collection must be of the array type",
       );
     } else {
-      return {
-        prefix: `__predicate_subquery_${columnName}`,
-        columnName,
-        fieldPath,
-        type: currentColumnType,
-      };
+      return [
+        {
+          prefix: `__predicate_subquery_${columnName}_${predicate_subquery_counter++}`,
+          columnName,
+          fieldPath,
+          type: currentColumnType,
+        },
+        predicate_subquery_counter,
+      ];
     }
   }
 }
