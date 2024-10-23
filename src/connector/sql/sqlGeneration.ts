@@ -794,7 +794,7 @@ function visitComparisonValue(
 ): string {
   switch (target.type) {
     case "scalar":
-      const comparisonTargetName = comparisonTarget.replace(".", "_");
+      const comparisonTargetName = comparisonTarget.replaceAll(".", "_");
       const comparisonTargetParameterValues = parameters[comparisonTargetName];
       if (comparisonTargetParameterValues != null) {
         const index = comparisonTargetParameterValues.findIndex(
@@ -906,18 +906,20 @@ export function translateWhereExpression(
 // Function to recursively build the nested query part
 function buildNestedFieldPredicate(
   nestedField: string[],
-  parentField: string,
-  arrayCounter: number,
+  currentFieldPrefix: string,
+  currentField: string,
   value: ComparisonValue | undefined,
   operator: ComparisonScalarDbOperator,
   parameters: SqlParameters,
   variables: VariablesMappings,
 ): string {
-  let comparisonTarget = parentField;
+  let comparisonTarget = `${currentFieldPrefix}.${currentField}`;
 
-  for (const nestedFieldElement in nestedField) {
+  for (const nestedFieldElement of nestedField) {
     comparisonTarget += `.${nestedFieldElement}`;
   }
+
+  console.log("compoiarson target ", comparisonTarget);
 
   if (value) {
     const comparisonValueRef = visitComparisonValue(
@@ -925,7 +927,7 @@ function buildNestedFieldPredicate(
       variables,
       value,
       comparisonTarget,
-      parentField,
+      currentFieldPrefix,
     );
 
     // abstract the logic for infix and prefix operators in a function to avoid code duplication
@@ -1023,7 +1025,7 @@ export function translateColumnPredicate(
     query = buildNestedFieldPredicate(
       fieldPath,
       prefix,
-      1,
+      name,
       value,
       operator,
       parameters,
@@ -1212,7 +1214,7 @@ export function nestedCollectionComparisonTarget(
             );
           } else {
             return {
-              prefix: `__subquery_${currentFieldPath[0]}`,
+              prefix: `__predicate_subquery_${currentFieldPath[0]}`,
               columnName,
               fieldPath,
               type: currentField.type,
@@ -1256,7 +1258,7 @@ export function nestedCollectionComparisonTarget(
       );
     } else {
       return {
-        prefix: `__subquery_${columnName}`,
+        prefix: `__predicate_subquery_${columnName}`,
         columnName,
         fieldPath,
         type: currentColumnType,
