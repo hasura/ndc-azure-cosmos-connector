@@ -44,17 +44,24 @@
     },
     "limit": 10,
     "predicate": {
-      "type": "binary_comparison_operator",
-      "column": {
-        "type": "column",
-        "name": "laureates",
-        "field_path": ["share"],
-        "path": []
+      "type": "exists",
+      "in_collection": {
+        "type": "nested_collection",
+        "arguments": {},
+        "column_name": "laureates"
       },
-      "operator": "gt",
-      "value": {
-        "type": "scalar",
-        "value": "1"
+      "predicate": {
+        "type": "binary_comparison_operator",
+        "column": {
+          "type": "column",
+          "name": "share",
+          "path": []
+        },
+        "operator": "gt",
+        "value": {
+          "type": "scalar",
+          "value": "1"
+        }
       }
     },
     "order_by": {

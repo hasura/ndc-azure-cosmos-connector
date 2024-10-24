@@ -64,20 +64,34 @@
     },
     "limit": 10,
     "predicate": {
-      "type": "binary_comparison_operator",
-      "column": {
-        "type": "column",
-        "name": "laureates",
-        "field_path": [
-          "awards",
-          "year"
-        ],
-        "path": []
+      "type": "exists",
+      "in_collection": {
+        "type": "nested_collection",
+        "arguments": {},
+        "column_name": "laureates",
+        "field_path": []
       },
-      "operator": "eq",
-      "value": {
-        "type": "scalar",
-        "value": 2023
+      "predicate": {
+        "type": "exists",
+        "in_collection": {
+          "type": "nested_collection",
+          "arguments": {},
+          "column_name": "awards",
+          "field_path": []
+        },
+        "predicate": {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "year",
+            "path": []
+          },
+          "operator": "eq",
+          "value": {
+            "type": "scalar",
+            "value": 2023
+          }
+        }
       }
     }
   },
