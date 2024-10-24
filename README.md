@@ -69,14 +69,14 @@ default suggested port.
 #### Step 2.3: Provide the env vars for the connector
 
 
-| Name                             | Description                                                                   | Required | Default |
-|----------------------------------|-------------------------------------------------------------------------------|----------|---------|
-| AZURE_COSMOS_KEY                 | Primary/Secondary key asssociated with the Azure Cosmos DB for NoSQL          | Yes      | N/A     |
-| AZURE_COSMOS_ENDPOINT            | Endpoint of the Azure Cosmos DB for NoSQL                                     | Yes      | N/A     |
-| AZURE_COSMOS_DB_NAME             | Name of the Database                                                          | Yes      | N/A     |
-| AZURE_COSMOS_NO_OF_ROWS_TO_FETCH | Maximum number of rows to fetch per container to infer the schema. (Optional) | No       | 100     |
-
-
+| Name                                          | Description                                                                              | Required | Default |
+|-----------------------------------------------|------------------------------------------------------------------------------------------|----------|---------|
+| AZURE_COSMOS_KEY                              | Primary/Secondary key asssociated with the Azure Cosmos DB for NoSQL                     | No       | N/A     |
+| AZURE_COSMOS_ENDPOINT                         | Endpoint of the Azure Cosmos DB for NoSQL                                                | Yes      | N/A     |
+| AZURE_COSMOS_DB_NAME                          | Name of the Database                                                                     | Yes      | N/A     |
+| AZURE_COSMOS_NO_OF_ROWS_TO_FETCH              | Maximum number of rows to fetch per container to infer the schema. (Optional)            | No       | 100     |
+| AZURE_COSMOS_SYSTEM_ASSIGNED_MANAGED_IDENTITY | Boolean value to indicate that the connector should use system assigned managed identity | No       | N/A     |
+| AZURE_COSMOS_MANAGED_CLIENT_ID                | Value of the user-assigned managed client id.                                            | No       | N/A     |
 
 
 ## Step 3: Introspect the connector
@@ -86,7 +86,7 @@ default suggested port.
 ddn connector introspect <connector-name>
 ```
 
-This will generate a `configuration.json` file that will have the schema of your Azure Cosmos DB for NoSQL.
+This will generate a `config.json` file that will have the schema of your Azure Cosmos DB for NoSQL.
 
 ## Step 4: Add your resources
 

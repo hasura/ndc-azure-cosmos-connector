@@ -31,7 +31,7 @@ function validateOrderBy(
 }
 
 function generateAliasToSelectFromParentColumn(
-  parentColumn: sql.Column,
+  parentColumn: sql.ColumnSelection,
 ): string {
   return `_subquery_parent_${parentColumn.name}`;
 }
@@ -50,7 +50,7 @@ function generateAliasToSelectFromParentColumn(
 // TODO: Please write unit tests for this function.
 function selectNestedField(
   nestedField: sdk.NestedField,
-  parentColumn: sql.Column,
+  parentColumn: sql.ColumnSelection,
 ): [sql.SqlQueryContext, string] {
   if (nestedField.type === "object") {
     let selectFields: sql.SelectColumns = {};
@@ -91,7 +91,7 @@ function selectNestedField(
 function selectField(field: sdk.Field, fieldPrefix: string): sql.SelectColumn {
   switch (field.type) {
     case "column":
-      const column: sql.Column = {
+      const column: sql.ColumnSelection = {
         name: field.column,
         prefix: fieldPrefix,
       };
@@ -172,7 +172,6 @@ function parseComparisonValue(
       return {
         type: "column",
         column: sql.visitComparisonTarget(
-          rootContainerAlias,
           value.column,
           collectionObjectProperties,
           collectionName,
@@ -193,7 +192,8 @@ function parseComparisonValue(
 }
 
 function parseExpression(
-  rootContainerAlias: string,
+  predicate_subquery_counter: number,
+  collectionAlias: string,
   expression: sdk.Expression,
   collectionObjectProperties: schema.ObjectTypePropertiesMap,
   collectionObjectTypeName: string,
@@ -205,7 +205,8 @@ function parseExpression(
         kind: "and",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
-            rootContainerAlias,
+            predicate_subquery_counter,
+            collectionAlias,
             expr,
             collectionObjectProperties,
             collectionObjectTypeName,
@@ -218,7 +219,8 @@ function parseExpression(
         kind: "or",
         expressions: expression.expressions.map((expr) =>
           parseExpression(
-            rootContainerAlias,
+            predicate_subquery_counter,
+            collectionAlias,
             expr,
             collectionObjectProperties,
             collectionObjectTypeName,
@@ -230,7 +232,8 @@ function parseExpression(
       return {
         kind: "not",
         expression: parseExpression(
-          rootContainerAlias,
+          predicate_subquery_counter,
+          collectionAlias,
           expression.expression,
           collectionObjectProperties,
           collectionObjectTypeName,
@@ -243,7 +246,6 @@ function parseExpression(
           return {
             kind: "simpleWhereExpression",
             column: sql.visitComparisonTarget(
-              rootContainerAlias,
               expression.column,
               collectionObjectProperties,
               collectionObjectTypeName,
@@ -257,8 +259,7 @@ function parseExpression(
           };
       }
     case "binary_comparison_operator":
-      const comparisonTarget: sql.Column = sql.visitComparisonTarget(
-        rootContainerAlias,
+      const comparisonTarget: sql.PredicateColumn = sql.visitComparisonTarget(
         expression.column,
         collectionObjectProperties,
         collectionObjectTypeName,
@@ -274,7 +275,7 @@ function parseExpression(
         kind: "simpleWhereExpression",
         column: comparisonTarget,
         value: parseComparisonValue(
-          rootContainerAlias,
+          collectionAlias,
           expression.value,
           collectionObjectProperties,
           collectionObjectTypeName,
@@ -284,7 +285,55 @@ function parseExpression(
       };
 
     case "exists":
-      throw new sdk.NotSupported("EXISTS operator is not supported.");
+      switch (expression.in_collection.type) {
+        case "related":
+          throw new sdk.BadRequest(
+            "Exists operator is not supported to query other tables",
+          );
+        case "unrelated":
+          throw new sdk.BadRequest(
+            "Exists operator is not supported to query other tables",
+          );
+        case "nested_collection":
+          const [
+            nestedCollectionPredicateColumn,
+            new_predicate_subquery_counter,
+          ] = sql.nestedCollectionComparisonTarget(
+            predicate_subquery_counter,
+            expression.in_collection.column_name,
+            expression.in_collection.field_path ?? [],
+            collectionsSchema,
+            collectionObjectProperties,
+          );
+
+          if (expression.predicate) {
+            const nestedCollectionObjectBaseType = getBaseType(
+              nestedCollectionPredicateColumn.type,
+            );
+
+            const nestedCollectionObjectProperties =
+              collectionsSchema.objectTypes[nestedCollectionObjectBaseType]
+                .properties;
+
+            return {
+              kind: "exists",
+              nestedCollectionPredicateColumn,
+              expression: parseExpression(
+                new_predicate_subquery_counter,
+                collectionAlias,
+                expression.predicate,
+                nestedCollectionObjectProperties,
+                nestedCollectionObjectBaseType,
+                collectionsSchema,
+              ),
+            };
+          } else {
+            return {
+              kind: "exists",
+              nestedCollectionPredicateColumn,
+            };
+          }
+      }
   }
 }
 
@@ -437,6 +486,7 @@ function parseQueryRequest(
 
   if (queryRequest.query.predicate) {
     const predicate = parseExpression(
+      0,
       rootContainerAlias,
       queryRequest.query.predicate,
       collectionObjectType.properties,
@@ -477,11 +527,13 @@ export async function executeQuery(
     queryRequest,
   );
 
-  const sqlQuery = sql.generateSqlQuerySpec(
+  const sqlQuery = sql.constructSqlQuery(
     sqlGenCtx,
-    collection,
+    `root_${collection}`,
     queryRequest.variables,
   );
+
+  console.log("SQL Query: ", sqlQuery);
 
   const queryResponse = await runSQLQuery<{ [k: string]: unknown }>(
     sqlQuery,

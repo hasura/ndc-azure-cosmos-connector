@@ -2,22 +2,21 @@ import * as sdk from "@hasura/ndc-sdk-typescript";
 import * as cosmos from "@azure/cosmos";
 import { SqlQuerySpec } from "@azure/cosmos";
 import * as schema from "../schema";
+import { getBaseType } from "../execution";
 
-export type Column = {
+export type ColumnSelection = {
   name: string;
   prefix: string;
-  type?: schema.TypeDefinition; // TODO(KC): Modify this to not be optional
-  nestedField?: NestedField;
 };
 
 export type SelectContainerColumn = {
   kind: "column";
-  column: Column;
+  column: ColumnSelection;
 };
 
 export type SelectAggregate = {
   kind: "aggregate";
-  column: Column;
+  column: ColumnSelection;
   aggregateFunction: string;
 };
 
@@ -29,13 +28,6 @@ export type SelectColumn =
 type NestedObjectField = {
   kind: "object";
   field: string;
-
-  nestedField: NestedField;
-};
-
-type NestedArrayField = {
-  kind: "array";
-  field?: string;
   nestedField: NestedField;
 };
 
@@ -45,11 +37,30 @@ type NestedScalarField = {
   kind: "scalar";
 };
 
-type NestedField = NestedObjectField | NestedArrayField | NestedScalarField;
+type NestedField = NestedObjectField | NestedScalarField;
 
+export type NestedCollectionPredicateColumn = {
+  prefix: string;
+  columnName: string;
+  fieldPath: string[];
+  type: schema.ArrayTypeDefinition;
+};
+
+export type PredicateColumn = {
+  // Name of the column
+  name: string;
+  // Optional path to the field
+  fieldPath?: string[];
+  // Type of the column, if the
+  // fieldPath is provided, it will be the type of the nested field
+  type: schema.NamedScalarTypeDefinition;
+};
+
+// TODO(KC): Refactor this to SimpleWhereBinaryComparisonOperatorExpression
+// and create a new type to handle SimpleWhereUnaryComparisonOperatorExpression
 export type SimpleWhereExpression = {
   kind: "simpleWhereExpression";
-  column: Column;
+  column: PredicateColumn;
   operator: ComparisonScalarDbOperator;
   // When value is undefined, it means that the operator is unary
   value?: ComparisonValue | undefined;
@@ -70,9 +81,17 @@ export type NotWhereExpression = {
   expression: WhereExpression;
 };
 
+export type NestedCollectionWhereExpression = {
+  kind: "exists";
+  nestedCollectionPredicateColumn: NestedCollectionPredicateColumn;
+  // Expression to filter the nested collection
+  expression?: WhereExpression | null;
+};
+
 export type WhereExpression =
   | SimpleWhereExpression
   | AndWhereExpression
+  | NestedCollectionWhereExpression
   | OrWhereExpression
   | NotWhereExpression;
 
@@ -379,53 +398,17 @@ export const scalarComparisonOperatorMappings: ScalarOperatorMappings = {
 
 // Function to get the scalar type of a column, if the column is nested, it will return the scalar type of the nested field
 // Throws an error if the column is not a scalar type
-export function getScalarType(column: Column): string {
-  if (column.nestedField) {
-    return getNestedScalarType(column.nestedField);
-  }
-
-  if (!column.type) {
-    throw new sdk.BadRequest(`Couldn't find type of column: ${column.name}`);
-  } else {
-    switch (column.type.type) {
-      case "array":
-        throw new sdk.BadRequest(
-          `Expected column ${column.name} to be a scalar type, but found array type`,
-        );
-      case "named":
-        if (column.type.kind === "object") {
-          throw new sdk.BadRequest(
-            `Expected column ${column.name} to be a scalar type, but found object type`,
-          );
-        }
-        return column.type.name;
-
-      case "nullable":
-        return getScalarType({
-          name: column.name,
-          prefix: column.prefix,
-          type: column.type.underlyingType,
-        });
-    }
-  }
-}
-
-function getNestedScalarType(nestedField: NestedField): string {
-  switch (nestedField.kind) {
-    case "scalar":
-      return nestedField.type;
-    case "object":
-      return getNestedScalarType(nestedField.nestedField);
-    case "array":
-      return getNestedScalarType(nestedField.nestedField);
-  }
+export function getScalarType(
+  column: PredicateColumn,
+): schema.NamedScalarTypeDefinition {
+  return column.type;
 }
 
 export function getDbComparisonOperator(
-  scalarTypeName: string,
+  scalarTypeName: schema.NamedScalarTypeDefinition,
   operator: string,
 ): ComparisonScalarDbOperator {
-  const scalarOperators = scalarComparisonOperatorMappings[scalarTypeName];
+  const scalarOperators = scalarComparisonOperatorMappings[scalarTypeName.name];
 
   if (!scalarOperators) {
     throw new sdk.BadRequest(
@@ -463,7 +446,7 @@ export type ComparisonTarget =
 export type ComparisonValue =
   | {
       type: "column";
-      column: Column;
+      column: PredicateColumn;
     }
   | {
       type: "scalar";
@@ -486,6 +469,14 @@ export type Expression =
   | {
       type: "not";
       expression: Expression;
+    }
+  | {
+      type: "exists";
+      expression: Expression;
+      nestedCollection?: {
+        columnName: string;
+        field_path?: string[];
+      };
     }
   | {
       type: "unary_comparison_operator";
@@ -574,6 +565,7 @@ export function constructSqlQuery(
 
   if (sqlQueryCtx.predicate) {
     const whereExp = translateWhereExpression(
+      source,
       // Translate the where expression to SQL
       sqlQueryCtx.predicate,
       predicateParameters,
@@ -653,7 +645,7 @@ export function generateSqlQuerySpec(
   return constructSqlQuery(sqlGenCtx, `root_${containerName}`, queryVariables);
 }
 
-export function formatColumn(column: Column) {
+export function formatColumn(column: ColumnSelection) {
   return `${column.prefix}.${column.name}`;
 }
 
@@ -722,95 +714,12 @@ function visitOrderByElement(
   }
 }
 
-/*
-  Wraps the expression in parantheses to avoid generating SQL with wrong operator precedence.
- */
-function visitExpressionWithParentheses(
-  parameters: SqlParameters,
-  variables: VariablesMappings,
-  expression: Expression,
-  containerAlias: string,
-): string {
-  return `(${visitExpression(parameters, variables, expression, containerAlias)})`;
-}
-
-function visitExpression(
-  parameters: SqlParameters,
-  variables: VariablesMappings,
-  expression: Expression,
-  containerAlias: string,
-): string {
-  switch (expression.type) {
-    case "and":
-      if (expression.expressions.length > 0) {
-        return expression.expressions
-          .map((expr) =>
-            visitExpressionWithParentheses(
-              parameters,
-              variables,
-              expr,
-              containerAlias,
-            ),
-          )
-          .join(" AND ");
-      } else {
-        return "true";
-      }
-
-    case "or":
-      if (expression.expressions.length > 0) {
-        return expression.expressions
-          .map((expr) =>
-            visitExpressionWithParentheses(
-              parameters,
-              variables,
-              expr,
-              containerAlias,
-            ),
-          )
-          .join(" OR ");
-      } else {
-        return "false";
-      }
-
-    case "not":
-      return `NOT ${visitExpressionWithParentheses(parameters, variables, expression.expression, containerAlias)} `;
-
-    case "unary_comparison_operator":
-      let unaryPredicate = "";
-      switch (expression.dbOperator.name) {
-        case "is_null":
-          unaryPredicate = `IS_NULL(${containerAlias}.${expression.column})`;
-      }
-      return unaryPredicate;
-
-    case "binary_comparison_operator":
-      const comparisonValue = visitComparisonValue(
-        parameters,
-        variables,
-        expression.value,
-        expression.column,
-        containerAlias,
-      );
-
-      if (expression.dbOperator.isInfix) {
-        return `${containerAlias}.${expression.column} ${expression.dbOperator.name} ${comparisonValue}`;
-      } else {
-        return `${expression.dbOperator.name}(${containerAlias}.${expression.column}, ${comparisonValue}) `;
-      }
-
-    default:
-      throw new sdk.InternalServerError("Unknown expression type");
-  }
-}
-
 export function visitComparisonTarget(
-  rootContainerAlias: string,
   target: sdk.ComparisonTarget,
   collectionObject: schema.ObjectTypePropertiesMap,
   collectionObjectName: string,
   schema: schema.CollectionsSchema,
-): Column {
+): PredicateColumn {
   switch (target.type) {
     case "column":
       if (target.path.length > 0) {
@@ -819,25 +728,55 @@ export function visitComparisonTarget(
         );
       }
 
-      let nestedField = undefined;
+      let nestedObjectFieldType;
 
       let comparisonTargetType = collectionObject[target.name].type;
 
       if (target.field_path && target.field_path.length > 0) {
-        nestedField = visitNestedField(
+        const currentObjectType = getBaseType(comparisonTargetType);
+
+        console.log("currentObjectType", currentObjectType);
+
+        const currentObjectTypeDefinition: schema.NamedObjectTypeDefinition = {
+          name: currentObjectType,
+          kind: "object",
+          type: "named",
+        };
+
+        nestedObjectFieldType = visitNestedObjectField(
           target.field_path,
-          comparisonTargetType,
+          currentObjectTypeDefinition,
           collectionObjectName,
           schema,
         );
-      }
 
-      return {
-        name: target.name,
-        prefix: rootContainerAlias,
-        type: comparisonTargetType,
-        nestedField,
-      };
+        return {
+          name: target.name,
+          fieldPath: target.field_path,
+          type: nestedObjectFieldType,
+        };
+      } else {
+        switch (comparisonTargetType.type) {
+          case "named":
+            switch (comparisonTargetType.kind) {
+              case "object":
+                throw new sdk.BadRequest(
+                  `Expected field ${target.name} to be a scalar field, but it is an object`,
+                );
+
+              case "scalar":
+                return {
+                  name: target.name,
+                  type: comparisonTargetType,
+                };
+            }
+
+          case "array":
+            throw new sdk.NotSupported(
+              "Root collection column comparison is not supported",
+            );
+        }
+      }
 
     case "root_collection_column":
       throw new sdk.NotSupported(
@@ -855,7 +794,7 @@ function visitComparisonValue(
 ): string {
   switch (target.type) {
     case "scalar":
-      const comparisonTargetName = comparisonTarget.replace(".", "_");
+      const comparisonTargetName = comparisonTarget.replaceAll(".", "_");
       const comparisonTargetParameterValues = parameters[comparisonTargetName];
       if (comparisonTargetParameterValues != null) {
         const index = comparisonTargetParameterValues.findIndex(
@@ -903,6 +842,7 @@ function serializeSqlParameters(
 }
 
 export function translateWhereExpression(
+  collectionAlias: string,
   whereExpression: WhereExpression,
   parameters: SqlParameters,
   variables: VariablesMappings,
@@ -910,6 +850,7 @@ export function translateWhereExpression(
   switch (whereExpression.kind) {
     case "simpleWhereExpression":
       return translateColumnPredicate(
+        collectionAlias,
         whereExpression.column,
         whereExpression.operator,
         whereExpression.value,
@@ -920,7 +861,10 @@ export function translateWhereExpression(
     case "and":
       if (whereExpression.expressions.length > 0) {
         return whereExpression.expressions
-          .map((e) => `(${translateWhereExpression(e, parameters, variables)})`)
+          .map(
+            (e) =>
+              `(${translateWhereExpression(collectionAlias, e, parameters, variables)})`,
+          )
           .join(" AND ");
       } else {
         return "true";
@@ -929,89 +873,133 @@ export function translateWhereExpression(
     case "or":
       if (whereExpression.expressions.length > 0) {
         return whereExpression.expressions
-          .map((e) => `(${translateWhereExpression(e, parameters, variables)})`)
+          .map(
+            (e) =>
+              `(${translateWhereExpression(collectionAlias, e, parameters, variables)})`,
+          )
           .join(" OR ");
       } else {
         return "false";
       }
 
+    case "exists":
+      console.log("whereExpression", whereExpression);
+      if (whereExpression.expression) {
+        return `EXISTS(SELECT VALUE 1 FROM
+                ${whereExpression.nestedCollectionPredicateColumn.prefix}
+                IN ${collectionAlias}.${whereExpression.nestedCollectionPredicateColumn.columnName}
+                WHERE ${translateWhereExpression(
+                  whereExpression.nestedCollectionPredicateColumn.prefix,
+                  whereExpression.expression,
+                  parameters,
+                  variables,
+                )})`;
+      } else {
+        return `EXISTS(SELECT VALUE 1 FROM a in ${collectionAlias}.${whereExpression.nestedCollectionPredicateColumn.columnName})`;
+      }
+
     case "not":
-      return `(NOT (${translateWhereExpression(whereExpression.expression, parameters, variables)})) `;
+      return `(NOT (${translateWhereExpression(collectionAlias, whereExpression.expression, parameters, variables)})) `;
   }
 }
 
 // Function to recursively build the nested query part
 function buildNestedFieldPredicate(
-  nestedField: NestedField,
-  parentField: string,
-  arrayCounter: number,
+  nestedField: string[],
+  currentFieldPrefix: string,
+  currentField: string,
   value: ComparisonValue | undefined,
   operator: ComparisonScalarDbOperator,
   parameters: SqlParameters,
   variables: VariablesMappings,
 ): string {
-  switch (nestedField.kind) {
-    case "array":
-      const nestedFieldAlias = `array_element_${arrayCounter++}`;
-      return `EXISTS(
-                SELECT 1
-                FROM ${nestedFieldAlias} IN ${parentField}.${nestedField.field}
-                WHERE ${buildNestedFieldPredicate(nestedField.nestedField, nestedFieldAlias, arrayCounter, value, operator, parameters, variables)})`;
+  let comparisonTarget = `${currentFieldPrefix}.${currentField}`;
 
-    case "object":
-      const alias = `${parentField}.${(nestedField as NestedObjectField).field}`;
-      return buildNestedFieldPredicate(
-        nestedField.nestedField,
-        alias,
-        arrayCounter,
-        value,
-        operator,
-        parameters,
-        variables,
-      );
-    case "scalar":
-      if (value === undefined) {
-        if (operator.isUnary) {
-          return `${operator.name}(${parentField}.${nestedField.field})`;
-        } else {
-          throw new sdk.InternalServerError(
-            "Value is undefined where a value was expected",
-          );
-        }
-      } else {
-        const comparisonValueRef = visitComparisonValue(
-          parameters,
-          variables,
-          value,
-          nestedField.field,
-          parentField,
-        );
-
-        // abstract the logic for infix and prefix operators in a function to avoid code duplication
-        if (operator.isInfix) {
-          return `${parentField}.${(nestedField as NestedScalarField).field} ${operator.name} ${comparisonValueRef}`;
-        } else {
-          return `${operator.name}(${parentField}.${(nestedField as NestedScalarField).field}, ${comparisonValueRef})`;
-        }
-      }
+  for (const nestedFieldElement of nestedField) {
+    comparisonTarget += `.${nestedFieldElement}`;
   }
+
+  console.log("compoiarson target ", comparisonTarget);
+
+  if (value) {
+    const comparisonValueRef = visitComparisonValue(
+      parameters,
+      variables,
+      value,
+      comparisonTarget,
+      currentFieldPrefix,
+    );
+
+    // abstract the logic for infix and prefix operators in a function to avoid code duplication
+    if (operator.isInfix) {
+      return `${comparisonTarget} ${operator.name} ${comparisonValueRef}`;
+    } else {
+      return `${operator.name}(${comparisonTarget}, ${comparisonValueRef})`;
+    }
+  } else {
+    if (operator.isUnary) {
+      return `${operator.name}(${comparisonTarget})`;
+    } else {
+      throw new sdk.InternalServerError(
+        "Value is undefined where a value was expected",
+      );
+    }
+  }
+  // switch (nestedField.kind) {
+  //   case "object":
+  //     const alias = `${parentField}.${(nestedField as NestedObjectField).field}`;
+  //     return buildNestedFieldPredicate(
+  //       nestedField.nestedField,
+  //       alias,
+  //       arrayCounter,
+  //       value,
+  //       operator,
+  //       parameters,
+  //       variables,
+  //     );
+  //   case "scalar":
+  //     if (value === undefined) {
+  //       if (operator.isUnary) {
+  //         return `${operator.name}(${parentField}.${nestedField.field})`;
+  //       } else {
+  //         throw new sdk.InternalServerError(
+  //           "Value is undefined where a value was expected",
+  //         );
+  //       }
+  //     } else {
+  //       const comparisonValueRef = visitComparisonValue(
+  //         parameters,
+  //         variables,
+  //         value,
+  //         nestedField.field,
+  //         parentField,
+  //       );
+  //       // abstract the logic for infix and prefix operators in a function to avoid code duplication
+  //       if (operator.isInfix) {
+  //         return `${parentField}.${(nestedField as NestedScalarField).field} ${operator.name} ${comparisonValueRef}`;
+  //       } else {
+  //         return `${operator.name}(${parentField}.${(nestedField as NestedScalarField).field}, ${comparisonValueRef})`;
+  //       }
+  //     }
+  // }
 }
 
 // Function to generate the SQL query
 export function translateColumnPredicate(
-  column: Column,
+  prefix: string,
+  column: PredicateColumn,
   operator: ComparisonScalarDbOperator,
   value: ComparisonValue | undefined,
   parameters: SqlParameters,
   variables: VariablesMappings,
 ): string {
-  const { name, prefix, nestedField } = column;
+  const { name, fieldPath, type } = column;
 
   // Initial alias for the top-level field
   const topLevelAlias = prefix + "." + name;
   let query = "";
   let predicate = "";
-  if (nestedField === undefined) {
+  if (!fieldPath) {
     if (value !== undefined) {
       const comparisonValueRef = visitComparisonValue(
         parameters,
@@ -1034,11 +1022,10 @@ export function translateColumnPredicate(
       );
     }
   } else {
-    nestedField.field = name;
     query = buildNestedFieldPredicate(
-      nestedField,
+      fieldPath,
       prefix,
-      1,
+      name,
       value,
       operator,
       parameters,
@@ -1049,17 +1036,19 @@ export function translateColumnPredicate(
   return `${query.trim()}`;
 }
 
-function visitNestedField(
+// Function to get the scalar type of a column,
+// if the column is nested, it will return the scalar type of the nested field
+function visitNestedObjectField(
   fieldNames: string[],
   parentFieldType: schema.TypeDefinition,
   parentObjectName: string,
   collectionsSchema: schema.CollectionsSchema,
-): NestedField {
+): schema.NamedScalarTypeDefinition {
   if (fieldNames.length === 0) {
     throw new sdk.BadRequest("Field path cannot be empty");
   }
 
-  return handleFieldType(
+  return handleNestedObjectFieldType(
     fieldNames,
     parentFieldType,
     parentObjectName,
@@ -1067,19 +1056,16 @@ function visitNestedField(
   );
 }
 
-function handleFieldType(
+function handleNestedObjectFieldType(
   fieldNames: string[],
   fieldType: schema.TypeDefinition,
   parentObjectName: string,
   collectionsSchema: schema.CollectionsSchema,
-): NestedField {
+): schema.NamedScalarTypeDefinition {
   switch (fieldType.type) {
     case "array":
-      return handleArrayType(
-        fieldNames,
-        fieldType,
-        parentObjectName,
-        collectionsSchema,
+      throw new sdk.BadRequest(
+        `Expected field ${parentObjectName} to be an object or scalar field, but it is an array`,
       );
     case "nullable":
       return handleNullableType(
@@ -1098,30 +1084,13 @@ function handleFieldType(
   }
 }
 
-function handleArrayType(
-  fieldNames: string[],
-  fieldType: schema.ArrayTypeDefinition,
-  parentObjectName: string,
-  collectionsSchema: schema.CollectionsSchema,
-): NestedArrayField {
-  return {
-    kind: "array",
-    nestedField: handleFieldType(
-      fieldNames,
-      fieldType.elementType,
-      parentObjectName,
-      collectionsSchema,
-    ),
-  };
-}
-
 function handleNullableType(
   fieldNames: string[],
   fieldType: schema.NullableTypeDefinition,
   parentObjectName: string,
   collectionsSchema: schema.CollectionsSchema,
-): NestedField {
-  return handleFieldType(
+): schema.NamedScalarTypeDefinition {
+  return handleNestedObjectFieldType(
     fieldNames,
     fieldType.underlyingType,
     parentObjectName,
@@ -1134,7 +1103,7 @@ function handleNamedType(
   fieldType: schema.NamedTypeDefinition,
   parentObjectName: string,
   collectionsSchema: schema.CollectionsSchema,
-): NestedField {
+): schema.NamedScalarTypeDefinition {
   switch (fieldType.kind) {
     case "object":
       return handleObjectType(
@@ -1153,7 +1122,7 @@ function handleObjectType(
   fieldType: schema.NamedObjectTypeDefinition,
   parentObjectName: string,
   collectionsSchema: schema.CollectionsSchema,
-): NestedField {
+): schema.NamedScalarTypeDefinition {
   const [currentFieldName, ...remainingFields] = fieldNames;
   const parentObjectType: schema.ObjectTypeDefinition =
     collectionsSchema.objectTypes[fieldType.name];
@@ -1176,16 +1145,12 @@ function handleObjectType(
     case "named":
       switch (currentFieldDefn.type.kind) {
         case "object":
-          return {
-            kind: "object",
-            field: currentFieldName,
-            nestedField: handleFieldType(
-              remainingFields,
-              currentFieldDefn.type,
-              currentFieldName,
-              collectionsSchema,
-            ),
-          };
+          return handleNestedObjectFieldType(
+            remainingFields,
+            currentFieldDefn.type,
+            currentFieldName,
+            collectionsSchema,
+          );
         case "scalar":
           return handleScalarType(
             [currentFieldName, ...remainingFields],
@@ -1193,18 +1158,11 @@ function handleObjectType(
           );
       }
     case "array":
-      return {
-        kind: "array",
-        field: currentFieldName,
-        nestedField: handleFieldType(
-          remainingFields,
-          currentFieldDefn.type.elementType,
-          currentFieldName,
-          collectionsSchema,
-        ),
-      };
+      throw new sdk.BadRequest(
+        `Field ${currentFieldName} is an array field, it cannot have nested fields`,
+      );
     case "nullable":
-      return handleFieldType(
+      return handleNestedObjectFieldType(
         remainingFields,
         currentFieldDefn.type.underlyingType,
         currentFieldName,
@@ -1216,16 +1174,102 @@ function handleObjectType(
 function handleScalarType(
   fieldNames: string[],
   fieldType: schema.NamedScalarTypeDefinition,
-): NestedScalarField {
+): schema.NamedScalarTypeDefinition {
   if (fieldNames.length > 1) {
     throw new sdk.BadRequest(
       `Scalar field ${fieldNames[0]} cannot have nested fields`,
     );
   }
 
-  return {
-    kind: "scalar",
-    field: fieldNames[0],
-    type: fieldType.name,
-  };
+  return fieldType;
+}
+
+export function nestedCollectionComparisonTarget(
+  predicate_subquery_counter: number,
+  columnName: string,
+  fieldPath: string[],
+  schema: schema.CollectionsSchema,
+  collectionObject: schema.ObjectTypePropertiesMap,
+): [NestedCollectionPredicateColumn, number] {
+  const currentColumnType = collectionObject[columnName].type;
+
+  if (fieldPath.length > 0) {
+    // 1. ALl the elements in the field path except the last one should be an object, the last one should be an array.
+    // 2. Traverse over the field path and look up the name of the column in the object and get its type from there.
+
+    function traverseFieldPath(
+      currentFieldPath: string[],
+      lastObject: schema.ObjectTypePropertiesMap,
+    ): [NestedCollectionPredicateColumn, number] {
+      if (currentFieldPath.length === 1) {
+        const currentField = lastObject[currentFieldPath[0]];
+        if (!currentField) {
+          throw new sdk.BadRequest(
+            `Field ${currentFieldPath[0]} specified in the field path does not exist.`,
+          );
+        } else {
+          console.log("current field is ", currentField);
+          if (currentField.type.type !== "array") {
+            throw new sdk.BadRequest(
+              "The comparison target of an nested collection must be of the array type",
+            );
+          } else {
+            return [
+              {
+                prefix: `__predicate_subquery_${currentFieldPath[0]}_${predicate_subquery_counter++}`,
+                columnName,
+                fieldPath,
+                type: currentField.type,
+              },
+              predicate_subquery_counter,
+            ];
+          }
+        }
+      } else {
+        const [headRemainingPath, ...tailRemainingPath] = currentFieldPath;
+
+        const currentField = lastObject[headRemainingPath];
+
+        if (
+          currentField.type.type === "named" &&
+          currentField.type.kind === "object"
+        ) {
+          const currentObj = schema.objectTypes[currentField.type.name];
+          return traverseFieldPath(tailRemainingPath, currentObj.properties);
+        } else {
+          throw new sdk.BadRequest(
+            `Intermediate Field path element ${headRemainingPath} is not of type object`,
+          );
+        }
+      }
+    }
+
+    const columnBaseType = getBaseType(currentColumnType);
+
+    const currentObject = schema.objectTypes[columnBaseType];
+
+    if (!currentObject) {
+      throw new sdk.BadRequest(
+        `Could not find the object type corresponding to the field: ${columnBaseType}`,
+      );
+    }
+
+    return traverseFieldPath(fieldPath, currentObject.properties);
+  } else {
+    if (currentColumnType.type !== "array") {
+      throw new sdk.BadRequest(
+        "The comparison target of an nested collection must be of the array type",
+      );
+    } else {
+      return [
+        {
+          prefix: `__predicate_subquery_${columnName}_${predicate_subquery_counter++}`,
+          columnName,
+          fieldPath,
+          type: currentColumnType,
+        },
+        predicate_subquery_counter,
+      ];
+    }
+  }
 }
