@@ -79,8 +79,6 @@ default suggested port.
 | AZURE_COSMOS_MANAGED_CLIENT_ID                | Value of the user-assigned managed client id.                                            | No       | N/A     |
 
 
-
-
 ## Step 3: Introspect the connector
 
 
@@ -88,7 +86,7 @@ default suggested port.
 ddn connector introspect <connector-name>
 ```
 
-This will generate a `configuration.json` file that will have the schema of your Azure Cosmos DB for NoSQL.
+This will generate a `config.json` file that will have the schema of your Azure Cosmos DB for NoSQL.
 
 ## Step 4: Add your resources
 
