@@ -87,36 +87,36 @@ function getEnvVariable(
   return envVariable;
 }
 
-function getConnectionConfig(): AzureCosmosAuthenticationConfig | null {
+function getConnectionConfig(): AzureCosmosAuthenticationConfig {
   const key = getEnvVariable("AZURE_COSMOS_KEY");
-  const managed_identity_client_id = getEnvVariable(
-    "AZURE_COSMOS_MANAGED_CLIENT_ID",
+  const systemAssignedManagedIdentity = getEnvVariable(
+    "AZURE_COSMOS_SYSTEM_ASSIGNED_MANAGED_IDENTITY",
+  );
+  const userAssignedManagedIdentity = getEnvVariable(
+    "AZURE_COSMOS_USER_ASSIGNED_MANAGED_IDENTITY",
   );
 
-  if (key === null && managed_identity_client_id === null) {
-    throw new Error(
-      `Either the AZURE_COSMOS_KEY or the AZURE_COSMOS_MANAGED_CLIENT_ID env var is expected`,
-    );
+  if (key) {
+    return {
+      type: "Key",
+      fromEnvVar: "AZURE_COSMOS_KEY",
+    };
+  } else if (userAssignedManagedIdentity) {
+    return {
+      type: "ManagedIdentity",
+      userAssignedId: {
+        fromEnvVar: "AZURE_COSMOS_MANAGED_CLIENT_ID",
+      },
+    };
+  } else if (systemAssignedManagedIdentity) {
+    return {
+      type: "ManagedIdentity",
+    };
   } else {
-    if (key) {
-      return {
-        type: "Key",
-        fromEnvVar: "AZURE_COSMOS_KEY",
-      };
-    } else if (managed_identity_client_id) {
-      return {
-        type: "ManagedIdentity",
-        userAssignedId: {
-          fromEnvVar: "AZURE_COSMOS_MANAGED_CLIENT_ID",
-        },
-      };
-    } else {
-      return {
-        type: "ManagedIdentity",
-      };
-    }
+    throw new Error(
+      `Either the AZURE_COSMOS_KEY,AZURE_COSMOS_MANAGED_CLIENT_ID or AZURE_COSMOS_SYSTEM_ASSIGNED_MANAGED_IDENTITY env var is expected`,
+    );
   }
-  return null;
 }
 
 export function constructCosmosDbClient() {
